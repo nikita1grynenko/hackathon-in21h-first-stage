@@ -17,7 +17,7 @@ public class Program
         {
             options.AddPolicy("AllowAll", policy =>
             {
-                policy.AllowAnyOrigin() // Дозволяє всі домени
+                policy.AllowAnyOrigin()  
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             });
