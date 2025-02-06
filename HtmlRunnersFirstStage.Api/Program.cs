@@ -15,13 +15,14 @@ public class Program
 
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("AllowReactApp", policy =>
+            options.AddPolicy("AllowAll", policy =>
             {
-                policy.WithOrigins("http://localhost:3000")
+                policy.AllowAnyOrigin() // Дозволяє всі домени
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             });
         });
+
 
         var app = builder.Build();
 
@@ -34,7 +35,7 @@ public class Program
 
         app.UseHttpsRedirection();
 
-        app.UseCors("AllowReactApp");
+        app.UseCors("AllowAll");
 
         app.UseAuthorization();
 
