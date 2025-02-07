@@ -1,0 +1,37 @@
+.single-quiz {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .tags span {
+    background: #ddd;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-right: 5px;
+  }
+  
+  .content {
+    margin-top: 15px;
+    font-size: 18px;
+  }
+  
+  .comment-section textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .comments {
+    margin-top: 20px;
+  }
+  
+  .comment {
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+  

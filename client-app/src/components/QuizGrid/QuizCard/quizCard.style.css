@@ -1,0 +1,27 @@
+.quiz-card {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+  
+  .tags {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .tag {
+    background: lightblue;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+  }
+  
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  

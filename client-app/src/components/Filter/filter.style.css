@@ -1,0 +1,31 @@
+.filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    width: 99%;
+    padding: 10px 20px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px; 
+}
+
+.filter-btn {
+    padding: 8px 12px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.filter-btn.active {
+    background-color: #ddd;
+    font-weight: bold;
+}
+
+.quiz-counter {
+    font-size: 16px;
+    font-weight: bold;
+}
