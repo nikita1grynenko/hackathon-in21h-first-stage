@@ -9,7 +9,22 @@ const quizzes = [
     tags: ["Тест", "Змагання", "Складний"],
     author: "Dude",
     date: "06.02.2025",
-    content: "Lorem Ipsum is simply dummy text...",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, beatae aliquid, impedit nisi unde dolorem error, neque voluptatum quibusdam dolorum aliquam. Iure molestiae, magnam itaque magni molestias ducimus earum eligendi.",
+    comments: [
+      {
+        author: "Dude",
+        text: "Хороший тамада, і конкурси веселі.",
+        date: "07.02.2025",
+        time: "13:22",
+      },
+      {
+        author: "Dude",
+        text: "Це якийсь пздц",
+        date: "06.02.2025",
+        time: "17:22",
+      },
+    ],
   },
   {
     id: 2,
@@ -44,12 +59,34 @@ const SingleQuiz: React.FC = () => {
       </div>
 
       <div className="comments">
-        <div className="comment">
-          <strong>Dude</strong> Хороший тамада, і конкурси веселі.
-        </div>
-        <div className="comment">
-          <strong>Dude</strong> Це якийсь пздц
-        </div>
+        {(quiz.comments || []).map((comment, index) => (
+          <div key={index} className="comment">
+            <div className="comment-header">
+              <div className="comment-author">
+                <div className="avatar">
+                  <svg
+                    className="avatar-placeholder"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+                <strong>{comment.author}</strong>
+              </div>
+              <div className="comment-date">
+                <span>{comment.date}</span>
+                <span>{comment.time}</span>
+              </div>
+            </div>
+            <div className="comment-text">{comment.text}</div>
+          </div>
+        ))}
       </div>
     </div>
   );

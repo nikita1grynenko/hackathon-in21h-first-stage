@@ -10,6 +10,7 @@ const quizzes = [
     author: "Dude",
     date: "06.02.2025",
     points: 100,
+    avatar: undefined,
   },
   {
     id: 2,

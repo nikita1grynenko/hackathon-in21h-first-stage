@@ -13,6 +13,14 @@ const Header: React.FC = () => {
       </div>
       <div className="header-right">
         <SearchBar />
+        <div className="auth-buttons">
+          <Link to="/login" className="auth-btn">
+            Вхід
+          </Link>
+          <Link to="/register" className="auth-btn register">
+            Реєстрація
+          </Link>
+        </div>
       </div>
     </header>
   );

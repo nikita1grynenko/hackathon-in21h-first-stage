@@ -14,7 +14,7 @@ const Filter: React.FC<FilterProps> = ({ current, total }) => {
         <button className="filter-btn active">Складність ⬇</button>
       </div>
       <div className="quiz-counter">
-        Квести{" "}
+        <span>Квести</span>{" "}
         <strong>
           {current}-{Math.min(current + 5, total)}
         </strong>{" "}

@@ -5,17 +5,28 @@ import Pagination from "./../../components/Pagination/pagination.reactive";
 import Filter from "./../../components/Filter/filter.reactive";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SingleQuiz from "./../../components/SingleQuiz/singleQuiz.reactive";
+import Login from "../Login/Login";
+import Register from "../Register/Register";
 
 const Home: React.FC = () => {
   return (
     <Router>
       <Header />
-      <Filter current={19} total={50} />
       <Routes>
-        <Route path="/" element={<QuizGrid />} />
+        <Route
+          path="/"
+          element={
+            <>
+              <Filter current={19} total={50} />
+              <QuizGrid />
+              <Pagination />
+            </>
+          }
+        />
         <Route path="/quiz/:id" element={<SingleQuiz />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
-      <Pagination />
     </Router>
   );
 };
