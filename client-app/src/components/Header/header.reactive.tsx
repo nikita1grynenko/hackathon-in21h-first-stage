@@ -13,7 +13,6 @@ const Header: React.FC = () => {
       </div>
       <div className="header-right">
         <SearchBar />
-        <span className="username">TheCoolestDude</span>
       </div>
     </header>
   );
