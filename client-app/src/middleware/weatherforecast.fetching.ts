@@ -1,8 +1,10 @@
-import axios from 'axios';
+
+import axios from "axios";
 import {
   WeatherForecastSchema,
   WeatherForecast,
-} from '../models/weathercast.model';
+} from "../models/weathercast.model";
+
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
