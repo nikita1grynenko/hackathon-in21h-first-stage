@@ -1,1 +1,3 @@
-export { default as AppComponent } from './app.reactive';
+
+export { default as AppComponent } from "./app.reactive";
+
