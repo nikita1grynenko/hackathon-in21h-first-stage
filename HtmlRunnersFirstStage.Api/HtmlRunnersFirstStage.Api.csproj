@@ -19,4 +19,8 @@
       <Folder Include="Controllers\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\HtmlRunnersFirstStage.Application\HtmlRunnersFirstStage.Application.csproj" />
+    </ItemGroup>
+
 </Project>

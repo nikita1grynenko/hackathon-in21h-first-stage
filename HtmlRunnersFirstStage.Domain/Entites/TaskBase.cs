@@ -7,6 +7,4 @@ public abstract class TaskBase
     
     public int QuestId { get; set; }
     public Quest Quest { get; set; }
-
-    public ICollection<TaskMedia> Media { get; set; }
 }
