@@ -1,10 +1,13 @@
+
 import z from "zod";
+
 
 export const WeatherForecastSchema = z.object({
   date: z.string(),
   temperatureC: z.number(),
   temperatureF: z.number(),
   summary: z.enum([
+
     "Freezing",
     "Bracing",
     "Hot",
@@ -15,6 +18,7 @@ export const WeatherForecastSchema = z.object({
     "Scorching",
     "Sweltering",
     "Balmy",
+
   ]),
 });
 
