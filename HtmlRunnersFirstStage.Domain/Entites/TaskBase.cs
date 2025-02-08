@@ -1,4 +1,6 @@
-﻿namespace HtmlRunnersFirstStage.Domain.Entites;
+﻿using HtmlRunnersFirstStage.Domain.Enums;
+
+namespace HtmlRunnersFirstStage.Domain.Entites;
 
 public abstract class TaskBase
 {
