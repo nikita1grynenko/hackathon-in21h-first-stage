@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import "./singleQuiz.style.css";
+import "./single-quiz.style.css";
 
 const quizzes = [
   {
@@ -39,7 +39,7 @@ const quizzes = [
 const SingleQuiz: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const quiz = quizzes.find((q) => q.id === Number(id));
-
+  
   if (!quiz) {
     return <h2>Квест не знайдено!</h2>;
   }
