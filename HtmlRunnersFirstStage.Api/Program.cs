@@ -1,6 +1,10 @@
 using System.Text;
+using HtmlRunnersFirstStage.Application.Contracts;
+using HtmlRunnersFirstStage.Application.Services;
 using HtmlRunnersFirstStage.Domain.Entities;
 using HtmlRunnersFirstStage.Infrastructure.Context;
+using HtmlRunnersFirstStage.Infrastructure.Contracts;
+using HtmlRunnersFirstStage.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +18,12 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Налаштовуємо контекст бази даних з Identity
+        // Налаштовуємо контекст бази даних
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-        // Додаємо Identity із нашим класом ApplicationUser (якщо ви його адаптували для Identity)
-        // Приклад для Identity з GUID або string ключем – залежить від вашої реалізації
-        builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+        // Налаштовуємо Identity з нашим класом ApplicationUser (GUID як ключ)
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
         {
             options.Password.RequireDigit = true;
             options.Password.RequiredLength = 6;
@@ -39,7 +42,6 @@ public class Program
 
         builder.Services.AddAuthentication(options =>
         {
-            // Встановлюємо схему за замовчуванням для API – JWT Bearer
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
@@ -58,8 +60,7 @@ public class Program
                 IssuerSigningKey = new SymmetricSecurityKey(key)
             };
         })
-        // Якщо все-таки плануєте підтримувати соціальні логіни, додайте їх як додаткові схеми.
-        // Зверніть увагу, що для API їх потрібно буде інтегрувати у власну логіку отримання токенів.
+        // Додаємо соціальні провайдери (Google, Facebook) – для API потрібна додаткова логіка обміну токенів
         .AddGoogle(googleOptions =>
         {
             googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
@@ -71,16 +72,18 @@ public class Program
             facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
         });
 
-        // Додаємо контролери для API (без підтримки представлень)
+        // Реєструємо репозиторій та сервіс
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+        // Додаємо контролери
         builder.Services.AddControllers();
 
         var app = builder.Build();
 
         app.UseHttpsRedirection();
-
         app.UseRouting();
 
-        // Для API порядок middleware має бути таким: спочатку аутентифікація, потім авторизація
         app.UseAuthentication();
         app.UseAuthorization();
 
