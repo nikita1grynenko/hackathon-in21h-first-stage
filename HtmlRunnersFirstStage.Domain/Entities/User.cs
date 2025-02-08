@@ -1,4 +1,4 @@
-﻿namespace HtmlRunnersFirstStage.Domain.Entites;
+﻿namespace HtmlRunnersFirstStage.Domain.Entities;
 
 public class User
 {
@@ -8,7 +8,7 @@ public class User
     public string PasswordHash { get; set; }
     public string AvatarUrl { get; set; }
     
-    public ICollection<PickedQuest> PickedQuests { get; set; }
+    public ICollection<QuestAttempt> QuestAttempts { get; set; }
     public ICollection<Quest> CreatedQuests { get; set; }
     public ICollection<Feedback> Feedbacks { get; set; }
 }
