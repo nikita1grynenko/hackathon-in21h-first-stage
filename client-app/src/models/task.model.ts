@@ -1,17 +1,46 @@
 import z from "zod";
 
-export const OpenAnswerTaskSchema = z.object({
-  // * TODO: Add the properties for the OpenAnswerTaskSchema
+const AbstractTaskSchema = z.object({
+  id: z.string().uuid(),
+  question: z.string(),
+  questId: z.string().uuid(),
 });
 
-export const MultipleChoiceTaskSchema = z.object({
-  // * TODO: Add the properties for the MultipleChoiceTaskSchema
-});
+export const OpenAnswerTaskSchema = AbstractTaskSchema.merge(
+  z.object({
+    type: z.literal("OpenAnswer"),
+    correctAnswer: z.string(),
+  })
+);
 
-export const ImageSearchTaskSchema = z.object({
-  // * TODO: Add the properties for the ImageSearchTaskSchema
-});
+export const OneChoiceTaskSchema = AbstractTaskSchema.merge(
+  z.object({
+    type: z.literal("OneChoice"),
+    options: z.array(z.string()),
+    correctOption: z.string(),
+  })
+);
 
-export const TaskSchema = z.union([OpenAnswerTaskSchema, MultipleChoiceTaskSchema, ImageSearchTaskSchema]);
+export const MultipleChoiceTaskSchema = AbstractTaskSchema.merge(
+  z.object({
+    type: z.literal("MultipleChoice"),
+    options: z.array(z.string()),
+    correctOptions: z.array(z.string()),
+  })
+);
+
+export const ImageSearchTaskSchema = AbstractTaskSchema.merge(
+  z.object({
+    type: z.literal("ImageSearch"),
+    // * TODO: need to implement on backend side
+  })
+); 
+
+export const TaskSchema = z.discriminatedUnion("type", [
+  OpenAnswerTaskSchema,
+  OneChoiceTaskSchema,
+  MultipleChoiceTaskSchema,
+  ImageSearchTaskSchema,
+]);
 
 export type Task = z.infer<typeof TaskSchema>;

@@ -2,9 +2,11 @@
 
 public abstract class TaskBase
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string Question { get; set; }
     
-    public int QuestId { get; set; }
+    public Guid QuestId { get; set; }
     public Quest Quest { get; set; }
+    
+    public TaskType TaskType { get; set; }
 }

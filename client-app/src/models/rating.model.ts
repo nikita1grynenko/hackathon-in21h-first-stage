@@ -1,8 +1,10 @@
+// ? TODO: Do we still need this model? 
+
 import z from "zod";
 
 export const RatingSchema = z.object({
-  ratingId: z.string(),
-  questId: z.string(),
+  ratingId: z.string().uuid(),
+  questId: z.string().uuid(),
   stars: z.number().max(5).min(1),
   comment: z.string(),
   ratedAt: z.date(),
