@@ -12,6 +12,5 @@ public class TaskOption
     [Required, MaxLength(500)]
     public string Text { get; set; } = null!;
 
-    // Чи є варіант правильним (важливо для MultipleChoice/SingleChoice)
     public bool IsCorrect { get; set; }
 }

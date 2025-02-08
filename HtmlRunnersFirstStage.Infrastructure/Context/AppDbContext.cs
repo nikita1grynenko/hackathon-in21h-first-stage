@@ -14,7 +14,6 @@ namespace HtmlRunnersFirstStage.Infrastructure.Context
         public DbSet<Feedback> Feedbacks { get; set; } = null!;
         public DbSet<QuestAttempt> QuestAttempts { get; set; } = null!;
         public DbSet<AttemptedTask> AttemptedTasks { get; set; } = null!;
-        public DbSet<AttemptedTaskOption> AttemptedTaskOptions { get; set; } = null!;
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
@@ -83,21 +82,6 @@ namespace HtmlRunnersFirstStage.Infrastructure.Context
                 .HasOne(at => at.Task)
                 .WithMany() 
                 .HasForeignKey(at => at.TaskId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<AttemptedTaskOption>()
-                .HasKey(ato => new { ato.AttemptedTaskId, ato.TaskOptionId });
-
-            modelBuilder.Entity<AttemptedTaskOption>()
-                .HasOne(ato => ato.AttemptedTask)
-                .WithMany(at => at.AttemptedTaskOptions)
-                .HasForeignKey(ato => ato.AttemptedTaskId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<AttemptedTaskOption>()
-                .HasOne(ato => ato.TaskOption)
-                .WithMany()
-                .HasForeignKey(ato => ato.TaskOptionId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Feedback>()

@@ -18,10 +18,7 @@ public class QuestTask
 
     // Тип завдання (SingleChoice, MultipleChoice, OpenAnswer)
     public QuestionType QuestionType { get; set; }
-
-    // Для OpenAnswer можна зберігати правильну відповідь (або залишити NULL)
-    public string? CorrectAnswer { get; set; }
-
+    
     // Обмеження часу саме для цього завдання (необов'язкове)
     public TimeSpan? TimeLimit { get; set; }
 
