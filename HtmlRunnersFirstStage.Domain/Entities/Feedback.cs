@@ -12,7 +12,7 @@ public class Feedback
 
     // Користувач, який залишив відгук
     public Guid UserId { get; set; }
-    public User User { get; set; } = null!;
+    public ApplicationUser User { get; set; } = null!;
 
     // Оцінка (наприклад 1..5)
     [Range(1, 5)]

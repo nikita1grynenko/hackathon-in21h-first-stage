@@ -16,7 +16,7 @@ public class Quest
 
     // Хто створив квест
     public Guid CreatedByUserId { get; set; }
-    public User CreatedByUser { get; set; } = null!;
+    public ApplicationUser CreatedByUser { get; set; } = null!;
 
     // Навігаційні властивості
     public ICollection<QuestTask> QuestTasks { get; set; } = new List<QuestTask>();

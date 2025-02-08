@@ -8,7 +8,7 @@ public class QuestAttempt
     public Quest Quest { get; set; } = null!;
 
     public Guid UserId { get; set; }
-    public User User { get; set; } = null!;
+    public ApplicationUser User { get; set; } = null!;
 
     // Час початку / завершення спроби
     public DateTime StartedAt { get; set; } = DateTime.UtcNow;
