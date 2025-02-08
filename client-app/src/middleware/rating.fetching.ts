@@ -1,17 +1,16 @@
 
 import axios from "axios";
 import {
-  WeatherForecastSchema,
-  WeatherForecast,
-} from "../models/weathercast.model";
-
+  RatingSchema,
+  Rating,
+} from "../models/rating.model";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export const fetchWeatherForecast = async (): Promise<WeatherForecast[]> => {
+export const fetchAllRatings = async (): Promise<Rating[]> => {
   const response = await axios.get(`${apiUrl}/weatherforecast`);
 
-  const result = WeatherForecastSchema.array().safeParse(response.data);
+  const result = RatingSchema.array().safeParse(response.data);
 
   if (!result.success) {
     console.error(result.error);
@@ -20,3 +19,5 @@ export const fetchWeatherForecast = async (): Promise<WeatherForecast[]> => {
 
   return result.data;
 };
+
+// * TODO: Need to update the backend to continue
