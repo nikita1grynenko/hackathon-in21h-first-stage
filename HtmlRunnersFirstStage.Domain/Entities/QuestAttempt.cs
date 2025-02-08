@@ -3,18 +3,17 @@
 public class QuestAttempt
 {
     public Guid Id { get; set; }
-    
-    public Guid UserId { get; set; }
-    public User User { get; set; }
 
     public Guid QuestId { get; set; }
-    public Quest Quest { get; set; }
+    public Quest Quest { get; set; } = null!;
 
-    public DateTime StartTime { get; set; }
-    public DateTime? EndTime { get; set; }
+    public Guid UserId { get; set; }
+    public User User { get; set; } = null!;
 
-    public double Score { get; set; }
-    public bool IsCompleted { get; set; }
-    
-    public ICollection<UserQuestTaskAnswer> UserQuestTaskAnswers { get; set; }
+    // Час початку / завершення спроби
+    public DateTime StartedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? CompletedAt { get; set; }
+
+    // Список виконаних завдань
+    public ICollection<AttemptedTask> AttemptedTasks { get; set; } = new List<AttemptedTask>();
 }
