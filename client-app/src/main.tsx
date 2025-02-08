@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "./index.css";
-import { AppComponent } from "./components/app";
+import { AppComponent } from "./pages/app";
 
 const root = document.getElementById("root");
 

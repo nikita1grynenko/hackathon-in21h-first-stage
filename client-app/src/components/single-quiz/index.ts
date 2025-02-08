@@ -1,0 +1,1 @@
+export { default as SingleQuizComponent } from "./single-quiz.reactive";

@@ -1,6 +1,6 @@
 import React from "react";
-import QuizCard from "./QuizCard/quizCard.reactive";
-import "./quizGrid.style.css";
+import { QuizCardComponent } from "../quiz-card";
+import "./quiz-grid.style.css";
 
 const quizzes = [
   {
@@ -27,7 +27,7 @@ const QuizGrid: React.FC = () => {
     <div>
       <div className="quiz-grid">
         {quizzes.map((quiz, index) => (
-          <QuizCard key={index} {...quiz} />
+          <QuizCardComponent key={index} {...quiz} />
         ))}
       </div>
     </div>
