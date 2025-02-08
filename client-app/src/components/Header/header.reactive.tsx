@@ -1,7 +1,7 @@
 import React from "react";
-import "./header.style.css";
-import SearchBar from "./../SearchBar/searchBar.reactive";
 import { Link } from "react-router-dom";
+import "./header.style.css";
+import { SearchBarComponent } from "../search-bar";
 
 const Header: React.FC = () => {
   return (
@@ -12,7 +12,7 @@ const Header: React.FC = () => {
         </h1>
       </div>
       <div className="header-right">
-        <SearchBar />
+        <SearchBarComponent />
         <div className="auth-buttons">
           <Link to="/login" className="auth-btn">
             Вхід
