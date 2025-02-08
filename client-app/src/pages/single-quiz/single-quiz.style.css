@@ -1,0 +1,96 @@
+.single-quiz {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .tags span {
+    background: #f1f3f5;
+    color: #495057;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-right: 8px;
+    font-size: 14px;
+  }
+  
+  .content {
+    margin-top: 15px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  .comment-section textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  .comment-section textarea:focus {
+    outline: none;
+    border-color: #5c7cfa;
+  }
+  
+  .comments {
+    margin-top: 30px;
+  }
+  
+  .comment {
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .comment-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #f1f3f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .avatar-placeholder {
+    width: 16px;
+    height: 16px;
+    color: #adb5bd;
+  }
+  
+  .comment-author strong {
+    color: #495057;
+    font-weight: 500;
+  }
+  
+  .comment-date {
+    display: flex;
+    gap: 8px;
+    color: #868e96;
+    font-size: 14px;
+  }
+  
+  .comment-text {
+    color: #495057;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  

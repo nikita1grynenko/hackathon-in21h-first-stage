@@ -1,0 +1,50 @@
+.filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 12px; 
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: 1px solid #e0e0e0;
+    background-color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    background-color: #f8f9fa;
+}
+
+.filter-btn.active {
+    background-color: #5c7cfa;
+    color: white;
+    border-color: #5c7cfa;
+}
+
+.quiz-counter {
+    font-size: 14px;
+    color: #868e96;
+}
+
+.quiz-counter strong {
+    color: #495057;
+    font-weight: 500;
+}
+
+/* Добавляем стиль для текста "Квести" */
+.quiz-counter span {
+    color: #868e96;
+    font-weight: 400;
+}
