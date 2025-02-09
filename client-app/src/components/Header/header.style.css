@@ -1,14 +1,15 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   padding: 15px 20px;
   background-color: #fff;
   border-bottom: 1px solid #ddd;
 }
 
 .header-left {
-  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
 }
 
 .header-left h1 {
@@ -19,16 +20,16 @@
 .header-right {
   display: flex;
   align-items: center;
-  justify-content: center;
   flex: 1;
-  gap: 20px;
+  justify-content: right;
   max-width: 900px;
+  gap: 20px;
 }
 
-.search-bar {
-  flex-grow: 1;
+.center-container {
   display: flex;
-  justify-content: center; 
+  flex-grow: 6;
+  justify-content: center;
 }
 
 .auth-buttons {
@@ -57,9 +58,4 @@
 
 .auth-btn.register:hover {
   background-color: #4c6ef5;
-}
-
-.username {
-  margin-left: auto; 
-  font-weight: bold;
 }

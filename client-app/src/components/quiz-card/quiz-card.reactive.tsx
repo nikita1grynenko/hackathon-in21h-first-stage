@@ -1,6 +1,6 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import "./quiz-card.style.css";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import './quiz-card.style.css';
 
 interface QuizCardProps {
   id: number;
@@ -9,7 +9,7 @@ interface QuizCardProps {
   author: string;
   date: string;
   points: number;
-  avatar?: string; // URL аватарки (опционально)
+  avatar?: string;
 }
 
 const QuizCard: React.FC<QuizCardProps> = ({
