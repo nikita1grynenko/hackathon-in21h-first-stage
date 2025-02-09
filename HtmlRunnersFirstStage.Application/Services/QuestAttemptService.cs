@@ -1,5 +1,6 @@
 ﻿using HtmlRunnersFirstStage.Application.Contracts;
 using HtmlRunnersFirstStage.Application.DTOs;
+using HtmlRunnersFirstStage.Application.DTOs.Quest;
 using HtmlRunnersFirstStage.Domain.Entities;
 using HtmlRunnersFirstStage.Domain.Enums;
 using HtmlRunnersFirstStage.Infrastructure.Context;
@@ -116,5 +117,10 @@ public class QuestAttemptService : IQuestAttemptService
         CorrectAnswers = correctAnswers
     };
 }
+    
+    public async Task<List<QuestAttempt>> GetUserAttemptsAsync(Guid userId)
+    {
+        return await _questAttemptRepository.GetUserAttemptsAsync(userId);
+    }
 
 }

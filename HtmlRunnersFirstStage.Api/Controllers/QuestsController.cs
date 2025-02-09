@@ -45,4 +45,11 @@ public class QuestsController : ControllerBase
 
         return Ok(quest);
     }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetAllQuests([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        var result = await _questService.GetAllQuestsAsync(page, pageSize);
+        return Ok(result);
+    }
 }

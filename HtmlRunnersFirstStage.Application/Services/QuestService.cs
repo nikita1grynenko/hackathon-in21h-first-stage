@@ -48,4 +48,27 @@ public class QuestService : IQuestService
     {
         return await _questRepository.GetQuestByIdAsync(id);
     }
+    
+    public async Task<PagedResponseDto<QuestDto>> GetAllQuestsAsync(int page, int pageSize)
+    {
+        var (quests, totalCount) = await _questRepository.GetAllQuestsAsync(page, pageSize);
+
+        var questDtos = quests.Select(q => new QuestDto
+        {
+            Id = q.Id,
+            Title = q.Title,
+            Description = q.Description,
+            QuestScore = q.QuestScore,
+            TimeLimit = q.TimeLimit,
+            CreatedByUserId = q.CreatedByUserId
+        }).ToList();
+
+        return new PagedResponseDto<QuestDto>
+        {
+            Items = questDtos,
+            TotalCount = totalCount,
+            PageNumber = page,
+            PageSize = pageSize
+        };
+    }
 }

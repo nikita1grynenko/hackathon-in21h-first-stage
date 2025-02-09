@@ -8,4 +8,5 @@ public interface IQuestService
 {
     Task<Quest> CreateQuestAsync(CreateQuestDto questDto, Guid userId);
     Task<Quest?> GetQuestByIdAsync(Guid id);
+    Task<PagedResponseDto<QuestDto>> GetAllQuestsAsync(int page, int pageSize);
 }

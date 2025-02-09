@@ -28,4 +28,17 @@ public class QuestRepository : IQuestRepository
             .ThenInclude(t => t.Options)
             .FirstOrDefaultAsync(q => q.Id == id);
     }
+    
+    public async Task<(List<Quest> Quests, int TotalCount)> GetAllQuestsAsync(int page, int pageSize)
+    {
+        var totalCount = await _context.Quests.CountAsync();
+
+        var quests = await _context.Quests
+            .OrderBy(q => q.Title)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (quests, totalCount);
+    }
 }

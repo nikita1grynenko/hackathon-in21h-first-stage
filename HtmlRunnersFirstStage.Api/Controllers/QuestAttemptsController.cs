@@ -29,4 +29,17 @@ public class QuestAttemptsController : ControllerBase
 
         return Ok(result);
     }
+    
+    [HttpGet("user")]
+    public async Task<IActionResult> GetUserAttempts()
+    {
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Unauthorized("Не вдалося отримати ID користувача.");
+
+        var userId = Guid.Parse(userIdClaim);
+        var attempts = await _questAttemptService.GetUserAttemptsAsync(userId);
+
+        return Ok(attempts);
+    }
 }
