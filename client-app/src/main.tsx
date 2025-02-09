@@ -6,7 +6,7 @@ import { store } from './store/store';
 import { Provider } from 'react-redux';
 
 import AppRoutes from './routes';
-import { HeaderComponent } from './components/Header';
+import { HeaderComponent } from './components/header';
 import './index.css';
 
 const root = document.getElementById('root');
