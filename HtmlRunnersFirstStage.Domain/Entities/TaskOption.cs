@@ -5,13 +5,11 @@ namespace HtmlRunnersFirstStage.Domain.Entities;
 public class TaskOption
 {
     public Guid Id { get; set; }
-
     public Guid TaskId { get; set; }
     public QuestTask Task { get; set; } = null!;
 
     [Required, MaxLength(500)]
     public string Text { get; set; } = null!;
 
-    // Чи є варіант правильним (важливо для MultipleChoice/SingleChoice)
-    public bool IsCorrect { get; set; }
+    public bool IsCorrect { get; set; }  
 }

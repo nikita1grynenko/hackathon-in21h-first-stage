@@ -13,8 +13,6 @@ namespace HtmlRunnersFirstStage.Infrastructure.Context
         public DbSet<TaskMedia> QuestTaskMedias { get; set; } = null!;
         public DbSet<Feedback> Feedbacks { get; set; } = null!;
         public DbSet<QuestAttempt> QuestAttempts { get; set; } = null!;
-        public DbSet<AttemptedTask> AttemptedTasks { get; set; } = null!;
-        public DbSet<AttemptedTaskOption> AttemptedTaskOptions { get; set; } = null!;
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
@@ -28,7 +26,7 @@ namespace HtmlRunnersFirstStage.Infrastructure.Context
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany(u => u.QuestsCreated)
                 .WithOne(q => q.CreatedByUser)
-                .HasForeignKey(q => q.CreatedByUser)
+                .HasForeignKey(q => q.CreatedByUserId)
                 .OnDelete(DeleteBehavior.Cascade);
             
             modelBuilder.Entity<ApplicationUser>()
@@ -55,12 +53,6 @@ namespace HtmlRunnersFirstStage.Infrastructure.Context
                 .HasForeignKey(f => f.QuestId)
                 .OnDelete(DeleteBehavior.Cascade);
             
-            modelBuilder.Entity<Quest>()
-                .HasMany(q => q.QuestAttempts)
-                .WithOne(qa => qa.Quest)
-                .HasForeignKey(qa => qa.QuestId)
-                .OnDelete(DeleteBehavior.Cascade);
-            
             modelBuilder.Entity<QuestTask>()
                 .HasMany(t => t.Options)
                 .WithOne(o => o.Task)
@@ -72,33 +64,6 @@ namespace HtmlRunnersFirstStage.Infrastructure.Context
                 .WithOne(m => m.Task)
                 .HasForeignKey(m => m.TaskId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
-            modelBuilder.Entity<AttemptedTask>()
-                .HasOne(at => at.QuestAttempt)
-                .WithMany(qa => qa.AttemptedTasks)
-                .HasForeignKey(at => at.QuestAttemptId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<AttemptedTask>()
-                .HasOne(at => at.Task)
-                .WithMany() 
-                .HasForeignKey(at => at.TaskId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<AttemptedTaskOption>()
-                .HasKey(ato => new { ato.AttemptedTaskId, ato.TaskOptionId });
-
-            modelBuilder.Entity<AttemptedTaskOption>()
-                .HasOne(ato => ato.AttemptedTask)
-                .WithMany(at => at.AttemptedTaskOptions)
-                .HasForeignKey(ato => ato.AttemptedTaskId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<AttemptedTaskOption>()
-                .HasOne(ato => ato.TaskOption)
-                .WithMany()
-                .HasForeignKey(ato => ato.TaskOptionId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Feedback>()
                 .HasIndex(f => new { f.UserId, f.QuestId })
