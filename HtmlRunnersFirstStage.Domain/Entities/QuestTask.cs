@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using HtmlRunnersFirstStage.Domain.Enums;
 
 namespace HtmlRunnersFirstStage.Domain.Entities;
@@ -9,6 +10,7 @@ public class QuestTask
 
     // Зв'язок із Quest
     public Guid QuestId { get; set; }
+    [JsonIgnore]
     public Quest Quest { get; set; } = null!;
 
     [Required, MaxLength(200)]
