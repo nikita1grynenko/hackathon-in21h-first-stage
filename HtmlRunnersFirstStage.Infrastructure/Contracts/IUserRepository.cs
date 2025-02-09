@@ -1,10 +1,11 @@
 ﻿using HtmlRunnersFirstStage.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace HtmlRunnersFirstStage.Infrastructure.Contracts;
 
 public interface IUserRepository
 {
-    Task<ApplicationUser?> GetUserByIdAsync(Guid id);
-    Task<ApplicationUser?> GetUserByEmailAsync(string email);
-    Task UpdateUserAsync(ApplicationUser user);
+    Task<ApplicationUser?> FindByEmailAsync(string email);
+    Task<IdentityResult> RegisterAsync(ApplicationUser user, string password);
+    Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
 }

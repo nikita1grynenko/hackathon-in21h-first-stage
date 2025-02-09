@@ -1,10 +1,11 @@
 ﻿using HtmlRunnersFirstStage.Domain.Entities;
 using HtmlRunnersFirstStage.Infrastructure.Context;
+using HtmlRunnersFirstStage.Infrastructure.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace HtmlRunnersFirstStage.Infrastructure.Repositories;
 
-public class QuestRepository
+public class QuestRepository : IQuestRepository
 {
     private readonly AppDbContext _context;
 
