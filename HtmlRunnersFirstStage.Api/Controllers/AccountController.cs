@@ -22,7 +22,7 @@ namespace HtmlRunnersFirstStage.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var token = await _authService.RegisterAsync(model.Email, model.Password, model.UserName, model.AvatarUrl);
+            var token = await _authService.RegisterAsync(model.Email, model.Password, model.UserName);
             if (string.IsNullOrEmpty(token))
                 return BadRequest("Registration failed.");
 

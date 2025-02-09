@@ -24,13 +24,12 @@ namespace HtmlRunnersFirstStage.Application.Services
             _configuration = configuration;
         }
 
-        public async Task<string?> RegisterAsync(string email, string password, string userName, string? avatarUrl)
+        public async Task<string?> RegisterAsync(string email, string password, string userName)
         {
             var user = new ApplicationUser
             {
                 UserName = userName,
                 Email = email,
-                AvatarUrl = avatarUrl
             };
 
             var result = await _userManager.CreateAsync(user, password);

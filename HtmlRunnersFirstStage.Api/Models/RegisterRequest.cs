@@ -12,7 +12,4 @@ public class RegisterRequest
         
     [Required]
     public string UserName { get; set; } = null!;
-        
-    // Додаткові дані профілю
-    public string? AvatarUrl { get; set; }
 }
