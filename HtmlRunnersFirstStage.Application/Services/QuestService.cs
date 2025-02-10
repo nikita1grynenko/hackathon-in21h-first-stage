@@ -1,6 +1,7 @@
 ﻿using HtmlRunnersFirstStage.Application.Contracts;
 using HtmlRunnersFirstStage.Application.DTOs;
 using HtmlRunnersFirstStage.Application.DTOs.Quest;
+using HtmlRunnersFirstStage.Application.DTOs.QuestAttempt;
 using HtmlRunnersFirstStage.Domain.Entities;
 using HtmlRunnersFirstStage.Infrastructure.Context;
 using HtmlRunnersFirstStage.Infrastructure.Contracts;
@@ -25,7 +26,7 @@ public class QuestService : IQuestService
             Description = questDto.Description,
             QuestScore = questDto.QuestScore,
             TimeLimit = questDto.TimeLimit,
-            CreatedByUserId = userId,  // Привязываем к юзеру из токена
+            CreatedByUserId = userId,
             QuestTasks = questDto.Tasks.Select(taskDto => new QuestTask
             {
                 Id = Guid.NewGuid(),
@@ -37,7 +38,13 @@ public class QuestService : IQuestService
                     Id = Guid.NewGuid(),
                     Text = optionDto.Text,
                     IsCorrect = optionDto.IsCorrect
-                }).ToList()
+                }).ToList(),
+                Media = taskDto.Media.Select(mediaDto => new TaskMedia
+                {
+                    Id = Guid.NewGuid(),
+                    Url = mediaDto.Url,
+                    MediaType = mediaDto.MediaType
+                }).ToList() // Додаємо медіафайли до завдання
             }).ToList()
         };
 
@@ -70,5 +77,18 @@ public class QuestService : IQuestService
             PageNumber = page,
             PageSize = pageSize
         };
+    }
+    
+    public async Task<bool> DeleteQuestAsync(Guid questId, Guid userId)
+    {
+        var quest = await _questRepository.GetQuestByIdAsync(questId);
+        if (quest == null)
+            return false; // Квест не знайдено
+
+        if (quest.CreatedByUserId != userId)
+            throw new UnauthorizedAccessException("Ви можете видаляти тільки свої квести.");
+
+        await _questRepository.DeleteQuestAsync(quest);
+        return true;
     }
 }

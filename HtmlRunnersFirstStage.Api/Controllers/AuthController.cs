@@ -19,7 +19,7 @@ namespace HtmlRunnersFirstStage.API.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
             var token = await _authService.RegisterAsync(model);
-            if (token == null) return BadRequest("Ошибка регистрации.");
+            if (token == null) return BadRequest("Помилка реєстрації.");
             return Ok(new { token });
         }
 
@@ -27,7 +27,7 @@ namespace HtmlRunnersFirstStage.API.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
             var token = await _authService.LoginAsync(model);
-            if (token == null) return Unauthorized("Неверные данные.");
+            if (token == null) return Unauthorized("Невірні данні.");
             return Ok(new { token });
         }
     }

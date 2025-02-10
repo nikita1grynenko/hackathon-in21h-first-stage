@@ -2,6 +2,7 @@
 using HtmlRunnersFirstStage.Application.Contracts;
 using HtmlRunnersFirstStage.Application.DTOs;
 using HtmlRunnersFirstStage.Application.DTOs.Quest;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HtmlRunnersFirstStage.API.Controllers;
@@ -23,14 +24,14 @@ public class QuestsController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        // Извлекаем UserId из токена (он всегда должен быть в JWT)
+        // Беремо UserId з токена (він завжди має бути у JWT)
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdClaim))
-            return Unauthorized("Не удалось получить ID пользователя.");
+            return Unauthorized("Не вдалося отримати ID користувача.");
 
         var userId = Guid.Parse(userIdClaim);
 
-        // Передаем userId в сервис
+        // Передаємо userId в сервіс
         var quest = await _questService.CreateQuestAsync(questDto, userId);
 
         return CreatedAtAction(nameof(GetQuestById), new { id = quest.Id }, quest);
@@ -51,5 +52,22 @@ public class QuestsController : ControllerBase
     {
         var result = await _questService.GetAllQuestsAsync(page, pageSize);
         return Ok(result);
+    }
+    
+    [Authorize]
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteQuest(Guid id)
+    {
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Unauthorized("Не вдалося отримати ID користувача.");
+
+        var userId = Guid.Parse(userIdClaim);
+        var result = await _questService.DeleteQuestAsync(id, userId);
+
+        if (!result)
+            return NotFound("Квест не знайдено або ви не маєте прав на його видалення.");
+
+        return NoContent(); // 204 No Content
     }
 }
