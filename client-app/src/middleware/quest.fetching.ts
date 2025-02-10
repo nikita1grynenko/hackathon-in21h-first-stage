@@ -2,12 +2,13 @@ import axios from "axios";
 import {
   QuestSimplifiedSchema,
   QuestSchema,
-  type Quest,
+  type Quest, 
+  type QuestSimplified,
 } from "../models/quest.model";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export const fetchAllQuests = async (): Promise<Quest[]> => {
+export const fetchAllQuests = async (): Promise<QuestSimplified[]> => {
   console.log(import.meta.env);
   const response = await axios.get(`${apiUrl}/quests`);
 
@@ -23,7 +24,7 @@ export const fetchAllQuests = async (): Promise<Quest[]> => {
 };
 
 export const fetchQuestById = async (id: string): Promise<Quest> => {
-  const response = await axios.get(`${apiUrl}/api/quests/${id}`);
+  const response = await axios.get(`${apiUrl}/quests/${id}`);
 
   const result = QuestSchema.safeParse(response.data);
 
