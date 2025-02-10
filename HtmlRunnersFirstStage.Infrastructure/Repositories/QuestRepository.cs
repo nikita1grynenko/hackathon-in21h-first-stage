@@ -28,6 +28,7 @@ public class QuestRepository : IQuestRepository
             .ThenInclude(t => t.Options)
             .Include(q => q.QuestTasks)
             .ThenInclude(t => t.Media) // Додаємо медіафайли
+            .Include(q => q.Feedbacks)
             .FirstOrDefaultAsync(q => q.Id == id);
     }
     
