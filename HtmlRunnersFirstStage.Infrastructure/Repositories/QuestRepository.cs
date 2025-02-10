@@ -50,4 +50,9 @@ public class QuestRepository : IQuestRepository
         _context.Quests.Remove(quest);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<int> GetTotalQuestsCountAsync()
+    {
+        return await _context.Quests.CountAsync();
+    }
 }

@@ -11,4 +11,5 @@ public interface IQuestService
     Task<Quest?> GetQuestByIdAsync(Guid id);
     Task<PagedResponseDto<QuestDto>> GetAllQuestsAsync(int page, int pageSize);
     Task<bool> DeleteQuestAsync(Guid questId, Guid userId);
+    Task<int> GetTotalQuestsCountAsync();
 }

@@ -87,4 +87,9 @@ public class QuestService : IQuestService
         await _questRepository.DeleteQuestAsync(quest);
         return true;
     }
+    
+    public async Task<int> GetTotalQuestsCountAsync()
+    {
+        return await _questRepository.GetTotalQuestsCountAsync();
+    }
 }
