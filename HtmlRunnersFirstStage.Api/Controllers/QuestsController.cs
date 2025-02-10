@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using HtmlRunnersFirstStage.Application.Contracts;
-using HtmlRunnersFirstStage.Application.DTOs;
 using HtmlRunnersFirstStage.Application.DTOs.Quest;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +53,13 @@ public class QuestsController : ControllerBase
         return Ok(result);
     }
     
+    [HttpGet("total")]
+    public async Task<IActionResult> GetTotalQuestsCount()
+    {
+        var totalQuests = await _questService.GetTotalQuestsCountAsync();
+        return Ok(new { totalQuests });
+    }
+    
     [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteQuest(Guid id)
@@ -70,4 +76,5 @@ public class QuestsController : ControllerBase
 
         return NoContent(); // 204 No Content
     }
+    
 }

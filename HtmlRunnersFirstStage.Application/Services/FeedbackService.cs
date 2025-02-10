@@ -33,7 +33,6 @@ public class FeedbackService : IFeedbackService
             Id = savedFeedback.Id,
             QuestId = savedFeedback.QuestId,
             UserId = savedFeedback.UserId,
-            UserEmail = "", // Емейл юзера потрібно отримати окремо, тут можна замінити на реальні дані
             Rating = savedFeedback.Rating,
             Comment = savedFeedback.Comment,
             CreatedAt = savedFeedback.CreatedAt
@@ -49,10 +48,10 @@ public class FeedbackService : IFeedbackService
             Id = f.Id,
             QuestId = f.QuestId,
             UserId = f.UserId,
-            UserEmail = f.User.Email, // Включаємо емейл користувача
             Rating = f.Rating,
             Comment = f.Comment,
-            CreatedAt = f.CreatedAt
+            CreatedAt = f.CreatedAt,
+            UserName = f.User.UserName 
         }).ToList();
     }
     
@@ -84,7 +83,7 @@ public class FeedbackService : IFeedbackService
             Rating = feedback.Rating,
             Comment = feedback.Comment,
             CreatedAt = feedback.CreatedAt,
-            UserEmail = feedback.User?.Email ?? "Анонім"
+            UserName = feedback.User?.UserName ?? "Анонім"
         };
     }
 }

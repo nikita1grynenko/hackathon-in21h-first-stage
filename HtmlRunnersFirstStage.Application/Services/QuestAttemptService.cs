@@ -96,10 +96,10 @@ public class QuestAttemptService : IQuestAttemptService
             }
         }
 
-        // 🔹 **Фінальне округлення оцінки**
+        // Фінальне округлення оцінки
         int finalScore = (int)Math.Round(totalScore);
 
-        // 🔹 **Остаточна перевірка**
+        // Остаточна перевірка
         if (finalScore < quest.QuestScore && correctTasks.All(t => t.Value == "true"))
         {
             finalScore = quest.QuestScore; // Якщо всі відповіді правильні, даємо максимум.

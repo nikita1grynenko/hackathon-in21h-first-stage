@@ -27,6 +27,8 @@ public class QuestService : IQuestService
             QuestScore = questDto.QuestScore,
             TimeLimit = questDto.TimeLimit,
             CreatedByUserId = userId,
+            Difficulty = questDto.Difficulty, 
+            Topic = questDto.Topic,
             QuestTasks = questDto.Tasks.Select(taskDto => new QuestTask
             {
                 Id = Guid.NewGuid(),
@@ -38,13 +40,7 @@ public class QuestService : IQuestService
                     Id = Guid.NewGuid(),
                     Text = optionDto.Text,
                     IsCorrect = optionDto.IsCorrect
-                }).ToList(),
-                Media = taskDto.Media.Select(mediaDto => new TaskMedia
-                {
-                    Id = Guid.NewGuid(),
-                    Url = mediaDto.Url,
-                    MediaType = mediaDto.MediaType
-                }).ToList() // Додаємо медіафайли до завдання
+                }).ToList()
             }).ToList()
         };
 
@@ -90,5 +86,10 @@ public class QuestService : IQuestService
 
         await _questRepository.DeleteQuestAsync(quest);
         return true;
+    }
+    
+    public async Task<int> GetTotalQuestsCountAsync()
+    {
+        return await _questRepository.GetTotalQuestsCountAsync();
     }
 }

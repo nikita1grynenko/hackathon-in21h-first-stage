@@ -26,7 +26,7 @@ namespace HtmlRunnersFirstStage.Application.Services
         {
             var user = new ApplicationUser
             {
-                UserName = model.Email,
+                UserName = model.Username,
                 Email = model.Email
             };
 
