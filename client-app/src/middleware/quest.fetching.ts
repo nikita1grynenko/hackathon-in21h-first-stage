@@ -8,20 +8,25 @@ import {
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const fetchAllQuests = async (): Promise<Quest[]> => {
-  console.log(import.meta.env);
-  const response = await axios.get(`${apiUrl}/quests`);
+  try {
+    console.log(`Fetching quests from ${apiUrl}/api/quests`);
+    const response = await axios.get(`${apiUrl}/api/quests`);
 
-  const result = QuestSchema.array().safeParse(response.data.items);
-  console.log(response.data);
+    console.log('Response data:', response.data);
 
-  if (!result.success) {
-    console.error(result.error);
-    return [];
+    const result = QuestSchema.array().safeParse(response.data.items);
+
+    if (!result.success) {
+      console.error('Validation failed:', result.error);
+      return [];
+    }
+
+    return result.data; // ✅ Повертаємо лише перевірені дані
+  } catch (error) {
+    console.error('Error fetching quests:', error);
+    throw new Error('Не вдалося отримати квести');
   }
-
-  return result.data;
 };
-
 export const fetchQuestById = async (id: string): Promise<Quest> => {
   const response = await axios.get(`${apiUrl}/api/quests/${id}`);
 

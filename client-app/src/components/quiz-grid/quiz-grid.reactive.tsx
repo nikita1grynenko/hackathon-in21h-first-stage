@@ -5,6 +5,7 @@ import { QuizCardComponent } from '../quiz-card';
 import './quiz-grid.style.css';
 // import { selectDifficulty } from '../../store/slices/filterSlice';
 import { useQuests } from '../../hooks/quest.hook';
+import { useEffect, useState } from 'react';
 
 // interface Quiz {
 //   id: number;
@@ -121,6 +122,7 @@ const QuizGrid: React.FC = () => {
 
   //     return quiz.tags.includes(difficultyMap[difficulty]);
   //   });
+  console.log(data);
 
   return (
     <div className="quiz-grid">

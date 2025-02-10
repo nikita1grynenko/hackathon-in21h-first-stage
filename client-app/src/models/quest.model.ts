@@ -14,9 +14,9 @@ export const QuestSimplifiedSchema = z.object({
 
 export const QuestSchema = QuestSimplifiedSchema.merge(
   z.object({
-    createdByUser: z.lazy(() => ApplicationUserSimplifiedSchema), // * TODO: move to simplified schema after updating backend
-    questTasks: z.array(z.lazy(() => QuestTaskSchema)),
-    feedbacks: z.array(z.lazy(() => FeedbackSchema)),
+    createdByUser: z.lazy(() => ApplicationUserSimplifiedSchema).optional(),
+    questTasks: z.array(z.lazy(() => QuestTaskSchema)).default([]),
+    feedbacks: z.array(z.lazy(() => FeedbackSchema)).default([]),
   })
 );
 
