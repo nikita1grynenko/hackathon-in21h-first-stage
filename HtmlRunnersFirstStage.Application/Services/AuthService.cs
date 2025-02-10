@@ -34,13 +34,13 @@ namespace HtmlRunnersFirstStage.Application.Services
     
             if (!result.Succeeded)
             {
-                // Логируем ошибки Identity
+                // Логуємо помилку Identity
                 var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                Console.WriteLine($"Ошибка регистрации: {errors}");
+                Console.WriteLine($"Помилка реєстрації: {errors}");
                 return null;
             }
 
-            // Генерируем JWT
+            // Генеруємо JWT
             var token = GenerateJwtToken(user);
             return token;
         }
@@ -59,7 +59,7 @@ namespace HtmlRunnersFirstStage.Application.Services
             var jwtKey = _configuration["Jwt:Key"];
             if (string.IsNullOrEmpty(jwtKey))
             {
-                throw new ArgumentNullException("Jwt:Key", "JWT ключ не найден в конфигурации.");
+                throw new ArgumentNullException("Jwt:Key", "JWT ключ не знайдений в конфигурації.");
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));

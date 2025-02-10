@@ -1,4 +1,4 @@
-﻿namespace HtmlRunnersFirstStage.Application.DTOs;
+﻿namespace HtmlRunnersFirstStage.Application.DTOs.QuestAttempt;
 
 public class SubmitAttemptDto
 {

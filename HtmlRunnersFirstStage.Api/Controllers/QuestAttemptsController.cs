@@ -1,10 +1,12 @@
 ﻿using System.Security.Claims;
 using HtmlRunnersFirstStage.Application.Contracts;
-using HtmlRunnersFirstStage.Application.DTOs;
+using HtmlRunnersFirstStage.Application.DTOs.QuestAttempt;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HtmlRunnersFirstStage.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/quest-attempts")]
 public class QuestAttemptsController : ControllerBase
@@ -15,7 +17,7 @@ public class QuestAttemptsController : ControllerBase
     {
         _questAttemptService = questAttemptService;
     }
-
+    
     [HttpPost("submit")]
     public async Task<IActionResult> SubmitAttempt([FromBody] SubmitAttemptDto attemptDto)
     {

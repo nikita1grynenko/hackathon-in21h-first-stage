@@ -9,4 +9,5 @@ public class QuestTaskDto
     public QuestionType QuestionType { get; set; }
 
     public List<TaskOptionDto> Options { get; set; } = new();
+    public List<TaskMediaDto> Media { get; set; } = new(); // Додаємо медіафайли
 }

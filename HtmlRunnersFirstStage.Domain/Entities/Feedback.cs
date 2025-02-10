@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace HtmlRunnersFirstStage.Domain.Entities;
 
@@ -8,10 +9,12 @@ public class Feedback
 
     // До якого квесту належить рейтинг
     public Guid QuestId { get; set; }
+    [JsonIgnore]
     public Quest Quest { get; set; } = null!;
 
     // Користувач, який залишив відгук
     public Guid UserId { get; set; }
+    
     public ApplicationUser User { get; set; } = null!;
 
     // Оцінка (наприклад 1..5)

@@ -10,6 +10,7 @@ public class QuestTask
 
     // Зв'язок із Quest
     public Guid QuestId { get; set; }
+    
     [JsonIgnore]
     public Quest Quest { get; set; } = null!;
 
