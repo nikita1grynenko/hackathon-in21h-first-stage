@@ -26,4 +26,7 @@ public class Feedback
     public string? Comment { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    
+    public string UserName => User?.UserName ?? "Анонім";
+
 }

@@ -15,4 +15,7 @@ public class QuestAttempt
     // Час початку / завершення спроби
     public DateTime StartedAt { get; set; } = DateTime.UtcNow;
     public DateTime? CompletedAt { get; set; }
+    
+    // **Додамо поле для юзернейму**
+    public string UserName => User?.UserName ?? "Анонім";
 }
