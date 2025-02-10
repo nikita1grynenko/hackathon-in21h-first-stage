@@ -34,13 +34,13 @@ namespace HtmlRunnersFirstStage.Application.Services
     
             if (!result.Succeeded)
             {
-                // Логируем ошибки Identity
+                // Логуємо помилку Identity
                 var errors = string.Join(", ", result.Errors.Select(e => e.Description));
                 Console.WriteLine($"Помилка реєстрації: {errors}");
                 return null;
             }
 
-            // Генерируем JWT
+            // Генеруємо JWT
             var token = GenerateJwtToken(user);
             return token;
         }

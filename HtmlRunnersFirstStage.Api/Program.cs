@@ -19,11 +19,11 @@ namespace HtmlRunnersFirstStage.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // 🔹 Налаштовуємо контекст бази даних
+            // Налаштовуємо контекст бази даних
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // 🔹 Налаштовуємо Identity (автентифікацію користувачів)
+            // Налаштовуємо Identity (автентифікацію користувачів)
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
             {
                 options.Password.RequireDigit = true;
@@ -49,7 +49,7 @@ namespace HtmlRunnersFirstStage.Api
             var jwtAudience = builder.Configuration["Jwt:Audience"];
             var key = Encoding.UTF8.GetBytes(jwtKey);
 
-            // 🔹 Налаштовуємо JWT-аутентифікацію
+            // Налаштовуємо JWT-аутентифікацію
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -57,7 +57,7 @@ namespace HtmlRunnersFirstStage.Api
             })
             .AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = false; // ❗ Для локального тестування (на продакшені включи!)
+                options.RequireHttpsMetadata = false; // Для локального тестування (на продакшені включи!)
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -71,10 +71,10 @@ namespace HtmlRunnersFirstStage.Api
                 };
             });
 
-            // ✅ Додаємо авторизацію
+            // Додаємо авторизацію
             builder.Services.AddAuthorization();
 
-            // 🔹 Реєструємо сервіси та репозиторії
+            // Реєструємо сервіси та репозиторії
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IQuestRepository, QuestRepository>();
@@ -84,7 +84,7 @@ namespace HtmlRunnersFirstStage.Api
             builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
             builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 
-            // 🔹 Додаємо CORS (дозволяємо всі запити)
+            // Додаємо CORS (дозволяємо всі запити)
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", policy =>
@@ -95,13 +95,13 @@ namespace HtmlRunnersFirstStage.Api
                 });
             });
 
-            // ✅ Додаємо Swagger + підтримку JWT
+            // Додаємо Swagger + підтримку JWT
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "HtmlRunners API", Version = "v1" });
 
-                // ✅ Додаємо кнопку "Authorize" у Swagger для JWT
+                // Додаємо кнопку "Authorize" у Swagger для JWT
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -112,7 +112,7 @@ namespace HtmlRunnersFirstStage.Api
                     Description = "Введіть свій JWT-токен у форматі: Bearer {токен}"
                 });
 
-                // ✅ Додаємо JWT-авторизацію до всіх запитів
+                // Додаємо JWT-авторизацію до всіх запитів
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -127,7 +127,7 @@ namespace HtmlRunnersFirstStage.Api
 
             var app = builder.Build();
 
-            // 🔹 Додаємо Swagger UI
+            // Додаємо Swagger UI
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -136,14 +136,14 @@ namespace HtmlRunnersFirstStage.Api
 
             app.UseHttpsRedirection();
             
-            // 🔹 Активуємо CORS
+            // Активуємо CORS
             app.UseCors("AllowAll");
 
-            // 🔹 Аутентифікація та авторизація (ВАЖЛИВО: ПРАВИЛЬНИЙ ПОРЯДОК)
+            // Аутентифікація та авторизація (ВАЖЛИВО: ПРАВИЛЬНИЙ ПОРЯДОК)
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // 🔹 Маршрути контролерів
+            // Маршрути контролерів
             app.MapControllers();
 
             app.Run();

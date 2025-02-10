@@ -24,14 +24,14 @@ public class QuestsController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        // Извлекаем UserId из токена (он всегда должен быть в JWT)
+        // Беремо UserId з токена (він завжди має бути у JWT)
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdClaim))
             return Unauthorized("Не вдалося отримати ID користувача.");
 
         var userId = Guid.Parse(userIdClaim);
 
-        // Передаем userId в сервис
+        // Передаємо userId в сервіс
         var quest = await _questService.CreateQuestAsync(questDto, userId);
 
         return CreatedAtAction(nameof(GetQuestById), new { id = quest.Id }, quest);
