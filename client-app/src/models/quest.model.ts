@@ -1,18 +1,23 @@
 import z from "zod";
-import { TaskSchema } from "./task.model";
 import { FeedbackSchema } from "./feedback.model";
+import { ApplicationUserSimplifiedSchema } from "./application-user.model";
+import { QuestTaskSchema } from "./quest-task.model";
 
-export const QuestSchema = z.object({
+export const QuestSimplifiedSchema = z.object({
   id: z.string().uuid(),
-  title: z.string(),
-  description: z.string(),
-  timeLimitMinutes: z.string().regex(/^(\d+):(\d+):(\d+)$/), // TimeSpan like "hh:mm:ss"
-  createdAt: z.date(),
-
-  authorId: z.string().uuid(),
-
-  tasks: z.array(TaskSchema),
-  feedbacks: z.array(FeedbackSchema),
+  title: z.string().max(200),
+  description: z.string().nullable(),
+  questScore: z.number(),
+  timeLimit: z.number(),
+  createdByUserId: z.string().uuid()
 });
+
+export const QuestSchema = QuestSimplifiedSchema.merge(z.object({
+  createdByUser: z.lazy(() => ApplicationUserSimplifiedSchema.nullable()), // * TODO: move to simplified schema after updating backend
+  questTasks: z.array(z.lazy(() => QuestTaskSchema)),
+  feedbacks: z.array(z.lazy(() => FeedbackSchema))
+}));
+
+export type QuestSimplified = z.infer<typeof QuestSimplifiedSchema>;
 
 export type Quest = z.infer<typeof QuestSchema>;
