@@ -10,18 +10,32 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using DotNetEnv;
 
 namespace HtmlRunnersFirstStage.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Налаштовуємо контекст бази даних
+            var envPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())!.FullName, ".env");
+
+            if (File.Exists(envPath))
+            {
+                Env.Load(envPath);
+                Console.WriteLine($"Завантажено .env із {envPath}");
+            }
+            else
+            {
+                Console.WriteLine("Файл .env не знайдено!");
+            }
+
+            var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
+            
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(connectionString));
 
             // Налаштовуємо Identity (автентифікацію користувачів)
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
@@ -145,8 +159,22 @@ namespace HtmlRunnersFirstStage.Api
 
             // Маршрути контролерів
             app.MapControllers();
+            
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
 
-            app.Run();
+            try
+            {
+                var context = services.GetRequiredService<AppDbContext>();
+                await context.Database.MigrateAsync();
+            }
+            catch(Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occured during migration");
+            }
+
+            await app.RunAsync();
         }
     }
 }
