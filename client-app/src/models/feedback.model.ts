@@ -12,8 +12,8 @@ export const FeedbackSimplifiedSchema = z.object({
 });
 
 export const FeedbackSchema = FeedbackSimplifiedSchema.merge(z.object({
-  quest: QuestSimplifiedSchema,
-  user: ApplicationUserSimplifiedSchema
+  quest: z.lazy(() => QuestSimplifiedSchema),
+  user: z.lazy(() => ApplicationUserSimplifiedSchema)
 }));
 
 export type Feedback = z.infer<typeof FeedbackSchema>;

@@ -9,7 +9,7 @@ export const TaskOptionSimplifiedSchema = z.object({
 });
 
 export const TaskOptionSchema = TaskOptionSimplifiedSchema.merge(z.object({
-  task: QuestTaskSimplifiedSchema,
+  task: z.lazy(() => QuestTaskSimplifiedSchema),
 }));
 
 export type TaskOption = z.infer<typeof TaskOptionSchema>;

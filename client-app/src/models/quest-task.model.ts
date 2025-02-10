@@ -13,10 +13,10 @@ export const QuestTaskSimplifiedSchema = z.object({
 });
 
 export const QuestTaskSchema = QuestTaskSimplifiedSchema.merge(z.object({
-  quest: QuestSimplifiedSchema,
+  quest: z.lazy(() => QuestSimplifiedSchema),
   description: z.string().nullable(),
-  options: z.array(TaskOptionSimplifiedSchema),
-  media: z.array(TaskMediaSimplifiedSchema)
+  options: z.array(z.lazy(() => TaskOptionSimplifiedSchema)),
+  media: z.array(z.lazy(() => TaskMediaSimplifiedSchema))
 }));
 
 export type QuestTask = z.infer<typeof QuestTaskSchema>;

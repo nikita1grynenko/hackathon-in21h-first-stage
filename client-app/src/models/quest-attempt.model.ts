@@ -12,8 +12,8 @@ export const QuestAttemptSimplifiedSchema = z.object({
 });
 
 export const QuestAttemptSchema = QuestAttemptSimplifiedSchema.merge(z.object({
-  quest: QuestSchema,
-  user: ApplicationUserSimplifiedSchema
+  quest: z.lazy(() => QuestSchema),
+  user: z.lazy(() => ApplicationUserSimplifiedSchema)
 }));
 
 export type QuestAttempt = z.infer<typeof QuestAttemptSchema>;

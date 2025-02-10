@@ -11,7 +11,7 @@ export const TaskMediaSimplifiedSchema = z.object({
 });
 
 export const TaskMediaSchema = TaskMediaSimplifiedSchema.merge(z.object({
-  task: QuestTaskSimplifiedSchema
+  task: z.lazy(() => QuestTaskSimplifiedSchema)
 }));
 
 export type TaskMedia = z.infer<typeof TaskMediaSchema>;
