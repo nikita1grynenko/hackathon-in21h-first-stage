@@ -20,8 +20,9 @@ namespace HtmlRunnersFirstStage.Api
         {
             var builder = WebApplication.CreateBuilder(args);
             // Налаштовуємо контекст бази даних
-            var envPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())!.FullName, ".env");
-
+            var projectRoot = Directory.GetParent(Directory.GetCurrentDirectory())!.FullName;
+            var envPath = Path.Combine(projectRoot, "client-app", ".env");
+            
             if (File.Exists(envPath))
             {
                 Env.Load(envPath);
