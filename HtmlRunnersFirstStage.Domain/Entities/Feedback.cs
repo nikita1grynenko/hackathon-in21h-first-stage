@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace HtmlRunnersFirstStage.Domain.Entities;
 
@@ -12,6 +13,7 @@ public class Feedback
 
     // Користувач, який залишив відгук
     public Guid UserId { get; set; }
+    
     public ApplicationUser User { get; set; } = null!;
 
     // Оцінка (наприклад 1..5)

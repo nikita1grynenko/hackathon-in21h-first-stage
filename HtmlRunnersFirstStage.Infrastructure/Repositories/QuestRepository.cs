@@ -26,6 +26,8 @@ public class QuestRepository : IQuestRepository
         return await _context.Quests
             .Include(q => q.QuestTasks)
             .ThenInclude(t => t.Options)
+            .Include(q => q.QuestTasks)
+            .ThenInclude(t => t.Media) // Додаємо медіафайли
             .FirstOrDefaultAsync(q => q.Id == id);
     }
     
@@ -40,5 +42,11 @@ public class QuestRepository : IQuestRepository
             .ToListAsync();
 
         return (quests, totalCount);
+    }
+    
+    public async Task DeleteQuestAsync(Quest quest)
+    {
+        _context.Quests.Remove(quest);
+        await _context.SaveChangesAsync();
     }
 }

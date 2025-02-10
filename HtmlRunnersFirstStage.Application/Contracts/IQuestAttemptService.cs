@@ -1,4 +1,5 @@
 ﻿using HtmlRunnersFirstStage.Application.DTOs;
+using HtmlRunnersFirstStage.Application.DTOs.QuestAttempt;
 using HtmlRunnersFirstStage.Domain.Entities;
 
 namespace HtmlRunnersFirstStage.Application.Contracts;

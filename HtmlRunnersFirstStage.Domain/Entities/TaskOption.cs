@@ -12,6 +12,7 @@ public class TaskOption
 
     [Required, MaxLength(500)]
     public string Text { get; set; } = null!;
-
+    
+    [JsonIgnore]
     public bool IsCorrect { get; set; }  
 }
