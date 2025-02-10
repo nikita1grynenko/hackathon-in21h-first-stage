@@ -33,6 +33,13 @@
 
 body {
   margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8f9fa;
+  color: #212529;
 }
 
 * {
@@ -41,4 +48,42 @@ body {
 
 a {
   text-decoration: none;
+}
+
+/* Обеспечиваем скролл для всего документа */
+html, 
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+
+#root {
+  min-height: 100%;
+  /* Убираем фиксированную высоту если она есть */
+  height: auto;
+  /* Разрешаем скролл */
+  overflow-y: auto;
+}
+
+/* Обеспечиваем правильное поведение скролла для контейнеров */
+.app-container,
+.main-content {
+  min-height: 100%;
+  height: auto;
+  overflow-y: auto;
+}
+
+/* Сбрасываем стили для всех контейнеров, которые могут блокировать скролл */
+.single-quiz,
+.profile-container,
+.create-quest-wrapper,
+.quiz-grid-container {
+  height: auto;
+  overflow: visible;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

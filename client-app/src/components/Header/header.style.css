@@ -2,19 +2,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 20px;
+  padding: 18px 20px;
   background-color: #fff;
   border-bottom: 1px solid #ddd;
+  height: 80px;
 }
 
 .header-left {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .header-left h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 20px;
+  line-height: 1;
 }
 
 .header-right {
@@ -30,21 +33,28 @@
   display: flex;
   flex-grow: 6;
   justify-content: center;
+  align-items: center;
 }
+.create-quiz-btn-container {
+  margin-left: 20px;
+}
+
 
 .auth-buttons {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 .auth-btn {
-  padding: 8px 16px;
+  padding: 6px 14px;
   border-radius: 20px;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s;
   text-decoration: none;
   color: #666;
+  line-height: 1;
 }
 
 .auth-btn:hover {

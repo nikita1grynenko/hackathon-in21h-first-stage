@@ -1,8 +1,17 @@
 function secondsToTime(seconds: number): string {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
 
-  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+  if (hours > 0) {
+    return `${hours} год ${minutes} хв ${secs} сек`;
+  }
+
+  if (minutes > 0) {
+    return `${minutes} хв ${secs} сек`;
+  }
+
+  return `${secs} сек`;
 }
 
 export default secondsToTime;

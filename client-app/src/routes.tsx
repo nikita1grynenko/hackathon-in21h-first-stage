@@ -6,6 +6,7 @@ import { SingleQuizPage } from './pages/single-quiz';
 import { AuthPage } from './pages/auth';
 import PrivateRoute from './components/private-route/private-route.reactive';
 import { CreateQuizPage } from './pages/create-quiz';
+import { ProfilePage } from './pages/profile';
 
 const AppRouter = () => {
   return (
@@ -31,6 +32,14 @@ const AppRouter = () => {
         element={
           <PrivateRoute>
             <CreateQuizPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <PrivateRoute>
+            <ProfilePage />
           </PrivateRoute>
         }
       />

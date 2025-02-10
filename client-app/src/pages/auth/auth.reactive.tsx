@@ -12,7 +12,9 @@ const Auth: React.FC = () => {
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
     // В майбутньому запит до API
-    dispatch(login({ username: 'testUser', email: 'test@example.com' }));
+    dispatch(
+      login({ userName: 'testUser', email: 'test@example.com', id: '1' })
+    );
     navigate('/');
   };
 
