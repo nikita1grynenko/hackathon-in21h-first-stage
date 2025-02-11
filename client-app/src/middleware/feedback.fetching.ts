@@ -1,12 +1,15 @@
-import instance from "../axios-config";
+import instance from '../axios-config';
 import {
   FeedbackCreateSchema,
   FeedbackSchema,
   type Feedback,
   type FeedbackCreate,
-} from "../models/feedback.model";
+} from '../models/feedback.model';
+import decodeJWT from '../utils/decode-jwt';
 
-export const fetchAllQuestFeedbacks = async (questId: string): Promise<Feedback[]> => {
+export const fetchAllQuestFeedbacks = async (
+  questId: string
+): Promise<Feedback[]> => {
   const response = await instance.get(`/feedbacks/quest/${questId}`);
 
   const result = FeedbackSchema.array().safeParse(response.data.items);
@@ -19,7 +22,9 @@ export const fetchAllQuestFeedbacks = async (questId: string): Promise<Feedback[
   return result.data;
 };
 
-export const fetchFeedbackById = async (id: string): Promise<Feedback | null> => {
+export const fetchFeedbackById = async (
+  id: string
+): Promise<Feedback | null> => {
   const response = await instance.get(`/feedbacks/${id}`);
 
   const result = FeedbackSchema.safeParse(response.data);
@@ -32,17 +37,43 @@ export const fetchFeedbackById = async (id: string): Promise<Feedback | null> =>
   return result.data;
 };
 
-export const createFeedback = async (feedback: FeedbackCreate) => {
-  const result = FeedbackCreateSchema.safeParse(feedback);
+export const createFeedback = async (
+  feedback: Omit<FeedbackCreate, 'userId' | 'userName'>
+) => {
+  console.log('Перед відправкою фідбеку:', feedback);
 
-  if (!result.success) {
-    console.error(result.error);
+  const token = localStorage.getItem('jwt');
+  if (!token) {
+    console.error('Токен не знайдено');
     return;
   }
 
-  await instance.post(`/feedbacks`, result.data);
-}
+  const { userName } = decodeJWT(token);
 
-export const deleteFeedback = async (id: string) => {
-  await instance.delete(`/feedbacks/${id}`);
-}
+  const fullFeedback: FeedbackCreate = {
+    ...feedback,
+    userId: userName,
+    userName,
+  };
+
+  const result = FeedbackCreateSchema.safeParse(fullFeedback);
+  if (!result.success) {
+    console.error('Помилка валідації:', result.error);
+    return;
+  }
+
+  try {
+    const response = await instance.post(`/feedbacks`, result.data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log('Отримана відповідь:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Помилка при створенні фідбека:', error);
+  }
+
+  return null;
+};

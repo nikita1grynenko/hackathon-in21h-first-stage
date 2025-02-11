@@ -132,22 +132,26 @@ body {
   border-radius: 16px;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   animation: fadeIn 0.5s ease-out;
+  margin-top: 32px;
 }
 
 .feedback-header {
   font-size: 24px;
   color: #212529;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .feedback-form {
   margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .feedback-input {
   width: 100%;
   padding: 12px;
-  border: 1px solid #dee2e6;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   resize: vertical;
   min-height: 100px;
@@ -155,14 +159,16 @@ body {
 }
 
 .feedback-list {
-  display: grid;
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .feedback-item {
   padding: 16px;
   background: #f8f9fa;
   border-radius: 8px;
+  border: 1px solid #e0e0e0;
 }
 
 .feedback-meta {
@@ -175,6 +181,7 @@ body {
 
 .feedback-text {
   color: #495057;
+  margin: 0;
 }
 
 .start-quiz-btn {
@@ -302,7 +309,7 @@ body {
   font-size: 14px;
   line-height: 1.5;
 }
-  
+
 .create-feedback-btn {
   display: inline-block;
   padding: 12px 24px;
@@ -316,14 +323,46 @@ body {
   transition:
     background 0.3s ease,
     transform 0.2s ease;
+  align-self: flex-start;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .create-feedback-btn:hover {
   background-color: #4a66d6;
   transform: scale(1.05);
+  background-color: #0056b3;
 }
 
 .create-feedback-btn:active {
   background-color: #3f5ac7;
   transform: scale(1);
+}
+
+.rating-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.rating-star {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.rating-star.active {
+  color: #ffd700;
+}
+
+.rating-star:hover {
+  color: #ffd700;
 }

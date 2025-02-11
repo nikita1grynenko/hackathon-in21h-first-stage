@@ -1,39 +1,77 @@
-import { type FC, ChangeEvent, ElementRef, FormEvent, useCallback, useState } from 'react';
+import {
+  type FC,
+  ChangeEvent,
+  ElementRef,
+  FormEvent,
+  useCallback,
+  useState,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuestById } from '../../hooks/quest.hook';
 import secondsToTime from '../../utils/time-format';
 import { createFeedback } from '../../middleware/feedback.fetching';
 import { FeedbackCreate } from '../../models/feedback.model';
+import { FeedbackItemComponent } from '../../components/feedback-item';
 import './single-quiz.style.css';
 
-interface SingleQuizFeedbackProps { 
-  comment: string; 
+interface FeedbackFormData {
+  comment: string;
+  rating: number;
 }
 
 const SingleQuiz: FC = () => {
   const { id } = useParams<{ id: string }>();
+  const [formData, setFormData] = useState<FeedbackFormData>({
+    comment: '',
+    rating: 5,
+  });
 
-  const [formData, setFormData] = useState<SingleQuizFeedbackProps>({ comment: '' });
-  
-    const formSubmitHandler = useCallback((e: FormEvent) => {
+  const formSubmitHandler = useCallback(
+    async (e: FormEvent) => {
       e.preventDefault();
+
       if (!id) return;
 
-      console.log(
-      localStorage.getItem('token'));
-
-      createFeedback({
-        comment: formData.comment,
+      const feedbackData: FeedbackCreate = {
         questId: id,
-        rating: 5,
-      } satisfies FeedbackCreate);
-      setFormData({ comment: '' });
-    }, [formData, id]);
-  
-    const handleInputChange = useCallback((e: ChangeEvent<ElementRef<"textarea">>) => {
-      const data = e.target.value;
-      setFormData({ comment: data });
-    }, []);
+        rating: formData.rating,
+        comment: formData.comment || null,
+        userId: '1', // TODO: get userId from auth
+        userName: 'User', // TODO: get userName from auth
+      };
+
+      try {
+        const response = await createFeedback(feedbackData);
+
+        if (response) {
+          console.log('Фідбек успішно створено:', response);
+          setFormData({ comment: '', rating: 5 });
+        } else {
+          console.error('Не вдалося створити фідбек');
+        }
+      } catch (error) {
+        console.error('Помилка при створенні фідбека:', error);
+      }
+    },
+    [formData, id]
+  );
+
+  const handleInputChange = useCallback(
+    (e: ChangeEvent<ElementRef<'textarea'>>) => {
+      setFormData((prev) => ({
+        ...prev,
+        comment: e.target.value,
+      }));
+    },
+    []
+  );
+
+  const handleRatingChange = useCallback((rating: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      rating,
+    }));
+  }, []);
 
   const { data: quest, isLoading, isError, error } = useQuestById(id ?? '');
 
@@ -109,32 +147,37 @@ const SingleQuiz: FC = () => {
 
       <div className="feedback-section">
         <h2 className="feedback-header">Відгуки</h2>
+
         <form className="feedback-form" onSubmit={formSubmitHandler}>
+          <div className="rating-container">
+            {[1, 2, 3, 4, 5].map((rating) => (
+              <button
+                key={rating}
+                type="button"
+                className={`rating-star ${rating <= formData.rating ? 'active' : ''}`}
+                onClick={() => handleRatingChange(rating)}
+              >
+                ★
+              </button>
+            ))}
+          </div>
+
           <textarea
             className="feedback-input"
             value={formData.comment}
             onChange={handleInputChange}
             placeholder="Напишіть свій відгук..."
           />
-          <button className="create-feedback-btn" type="submit">Надіслати</button>
+
+          <button className="create-feedback-btn" type="submit">
+            Надіслати
+          </button>
         </form>
 
         <div className="feedback-list">
-          {quest.feedbacks?.map((feedback) => {
-            if (!feedback) return null;
-
-            return (
-              <div key={feedback.id} className="feedback-item">
-                <div className="feedback-meta">
-                  <span>Оцінка: {feedback.rating}/5</span>
-                  <span>
-                    {feedback.createdAt}
-                  </span>
-                </div>
-                <p className="feedback-text">{feedback.comment}</p>
-              </div>
-            );
-          })}
+          {quest.feedbacks?.map((feedback) => (
+            <FeedbackItemComponent key={feedback.id} feedback={feedback} />
+          ))}
         </div>
       </div>
 
