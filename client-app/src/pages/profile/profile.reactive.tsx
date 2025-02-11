@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 import { faker } from '@faker-js/faker';
 import './profile.style.css';
 
@@ -12,22 +14,24 @@ interface QuestHistory {
 export const ProfilePage: React.FC = () => {
   const [showHistory, setShowHistory] = useState(false);
 
-  // Тестові данні
+  // Отримуємо дані користувача з Redux
+  const user = useSelector((state: RootState) => state.auth.user);
+  console.log(user);
   const userAvatar = faker.image.avatar();
-  const userName = faker.person.fullName();
-  const userEmail = faker.internet.email();
+  const userName = user?.userName || 'Користувач';
+  const userEmail = user?.email || 'email@example.com';
 
   const questHistory: QuestHistory[] = Array.from({ length: 5 }, () => ({
-    id: faker.string.uuid(),
-    title: faker.lorem.words(3),
-    date: faker.date.recent().toLocaleDateString(),
-    score: faker.number.int({ min: 50, max: 100 }),
+    id: 'uuid',
+    title: 'Назва квесту',
+    date: new Date().toLocaleDateString(),
+    score: Math.floor(Math.random() * 51) + 50,
   }));
 
   const stats = {
-    completedQuests: faker.number.int({ min: 10, max: 50 }),
-    totalScore: faker.number.int({ min: 1000, max: 5000 }),
-    averageScore: faker.number.int({ min: 70, max: 95 }),
+    completedQuests: Math.floor(Math.random() * 41) + 10,
+    totalScore: Math.floor(Math.random() * 4001) + 1000,
+    averageScore: Math.floor(Math.random() * 26) + 70,
   };
 
   return (

@@ -292,7 +292,7 @@ body {
   font-size: 14px;
   line-height: 1.5;
 }
-  
+
 .create-feedback-btn {
   display: inline-block;
   padding: 12px 24px;
@@ -316,4 +316,27 @@ body {
 .create-feedback-btn:active {
   background-color: #3f5ac7;
   transform: scale(1);
+}
+
+.rating-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.rating-star {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.rating-star.active {
+  color: #ffd700;
+}
+
+.rating-star:hover {
+  color: #ffd700;
 }
