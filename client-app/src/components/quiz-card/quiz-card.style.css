@@ -17,18 +17,18 @@
 
 .quiz-card-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: center;
   margin-bottom: 12px;
 }
 
 .quiz-card-header h3 {
-  margin: 0;
   font-size: 20px;
   color: #000;
   font-weight: 500;
-  flex: 1;
-  padding-right: 15px;
+  flex: none;
+  padding-right: 0;
+  margin-right: auto;
 }
 
 .points {
