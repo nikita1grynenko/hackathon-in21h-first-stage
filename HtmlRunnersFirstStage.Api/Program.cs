@@ -41,6 +41,7 @@ namespace HtmlRunnersFirstStage.Api
             // Налаштовуємо Identity (автентифікацію користувачів)
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
             {
+                options.User.RequireUniqueEmail = true;
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 6;
                 options.Password.RequireNonAlphanumeric = false;

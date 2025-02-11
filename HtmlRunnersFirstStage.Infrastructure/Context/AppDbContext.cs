@@ -24,6 +24,10 @@ namespace HtmlRunnersFirstStage.Infrastructure.Context
             base.OnModelCreating(modelBuilder);
             
             modelBuilder.Entity<ApplicationUser>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+            
+            modelBuilder.Entity<ApplicationUser>()
                 .HasMany(u => u.QuestsCreated)
                 .WithOne(q => q.CreatedByUser)
                 .HasForeignKey(q => q.CreatedByUserId)
