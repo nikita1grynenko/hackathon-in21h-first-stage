@@ -44,3 +44,17 @@
 .feedback-date {
   font-size: 12px;
 }
+.delete-feedback-btn {
+  background-color: #e03131;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 8px;
+}
+
+.delete-feedback-btn:hover {
+  background-color: #c92a2a;
+}
