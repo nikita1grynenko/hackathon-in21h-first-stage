@@ -1,4 +1,5 @@
-import axios from "axios";
+
+import instance from "../axios-config";
 import {
   QuestSimplifiedSchema,
   QuestSchema,
@@ -6,14 +7,10 @@ import {
   type QuestSimplified,
 } from "../models/quest.model";
 
-const apiUrl = import.meta.env.VITE_API_URL;
-
 export const fetchAllQuests = async (): Promise<QuestSimplified[]> => {
-  console.log(import.meta.env);
-  const response = await axios.get(`${apiUrl}/quests`);
+  const response = await instance.get(`/quests`);
 
   const result = QuestSimplifiedSchema.array().safeParse(response.data.items);
-  console.log(response.data);
 
   if (!result.success) {
     console.error(result.error);
@@ -23,28 +20,29 @@ export const fetchAllQuests = async (): Promise<QuestSimplified[]> => {
   return result.data;
 };
 
-export const fetchQuestById = async (id: string): Promise<Quest> => {
-  const response = await axios.get(`${apiUrl}/quests/${id}`);
+export const fetchQuestById = async (id: string): Promise<Quest | null> => {
+  const response = await instance.get(`/quests/${id}`);
 
   const result = QuestSchema.safeParse(response.data);
 
   if (!result.success) {
     console.error(result.error);
-    return {} as Quest;
+    return null;
   }
 
   return result.data;
 };
 
-export const createQuest = async (quest: Quest): Promise<Quest> => {
-  const response = await axios.post(`${apiUrl}/api/quests`, quest);
+export const createQuest = async (quest: Quest) => {
+  const response = await instance.post(`/quests`, quest);
 
   const result = QuestSchema.safeParse(response.data);
 
   if (!result.success) {
     console.error(result.error);
-    return {} as Quest;
+    return;
   }
 
-  return result.data;
+  console.log("Creating feedback", result.data);
+  // await axios.post(`/feedbacks`, result.data);
 };

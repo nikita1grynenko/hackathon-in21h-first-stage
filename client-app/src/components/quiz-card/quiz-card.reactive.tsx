@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './quiz-card.style.css';
-import { Quest } from '../../models/quest.model';
+import { type QuestSimplified } from '../../models/quest.model';
 import secondsToTime from '../../utils/time-format';
 
-const QuizCard: React.FC<Quest> = ({
+const QuizCard: React.FC<QuestSimplified> = ({
   id,
   title,
   questScore,

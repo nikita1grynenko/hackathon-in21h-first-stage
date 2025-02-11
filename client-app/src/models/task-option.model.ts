@@ -5,7 +5,6 @@ export const TaskOptionSimplifiedSchema = z.object({
   id: z.string().uuid(),
   taskId: z.string().uuid(),
   text: z.string().max(500),
-  isCorrect: z.boolean().optional()
 });
 
 export const TaskOptionSchema = TaskOptionSimplifiedSchema.merge(z.object({

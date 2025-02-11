@@ -1,50 +1,47 @@
-import React from 'react';
+import { type FC, ChangeEvent, ElementRef, FormEvent, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import './single-quiz.style.css';
+import { v6 } from 'uuid';
 import { useQuestById } from '../../hooks/quest.hook';
 import formatDateTime from '../../utils/date-time-format';
 import secondsToTime from '../../utils/time-format';
+import { createFeedback } from '../../middleware/feedback.fetching';
+import { Feedback } from '../../models/feedback.model';
+import './single-quiz.style.css';
 
-//
-//  const quizzes = [
-//   {
-//     id: 1,
-//     title: "Придумати ідею",
-//     tags: ["Тест", "Змагання", "Складний"],
-//     author: "Dude",
-//     date: "06.02.2025",
-//     content:
-//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, beatae aliquid, impedit nisi unde dolorem error, neque voluptatum quibusdam dolorum aliquam. Iure molestiae, magnam itaque magni molestias ducimus earum eligendi.",
-//     comments: [
-//       {
-//         author: "Dude",
-//         text: "Хороший тамада, і конкурси веселі.",
-//         date: "07.02.2025",
-//         time: "13:22",
-//       },
-//       {
-//         author: "Dude",
-//         text: "Це якийсь пздц",
-//         date: "06.02.2025",
-//         time: "17:22",
-//       },
-//     ],
-//   },
-//   {
-//     id: 2,
-//     title: "Придумати дизайн",
-//     tags: ["Тест", "Команда", "Простий"],
-//     author: "Dude",
-//     date: "06.02.2025",
-//     content: "Це текст про дизайн...",
-//   },
-// ];
+interface SingleQuizFeedbackProps { 
+  comment: string; 
+}
 
-const SingleQuiz: React.FC = () => {
+const SingleQuiz: FC = () => {
   const { id } = useParams<{ id: string }>();
 
+  const [formData, setFormData] = useState<SingleQuizFeedbackProps>({ comment: '' });
+  
+    const formSubmitHandler = useCallback((e: FormEvent) => {
+      e.preventDefault();
+      if (!id) return;
+
+      console.log(
+      localStorage.getItem('token'));
+
+      createFeedback({
+        id: v6(),
+        comment: formData.comment,
+        userName: 'Демо юзер',
+        createdAt: new Date(),
+        questId: id,
+        userId: '00000000-0000-0000-0000-000000000000',
+        rating: 5,
+      } satisfies Feedback);
+      setFormData({ comment: '' });
+    }, [formData, id]);
+  
+    const handleInputChange = useCallback((e: ChangeEvent<ElementRef<"textarea">>) => {
+      const data = e.target.value;
+      setFormData({ comment: data });
+    }, []);
+
   const { data: quest, isLoading, isError, error } = useQuestById(id ?? '');
-  // const quiz = quizzes.find((q) => q.id === Number(id));
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -118,12 +115,15 @@ const SingleQuiz: React.FC = () => {
 
       <div className="feedback-section">
         <h2 className="feedback-header">Відгуки</h2>
-        <div className="feedback-form">
+        <form className="feedback-form" onSubmit={formSubmitHandler}>
           <textarea
             className="feedback-input"
+            value={formData.comment}
+            onChange={handleInputChange}
             placeholder="Напишіть свій відгук..."
           />
-        </div>
+          <button className="create-feedback-btn" type="submit">Надіслати</button>
+        </form>
 
         <div className="feedback-list">
           {quest.feedbacks?.map((feedback) => {
