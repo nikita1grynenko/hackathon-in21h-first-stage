@@ -19,7 +19,7 @@
   gap: 4px;
 }
 
-.pagination-numbers span {
+.pagination-numbers > button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,18 +31,20 @@
   color: #495057;
   cursor: pointer;
   transition: all 0.2s;
+  background: none;
+  border: none;
 }
 
-.pagination-numbers span:not(.dots):hover {
+.pagination-numbers > button:not(.dots):hover {
   background-color: #738efc;
 }
 
-.pagination-numbers span.active {
+.pagination-numbers > button.active {
   background-color: #5c7cfa;
   color: white;
 }
 
-.pagination-numbers span.dots {
+.pagination-numbers > button.dots {
   cursor: default;
   padding: 0 4px;
 }

@@ -1,10 +1,44 @@
-import React from "react";
+import React, { useMemo } from "react";
 import "./pagination.style.css";
 
-const Pagination: React.FC = () => {
+interface PaginationProps {
+  totalPages: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+}
+
+const Pagination: React.FC = ({totalPages = 1, currentPage = 1, onPageChange}: PaginationProps) => {
+  const pages = useMemo(() => {
+    const pagesNumbers: Array<number | string> = [1];
+
+    if (currentPage > 3) {
+      pagesNumbers.push('...');
+    }
+
+    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+      pagesNumbers.push(i);
+    }
+
+    if (currentPage < totalPages - 2) {
+      pagesNumbers.push('...');
+    }
+
+    if (currentPage < totalPages) {
+      pagesNumbers.push(totalPages);
+    }
+
+    return pagesNumbers;
+  }, [totalPages, currentPage]);
+
+  console.log(pages);
+
   return (
     <div className="pagination">
-      <button className="pagination-btn">
+      <button 
+        className="pagination-btn"
+        onChange={() => currentPage > 1 && onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
         <svg
           width="20"
           height="20"
@@ -20,16 +54,31 @@ const Pagination: React.FC = () => {
       </button>
 
       <div className="pagination-numbers">
-        <span className="active">1</span>
-        <span className="dots">...</span>
-        <span>3</span>
-        <span>4</span>
-        <span>5</span>
-        <span className="dots">...</span>
-        <span>9</span>
+        {pages.map((page, index) => {
+          if (!page) {
+            return null;
+          }
+
+          const activePage = page === currentPage.toString() ? 'active' : '';
+          const dots = page === '...' ? 'dots' : '';
+
+          return (
+          <button 
+            key={index} 
+            className={dots + ' ' + activePage} 
+            onClick={() => !isNaN(+page) && onPageChange(+page)}
+            disabled={isNaN(+page) || (!isNaN(+page) && +page !== currentPage)}
+          >
+            {page}
+          </button>
+        )})}
       </div>
 
-      <button className="pagination-btn">
+      <button 
+        className="pagination-btn"
+        onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
         <svg
           width="20"
           height="20"
