@@ -20,13 +20,14 @@ const Auth: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleSignUp = useCallback(
     async (e: FormEvent) => {
       e.preventDefault();
 
       if (password !== confirmPassword) {
-        // TODO show error on the form
+        setError('Passwords do not match');
         return;
       }
 
@@ -46,7 +47,7 @@ const Auth: React.FC = () => {
         );
         navigate('/');
       } else {
-        // TODO show error on the form
+        setError('Failed to sign up');
       }
     },
     [confirmPassword, dispatch, email, navigate, password, userName]
@@ -72,7 +73,7 @@ const Auth: React.FC = () => {
         );
         navigate('/');
       } else {
-        // TODO show error on the form
+        setError('Failed to sign in');
       }
     },
     [dispatch, email, navigate, password]
@@ -80,17 +81,12 @@ const Auth: React.FC = () => {
 
   const toggle = useCallback(() => {
     setIsSignIn(!isSignIn);
+    setError(null); // Сброс ошибки при переключении между формами
   }, [isSignIn]);
 
   const blockActions = useCallback((e: React.ClipboardEvent) => {
     e.preventDefault();
   }, []);
-
-  // useEffect(() => {
-  //   if (localStorage.getItem('jwt')) {
-  //     navigate('/');
-  //   }
-  // }, [navigate]); // ! TODO this is commented out because it causes an infinite loop
 
   return (
     <div
@@ -144,6 +140,7 @@ const Auth: React.FC = () => {
                   onCut={blockActions}
                 />
               </div>
+              {error && <div className="error-message">{error}</div>}
               <button>Sign up</button>
               <p>
                 <span>Already have an account?</span>
@@ -179,6 +176,7 @@ const Auth: React.FC = () => {
                   onCut={blockActions}
                 />
               </div>
+              {error && <div className="error-message">{error}</div>}
               <button type="submit">Sign in</button>
               <p>
                 <span>Don't have an account?</span>
