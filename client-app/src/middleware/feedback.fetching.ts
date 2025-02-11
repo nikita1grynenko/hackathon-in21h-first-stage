@@ -5,6 +5,7 @@ import {
   type Feedback,
   type FeedbackCreate,
 } from '../models/feedback.model';
+import decodeJWT from '../utils/decode-jwt';
 
 export const fetchAllQuestFeedbacks = async (
   questId: string
@@ -36,20 +37,32 @@ export const fetchFeedbackById = async (
   return result.data;
 };
 
-export const createFeedback = async (feedback: FeedbackCreate) => {
+export const createFeedback = async (
+  feedback: Omit<FeedbackCreate, 'userId' | 'userName'>
+) => {
   console.log('Перед відправкою фідбеку:', feedback);
 
-  const result = FeedbackCreateSchema.safeParse(feedback);
+  const token = localStorage.getItem('jwt');
+  if (!token) {
+    console.error('Токен не знайдено');
+    return;
+  }
 
+  const { userName } = decodeJWT(token);
+
+  const fullFeedback: FeedbackCreate = {
+    ...feedback,
+    userId: userName,
+    userName,
+  };
+
+  const result = FeedbackCreateSchema.safeParse(fullFeedback);
   if (!result.success) {
     console.error('Помилка валідації:', result.error);
     return;
   }
 
-  console.log('Відправляється фідбек:', result.data);
-
   try {
-    const token = localStorage.getItem('jwt');
     const response = await instance.post(`/feedbacks`, result.data, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -63,8 +76,4 @@ export const createFeedback = async (feedback: FeedbackCreate) => {
   }
 
   return null;
-};
-
-export const deleteFeedback = async (id: string) => {
-  await instance.delete(`/feedbacks/${id}`);
 };

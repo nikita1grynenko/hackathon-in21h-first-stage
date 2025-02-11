@@ -11,9 +11,8 @@ import { useQuestById } from '../../hooks/quest.hook';
 import secondsToTime from '../../utils/time-format';
 import { createFeedback } from '../../middleware/feedback.fetching';
 import { FeedbackCreate } from '../../models/feedback.model';
-import { FeedbackItemComponent } from '../../components/feedback-item'; // імпорт нового компонента
+import { FeedbackItemComponent } from '../../components/feedback-item';
 import './single-quiz.style.css';
-import formatDateTime from '../../utils/date-time-format';
 
 interface FeedbackFormData {
   comment: string;
@@ -37,6 +36,8 @@ const SingleQuiz: FC = () => {
         questId: id,
         rating: formData.rating,
         comment: formData.comment || null,
+        userId: '1', // TODO: get userId from auth
+        userName: 'User', // TODO: get userName from auth
       };
 
       try {

@@ -20,6 +20,8 @@ export const FeedbackCreateSchema = z.object({
   questId: z.string().uuid(),
   rating: z.number().min(1).max(5),
   comment: z.string().max(2000).nullable(),
+  userId: z.string().uuid(),
+  userName: z.string().max(50),
 });
 
 export type FeedbackCreate = z.infer<typeof FeedbackCreateSchema>;
