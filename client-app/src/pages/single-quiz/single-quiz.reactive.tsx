@@ -1,17 +1,18 @@
 import {
-  type FC,
+  useEffect,
+  useState,
+  useCallback,
+  FormEvent,
   ChangeEvent,
   ElementRef,
-  FormEvent,
-  useCallback,
-  useState,
+  FC,
 } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuestById } from '../../hooks/quest.hook';
 import secondsToTime from '../../utils/time-format';
 import { createFeedback } from '../../middleware/feedback.fetching';
-import { FeedbackCreate } from '../../models/feedback.model';
-import { FeedbackItemComponent } from '../../components/feedback-item';
+import { FeedbackCreate, FeedbackSchema } from '../../models/feedback.model';
+import FeedbackItem from '../../components/feedback-item/feedback-item.reactive';
 import './single-quiz.style.css';
 
 interface FeedbackFormData {
@@ -21,15 +22,24 @@ interface FeedbackFormData {
 
 const SingleQuiz: FC = () => {
   const { id } = useParams<{ id: string }>();
+
   const [formData, setFormData] = useState<FeedbackFormData>({
     comment: '',
     rating: 5,
   });
 
+  const { data: quest, isLoading, isError, error } = useQuestById(id ?? '');
+  const [feedbacks, setFeedbacks] = useState(quest?.feedbacks ?? []);
+
+  useEffect(() => {
+    if (quest?.feedbacks) {
+      setFeedbacks(quest.feedbacks);
+    }
+  }, [quest]);
+
   const formSubmitHandler = useCallback(
     async (e: FormEvent) => {
       e.preventDefault();
-
       if (!id) return;
 
       const feedbackData: FeedbackCreate = {
@@ -42,10 +52,10 @@ const SingleQuiz: FC = () => {
 
       try {
         const response = await createFeedback(feedbackData);
-
         if (response) {
           console.log('Фідбек успішно створено:', response);
           setFormData({ comment: '', rating: 5 });
+          setFeedbacks((prev) => [...prev, response]);
         } else {
           console.error('Не вдалося створити фідбек');
         }
@@ -66,6 +76,10 @@ const SingleQuiz: FC = () => {
     []
   );
 
+  const handleDeleteFeedback = useCallback((id: string) => {
+    setFeedbacks((prev) => prev.filter((feedback) => feedback.id !== id));
+  }, []);
+
   const handleRatingChange = useCallback((rating: number) => {
     setFormData((prev) => ({
       ...prev,
@@ -73,19 +87,9 @@ const SingleQuiz: FC = () => {
     }));
   }, []);
 
-  const { data: quest, isLoading, isError, error } = useQuestById(id ?? '');
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  if (!quest) {
-    return <h2>Квест не знайдено!</h2>;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
+  if (!quest) return <h2>Квест не знайдено!</h2>;
 
   return (
     <div className="single-quiz">
@@ -175,8 +179,12 @@ const SingleQuiz: FC = () => {
         </form>
 
         <div className="feedback-list">
-          {quest.feedbacks?.map((feedback) => (
-            <FeedbackItemComponent key={feedback.id} feedback={feedback} />
+          {feedbacks.map((feedback) => (
+            <FeedbackItem
+              key={feedback.id}
+              feedback={feedback}
+              onDelete={handleDeleteFeedback}
+            />
           ))}
         </div>
       </div>

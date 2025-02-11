@@ -77,3 +77,23 @@ export const createFeedback = async (
 
   return null;
 };
+export const deleteFeedback = async (feedbackId: string) => {
+  const token = localStorage.getItem('jwt');
+  if (!token) {
+    console.error('Токен не знайдено');
+    return;
+  }
+
+  try {
+    const response = await instance.delete(`/feedbacks/${feedbackId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log('Фідбек успішно видалено:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Помилка при видаленні фідбека:', error);
+    return null;
+  }
+};
