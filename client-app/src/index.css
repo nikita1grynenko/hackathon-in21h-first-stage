@@ -60,6 +60,7 @@ body {
 }
 
 #root {
+  position: relative;
   min-height: 100%;
   /* Убираем фиксированную высоту если она есть */
   height: auto;

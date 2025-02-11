@@ -11,6 +11,8 @@ export const ApplicationUserSimplifiedSchema = z.object({
   avatarUrl: z.string().nullable()
 });
 
+export type ApplicationUserSimplified = z.infer<typeof ApplicationUserSimplifiedSchema>;
+
 export const ApplicationUserSchema = ApplicationUserSimplifiedSchema.merge(z.object({
   questsCreated: z.array(z.lazy(() => QuestSimplifiedSchema)),
   feedbacks: z.array(z.lazy(() => FeedbackSchema)),

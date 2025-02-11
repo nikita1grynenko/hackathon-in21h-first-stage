@@ -1,10 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { type ApplicationUserSimplified } from '../../models/application-user.model';
 
-interface User {
-  id: string;
-  userName: string;
-  email: string;
-}
+type User = Omit<ApplicationUserSimplified, "passwordHash" | "id">;
 
 interface AuthState {
   isAuthenticated: boolean;

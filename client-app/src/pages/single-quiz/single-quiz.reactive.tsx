@@ -1,11 +1,9 @@
 import { type FC, ChangeEvent, ElementRef, FormEvent, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { v6 } from 'uuid';
 import { useQuestById } from '../../hooks/quest.hook';
-import formatDateTime from '../../utils/date-time-format';
 import secondsToTime from '../../utils/time-format';
 import { createFeedback } from '../../middleware/feedback.fetching';
-import { Feedback } from '../../models/feedback.model';
+import { FeedbackCreate } from '../../models/feedback.model';
 import './single-quiz.style.css';
 
 interface SingleQuizFeedbackProps { 
@@ -25,14 +23,10 @@ const SingleQuiz: FC = () => {
       localStorage.getItem('token'));
 
       createFeedback({
-        id: v6(),
         comment: formData.comment,
-        userName: 'Демо юзер',
-        createdAt: new Date(),
         questId: id,
-        userId: '00000000-0000-0000-0000-000000000000',
         rating: 5,
-      } satisfies Feedback);
+      } satisfies FeedbackCreate);
       setFormData({ comment: '' });
     }, [formData, id]);
   
@@ -128,14 +122,13 @@ const SingleQuiz: FC = () => {
         <div className="feedback-list">
           {quest.feedbacks?.map((feedback) => {
             if (!feedback) return null;
-            const [date, time] = formatDateTime(new Date(feedback.createdAt));
 
             return (
               <div key={feedback.id} className="feedback-item">
                 <div className="feedback-meta">
                   <span>Оцінка: {feedback.rating}/5</span>
                   <span>
-                    {date} {time}
+                    {feedback.createdAt}
                   </span>
                 </div>
                 <p className="feedback-text">{feedback.comment}</p>

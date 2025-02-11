@@ -1,7 +1,9 @@
 import instance from "../axios-config";
 import {
+  FeedbackCreateSchema,
   FeedbackSchema,
   type Feedback,
+  type FeedbackCreate,
 } from "../models/feedback.model";
 
 export const fetchAllQuestFeedbacks = async (questId: string): Promise<Feedback[]> => {
@@ -30,8 +32,8 @@ export const fetchFeedbackById = async (id: string): Promise<Feedback | null> =>
   return result.data;
 };
 
-export const createFeedback = async (feedback: Feedback) => {
-  const result = FeedbackSchema.safeParse(feedback);
+export const createFeedback = async (feedback: FeedbackCreate) => {
+  const result = FeedbackCreateSchema.safeParse(feedback);
 
   if (!result.success) {
     console.error(result.error);
