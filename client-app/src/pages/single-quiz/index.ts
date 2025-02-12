@@ -1,0 +1,1 @@
+export { default as SingleQuizPage } from "./single-quiz.reactive";

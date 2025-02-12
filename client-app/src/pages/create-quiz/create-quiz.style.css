@@ -1,0 +1,137 @@
+.create-quest-wrapper {
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+  overflow: hidden;
+}
+
+.create-quest-container {
+  max-width: 600px;
+  width: 90%;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.create-quest-wrapper h2,
+.create-quest-wrapper h3 {
+  color: #5c7cfa;
+  text-align: center;
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: #5c7cfa;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: #4a66d6;
+}
+
+.btn.secondary {
+  background: #f8f9fa;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.btn.secondary:hover {
+  background: #e9ecef;
+}
+
+.submit-btn {
+  background: #5c7cfa;
+  font-weight: bold;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: #ddd;
+  margin: 20px 0;
+}
+
+.create-quest-container textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.create-quest-container textarea:focus {
+  outline: none;
+  border-color: #5c7cfa;
+}
+
+.x-button {
+  position: absolute;
+  display: block;
+  aspect-ratio: 1 / 1;
+  height: 28px;
+  top: 0px;
+  right: 4px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #5c7cfa;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.create-task select, .create-media select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.create-task select:focus, .create-media select:focus {
+  outline: none;
+  border-color: #5c7cfa;
+}
+
+.create-task, .create-option, .create-media {
+  position: relative;
+  border-left: 3px solid #e0e0e0;
+  padding-left: 10px;
+  margin-block: 32px;
+}

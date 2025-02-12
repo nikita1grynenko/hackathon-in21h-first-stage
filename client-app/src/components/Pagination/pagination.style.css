@@ -1,0 +1,88 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-top: 1px solid #e0e0e0;
+  z-index: 100;
+}
+
+.pagination-numbers {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pagination-numbers > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #495057;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: none;
+  border: none;
+}
+
+.pagination-numbers > button:not(.dots):hover {
+  background-color: #738efc;
+}
+
+.pagination-numbers > button.active {
+  background-color: #5c7cfa;
+  color: white;
+}
+
+.pagination-numbers > button.dots {
+  cursor: default;
+  padding: 0 4px;
+}
+
+.pagination-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  color: #495057;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination-btn:hover {
+  background-color: #f1f3f5;
+}
+
+.pagination-btn:disabled {
+  color: #dee2e6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .pagination-numbers span:not(.active):not(.dots) {
+    display: none;
+  }
+
+  .pagination-numbers span.dots:last-of-type {
+    display: none;
+  }
+}
+
+/* Добавим отступ для контента, чтобы он не перекрывался пагинацией */
+.quiz-grid-container {
+  padding-bottom: 80px;
+}

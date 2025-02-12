@@ -1,0 +1,29 @@
+.quiz-grid-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 60px;
+  justify-items: center;
+  justify-content: center;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+@media (min-width: 640px) {
+  .quiz-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 350px));
+  }
+}
+
+@media (max-width: 639px) {
+  .quiz-grid {
+    grid-template-columns: minmax(280px, 1fr);
+  }
+}
+  
