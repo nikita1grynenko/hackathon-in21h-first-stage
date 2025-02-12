@@ -15,17 +15,22 @@ const QuizGrid: React.FC<QuizGridProps> = ({currentPage}) => {
     (state: RootState) => state.search.searchQuery
   );
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (isLoading) { 
+    return (
+      <div className="loading">
+        <div className="spinner"></div>
+        Loading...
+      </div>
+    );
   }
-
+  
   if (isError) {
-    return <div>Error: {error.message}</div>;
+    return <div className="error">Error: {error.message}</div>;
   }
-
+  
   if (!data) {
-    return <div>No data</div>;
-  }
+    return <div className="no-data">No data</div>;
+  }  
 
   const filteredQuizzes = data.filter((quiz) => {
     const searchLower = searchQuery.toLowerCase();
