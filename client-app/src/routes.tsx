@@ -37,6 +37,7 @@ const AppRouter = () => {
         }
       />
       <Route path="/quiz/:id" element={<SingleQuizPage />} />
+      <Route path="/quiz/:id/attempt" element={<SingleQuizPage />} />
       <Route path="/create-quiz" element={<CreateQuizPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/auth" element={<AuthPage />} />

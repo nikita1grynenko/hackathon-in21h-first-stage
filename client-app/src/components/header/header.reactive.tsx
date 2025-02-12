@@ -21,9 +21,11 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="header-left">
-        <img src={Qlogo} alt="Logo" width={50} style={{ marginRight: "10px" }}/>
+      <Link to={'/'}>
+        <img src={Qlogo} alt="Logo" width={64} style={{ marginRight: "8px", aspectRatio: 1/1, objectFit: 'contain' }}/>
+      </Link>
         <h1>
-          <Link to={'/'}>QUIZIII</Link>
+          <Link to={'/'} style={{ fontSize: "32px", color: "#5c7cfa" }}>QUIZIII</Link>
         </h1>
 
         {isAuthenticated && (

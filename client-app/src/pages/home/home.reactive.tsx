@@ -32,6 +32,10 @@ const Home: React.FC = () => {
     });
   }, [dispatch]);
 
+  useEffect(() => {
+    document.title = 'Home — QUIZIII';
+  }, []);
+
   return (
     <>
       <FilterComponent 

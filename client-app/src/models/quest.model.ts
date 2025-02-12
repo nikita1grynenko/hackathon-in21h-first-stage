@@ -40,8 +40,8 @@ export const QuestSimplifiedSchema = z.object({
   questScore: z.number(),
   timeLimit: z.number(),
   createdByUserId: z.string().uuid(),
-  // difficulty: z.number().transform((val) => QuestDificultySchema[val]),
-  // topic: z.number().transform((val) => QuestTopicSchema[val]),
+  difficulty: z.number().transform((val) => QuestDificultySchema[val]),
+  topic: z.number().transform((val) => QuestTopicSchema[val]),
 });
 
 export const QuestSchema = QuestSimplifiedSchema.merge(
