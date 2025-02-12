@@ -21,7 +21,9 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="header-left">
+      <Link to={'/'}>
         <img src={Qlogo} alt="Logo" width={64} style={{ marginRight: "8px", aspectRatio: 1/1, objectFit: 'contain' }}/>
+      </Link>
         <h1>
           <Link to={'/'} style={{ fontSize: "32px", color: "#5c7cfa" }}>QUIZIII</Link>
         </h1>

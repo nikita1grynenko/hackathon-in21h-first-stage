@@ -41,6 +41,10 @@ export const ProfilePage: React.FC = () => {
     }
   }, [dispatch, user?.avatar]);
 
+  useEffect(() => {
+    document.title = `${user?.displayName} — Profile — QUIZIII`;
+  }, [user?.displayName]);
+
   if (!user) {
     return <div>Користувач не знайдений</div>;
   }

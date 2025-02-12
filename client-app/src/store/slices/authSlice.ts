@@ -6,6 +6,7 @@ import { faker } from '@faker-js/faker';
 type User = Omit<ApplicationUserSimplified, 'passwordHash' | 'id'> & {
   displayName: string;
   avatar: string;
+  avatarUrl: string | null;
 };
 
 interface AuthState {
@@ -49,6 +50,7 @@ const authSlice = createSlice({
           email: decodedToken.email,
           displayName: displayName,
           avatar: localStorage.getItem('avatar') || faker.image.avatar(),
+          avatarUrl: null,
         };
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('user', JSON.stringify(state.user));
