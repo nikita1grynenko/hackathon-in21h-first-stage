@@ -164,8 +164,6 @@ namespace HtmlRunnersFirstStage.Api
 
             // Маршрути контролерів
             app.MapControllers();
-            app.MapFallbackToFile("index.html"); 
-            
             
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
@@ -181,10 +179,7 @@ namespace HtmlRunnersFirstStage.Api
                 logger.LogError(ex, "An error occured during migration");
             }
             
-            app.UseStaticFiles(); // ✅ Дозволяємо обслуговування статичних файлів
             app.UseRouting();
-
-            
 
             await app.RunAsync();
         }
