@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using HtmlRunnersFirstStage.Application.Contracts;
 using HtmlRunnersFirstStage.Application.DTOs.Quest;
+using HtmlRunnersFirstStage.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,9 +48,13 @@ public class QuestsController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAllQuests([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string sortBy = "date")
+    public async Task<IActionResult> GetAllQuests(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] DifficultyLevel? difficulty = null // Використовуємо enum
+        )
     {
-        var result = await _questService.GetAllQuestsAsync(page, pageSize, sortBy);
+        var result = await _questService.GetAllQuestsAsync(page, pageSize, difficulty);
         return Ok(result);
     }
     

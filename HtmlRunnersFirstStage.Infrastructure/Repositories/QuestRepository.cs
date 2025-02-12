@@ -1,4 +1,5 @@
 ﻿using HtmlRunnersFirstStage.Domain.Entities;
+using HtmlRunnersFirstStage.Domain.Enums;
 using HtmlRunnersFirstStage.Infrastructure.Context;
 using HtmlRunnersFirstStage.Infrastructure.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -32,19 +33,17 @@ public class QuestRepository : IQuestRepository
             .FirstOrDefaultAsync(q => q.Id == id);
     }
     
-    public async Task<(List<Quest>, int)> GetAllQuestsAsync(int page, int pageSize, string sortBy)
+    public async Task<(List<Quest>, int)> GetAllQuestsAsync(int page, int pageSize, DifficultyLevel? difficulty)
     {
-        var totalCount = await _context.Quests.CountAsync();
-
         var query = _context.Quests.AsQueryable();
 
-        // Додаємо сортування
-        query = sortBy.ToLower() switch
+        // Фільтр за рівнем складності, якщо він переданий
+        if (difficulty.HasValue)
         {
-            "difficulty" => query.OrderBy(q => q.Difficulty),
-            _ => query.OrderByDescending(q => q.CreatedAt) // За замовчуванням - новіші квести першими
-        };
+            query = query.Where(q => q.Difficulty == difficulty.Value);
+        }
 
+        var totalCount = await query.CountAsync();
         var quests = await query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
