@@ -29,7 +29,6 @@ const Pagination: React.FC<PaginationProps> = ({totalPages = 2, currentPage = 2,
       pagesNumbers.push(totalPages);
     }
   
-    console.log(pagesNumbers);
     return pagesNumbers;
   }, [totalPages, currentPage]);
   

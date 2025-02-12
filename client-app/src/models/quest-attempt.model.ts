@@ -11,9 +11,19 @@ export const QuestAttemptSimplifiedSchema = z.object({
   completedAt: z.date().nullable()
 });
 
+export type QuestAttemptSimplified = z.infer<typeof QuestAttemptSimplifiedSchema>;
+
 export const QuestAttemptSchema = QuestAttemptSimplifiedSchema.merge(z.object({
   quest: z.lazy(() => QuestSchema),
   user: z.lazy(() => ApplicationUserSimplifiedSchema)
 }));
 
 export type QuestAttempt = z.infer<typeof QuestAttemptSchema>;
+
+
+export const AttemtSubmitSchema = z.object({
+  questId: z.string().uuid(),
+  answers: z.record(z.array(z.string()))
+}); 
+
+export type AttemptSubmit = z.infer<typeof AttemtSubmitSchema>;

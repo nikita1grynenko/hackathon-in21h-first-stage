@@ -204,21 +204,21 @@
   animation: fadeIn 0.5s ease forwards;
 }
 
-.history-list::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 8px;
 }
 
-.history-list::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: #f1f3f5;
   border-radius: 4px;
 }
 
-.history-list::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: #adb5bd;
   border-radius: 4px;
 }
 
-.history-list::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background: #868e96;
 }
 

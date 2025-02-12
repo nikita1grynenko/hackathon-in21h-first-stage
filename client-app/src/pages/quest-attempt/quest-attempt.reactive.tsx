@@ -1,172 +1,107 @@
-import { ElementRef, useCallback, useEffect, useState } from 'react';
-import './create-quiz.style.css';
-import CreateTask from './create-task.reactive';
-import { v6 } from 'uuid';
-import { QuestTask } from '../../models/quest-task.model';
-import { isQuestDificulty, isQuestTopic, QuestCreate, QuestDificultySchema, QuestTopicSchema } from '../../models/quest.model';
-import { createQuest } from '../../middleware/quest.fetching';
+import {
+  useEffect,
+  FC,
+  useState,
+  useCallback,
+} from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useQuestById } from '../../hooks/query.hook';
+import formatTime from '../../utils/time-format';
+import './quest-attempt.style.css';
+import useTimer from '../../hooks/timer.hook';
+import formatTimer from '../../utils/timer-format';
+import { AttemptSubmit } from '../../models/quest-attempt.model';
+import { QuizTaskComponent } from '../../components/quiz-task';
+import { createQuestAttempt } from '../../middleware/quest-attempt.fetching';
 
-const QuestAttempt: React.FC = () => {
-  const [tasks, setTasks] = useState<JSX.Element[]>([]);
+const QuestAttempt: FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
-  const [questData, setQuestData] = useState<QuestCreate>({
-    title: '',
-    description: '',
-    questScore: 0,
-    timeLimit: 0,
-    tasks: [],
-    difficulty: 0,
-    topic: 0,
+  const { data: quest, isLoading, isError, error } = useQuestById(id ?? '');
+  const [timeSeconds, timerState] = useTimer(quest?.timeLimit ?? 0);
+  const [answers, setAnswers] = useState<AttemptSubmit>({
+    questId: id ?? '',
+    answers: {},
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<ElementRef<'input' | 'textarea'>>
-  ) => {
-    const { name, value } = e.target;
-    setQuestData((prev) => ({
+  const handleUpdateAnswers = (answer: Record<string, string[]>) => {
+    setAnswers((prev) => ({
       ...prev,
-      [name]: value,
+      answers: {
+        ...prev.answers,
+        ...answer,
+      },
     }));
   };
 
-  const handleCreateTask = useCallback((task: QuestTask) => {
-    setQuestData((prev) => ({
-      ...prev,
-      tasks: [...prev.tasks.filter(questTask => questTask.id !== task.id), task],
-    }));
-  }, []);
-
-  const handleRemoveTask = useCallback((taskId: string) => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.props.id !== taskId));
-    setQuestData((prev) => ({
-      ...prev,
-      tasks: prev.tasks.filter((task) => task.id !== taskId),
-    }));
-  }, []);
-
-  const addTask = useCallback(() => {
-    const taskId = v6();
-    setTasks((prevTasks) => [
-      ...prevTasks,
-      <CreateTask
-        key={taskId}
-        id={taskId}
-        onSaveTask={handleCreateTask}
-        onRemoveTask={handleRemoveTask}
-      />,
-    ]);
-  }, [handleCreateTask, handleRemoveTask]);
-
-  const handleSubmit = (e: React.MouseEvent<ElementRef<'button'>, MouseEvent>) => {
-    e.preventDefault();
-    
-    createQuest(questData);
-  };
-
-  const convertDificulty = (dificulty: string) => {
-    if (!isQuestDificulty(dificulty)) return -1;
-
-    return QuestDificultySchema.indexOf(dificulty);
-  };
-
-  const convertTopic = (topic: string) => {
-    if (!isQuestTopic(topic)) return -1;
-
-    return QuestTopicSchema.indexOf(topic);
-  };
-  
-  useEffect(() => {
-    console.log(questData);
-  }, [questData]);
+  const completeAttempt = useCallback(() => {
+    createQuestAttempt(answers);
+    navigate(`/quiz/${id ?? ''}`);
+  }, [answers, id, navigate]);
 
   useEffect(() => {
-    document.title = 'Create quiz — QUIZIII';
-  }, []);
+    console.log(answers);
+  }, [answers]);
+
+  useEffect(() => {
+    document.title = `${quest?.title} — Quest attempt — QUIZIII`;
+  }, [quest?.title]);
+
+  useEffect(() => {
+    if (timeSeconds <= 0) completeAttempt();
+  }, [answers, completeAttempt, id, navigate, timeSeconds]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
+  if (!quest) return <h2>Квест не знайдено!</h2>;
 
   return (
-    <div className="create-quest-wrapper">
-      <div className="create-quest-container">
-        <h2>Створити квест</h2>
-        <form className="quest-form">
-          <div className="form-group">
-            <label>Назва квесту:</label>
-            <input
-              type="text"
-              name="title"
-              value={questData.title}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Опис:</label>
-            <textarea
-              name="description"
-              value={questData.description || ''}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Складність:</label>
-            <select
-              value={questData.difficulty}
-              onChange={(e) => isQuestDificulty(e.target.value) && setQuestData({ ...questData, difficulty: convertDificulty(e.target.value) })}
+    <div className="single-quiz">
+      <div className="quiz-header">
+        <h1>{quest.title}</h1>
+        <div className="quiz-meta">
+          <div className="quiz-meta-item">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
             >
-              {QuestDificultySchema.map((questDificulty) => (
-                <option key={questDificulty} value={questDificulty}>{questDificulty}</option>
-              ))}
-            </select>
+              <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {formatTime(quest.timeLimit)}
           </div>
-
-          <div className="form-group">
-            <label>Тема:</label>
-            <select
-              value={QuestTopicSchema[questData.topic]}
-              onChange={(e) => isQuestTopic(e.target.value) && setQuestData({ ...questData, topic: convertTopic(e.target.value) })}
+          <div className="quiz-meta-item">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
             >
-              {QuestTopicSchema.map((questTopic) => (
-                <option key={questTopic} value={questTopic}>{questTopic}</option>
-              ))}
-            </select>
+              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            {quest.questScore} балів
           </div>
-
-          <div className="form-group">
-            <label>Бали:</label>
-            <input
-              type="number"
-              name="questScore"
-              value={questData.questScore}
-              onChange={(e) => setQuestData({ ...questData, questScore: Math.max(+e.target.value, 0) })}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Ліміт часу (хв):</label>
-            <input
-              type="number"
-              name="timeLimit"
-              value={questData.timeLimit}
-              onChange={(e) => setQuestData({ ...questData, timeLimit: Math.max(+e.target.value, 0) })}
-              required
-            />
-          </div>
-        </form>
-        <hr />
-
-        <div className="tasks-group">{tasks}</div>
-        <button className="secondary btn" onClick={addTask} type="button">
-          Додати завдання
-        </button>
-
-        <button type="button" className="btn submit-btn" onClick={handleSubmit}>
-          Створити квест
-        </button>
-        
+        </div>
+        <p className="quiz-description">{quest.description}</p>
       </div>
+
+      <div className="quiz-tasks">
+        {quest.questTasks?.map((task, index) => (
+          <QuizTaskComponent key={task.id} index={index} task={task} onSaveOption={handleUpdateAnswers} />
+        ))}
+      </div>
+
+      <button className="submit-btn btn" onClick={completeAttempt}>
+        Завершити квест
+      </button>
+
+      <div className='timer' style={{ 
+        borderColor: timerState === 'EnoughTime' ? 'green' : timerState === 'RunningOut' ? 'yellow' : 'red',
+        color: timerState === 'EnoughTime' ? 'green' : timerState === 'RunningOut' ? 'yellow' : 'red',
+        backgroundColor: timerState === 'EnoughTime' ? '#a9ffa9' : timerState === 'RunningOut' ? '#c0cc5a' : '#671222',
+      }}>{formatTimer(timeSeconds)}</div>
     </div>
   );
 };

@@ -38,11 +38,6 @@ export const ProfileComponent: React.FC<ProfileComponentProps> = () => {
             Мій профіль
           </Link>
         </li>
-        <li>
-          <Link to="/" className="profile-link">
-            Мої квізи
-          </Link>
-        </li>
         <button className="logout-btn" onClick={handleLogout}>
           Вийти
         </button>
