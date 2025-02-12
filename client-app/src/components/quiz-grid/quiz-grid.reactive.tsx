@@ -29,11 +29,10 @@ const QuizGrid: React.FC<QuizGridProps> = ({currentPage}) => {
 
   const filteredQuizzes = data.filter((quiz) => {
     const searchLower = searchQuery.toLowerCase();
+    const tags: string[] = [quiz.difficulty, quiz.topic];
     return (
       (quiz.title && quiz.title.toLowerCase().includes(searchLower)) ||
-      (quiz.tags &&
-        quiz.tags.some((tag) => tag.toLowerCase().includes(searchLower))) ||
-      (quiz.author && quiz.author.toLowerCase().includes(searchLower))
+      (tags.some((tag) => tag.toLowerCase().includes(searchLower)))
     );
   });
 
