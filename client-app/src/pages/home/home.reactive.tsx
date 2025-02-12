@@ -39,7 +39,7 @@ const Home: React.FC = () => {
         perPage={pagination.itemsPerPage} 
         total={pagination.totalItems} 
       />
-      <QuizGridComponent />
+      <QuizGridComponent key={pagination.currentPage} currentPage={pagination.currentPage} />
       <PaginationComponent 
         currentPage={pagination.currentPage} 
         totalPages={pagination.maxPage}

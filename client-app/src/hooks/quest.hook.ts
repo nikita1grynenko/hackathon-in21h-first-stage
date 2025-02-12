@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchAllQuests, fetchQuestById } from '../middleware/quest.fetching';
 
-export const useQuests = (currentPage?: number) => {
+export const useQuests = (currentPage: number = 1) => {
   return useQuery({
     queryKey: ['quests'],
     queryFn: () => fetchAllQuests(currentPage),
