@@ -57,14 +57,14 @@ namespace HtmlRunnersFirstStage.Api
             builder.Services.AddControllers();
 
             // Отримуємо налаштування JWT із `appsettings.json`
-            var jwtKey = Environment.GetEnvironmentVariable("KEY");
+            var jwtKey = builder.Configuration["Jwt:Key"];
             if (string.IsNullOrEmpty(jwtKey))
             {
                 throw new ArgumentNullException("Jwt:Key", "JWT ключ не заданий у конфігурації.");
             }
 
-            var jwtIssuer = Environment.GetEnvironmentVariable("ISSUER");
-            var jwtAudience = Environment.GetEnvironmentVariable("AUD");
+            var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+            var jwtAudience = builder.Configuration["Jwt:Audience"];
             var key = Encoding.UTF8.GetBytes(jwtKey);
 
             // Налаштовуємо JWT-аутентифікацію
