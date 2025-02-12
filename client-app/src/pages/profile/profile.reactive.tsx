@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { faker } from '@faker-js/faker';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
+import { setAvatar } from '../../store/slices/authSlice';
+import { faker } from '@faker-js/faker';
 import './profile.style.css';
 
 interface QuestHistory {
@@ -12,18 +13,23 @@ interface QuestHistory {
 }
 
 export const ProfilePage: React.FC = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
+  const [showHistory, setShowHistory] = useState(false);
+
+  useEffect(() => {
+    // Если у пользователя нет аватара, генерируем случайный
+    if (!user?.avatar) {
+      const randomAvatar = faker.image.avatar();
+      dispatch(setAvatar(randomAvatar));
+    }
+  }, [dispatch, user?.avatar]);
+
   if (!user) {
     return <div>Користувач не знайдений</div>;
   }
-  console.log(user);
-  const [showHistory, setShowHistory] = useState(false);
 
-  // Тестові данні
-  const userAvatar = faker.image.avatar();
-  const userName = faker.person.fullName();
-  const userEmail = faker.internet.email();
-
+  // Генерируем тестовые данные для истории
   const questHistory: QuestHistory[] = Array.from({ length: 5 }, () => ({
     id: faker.string.uuid(),
     title: faker.lorem.words(3),
@@ -41,11 +47,14 @@ export const ProfilePage: React.FC = () => {
     <div className="profile-container">
       <div className="profile-header animate-fade-in">
         <div className="avatar-container">
-          <img src={user.avatarUrl ?? ''} alt="User avatar" />
+          <img
+            src={user.avatar || faker.image.avatar()}
+            alt={`${user.displayName}'s avatar`}
+          />
         </div>
         <div className="profile-info">
-          <h1 className="profile-name">{userName}</h1>
-          <p className="profile-email">{userEmail}</p>
+          <h1 className="profile-name">{user.displayName}</h1>
+          <p className="profile-email">{user.email}</p>
           <div className="profile-actions">
             <button
               className="action-button primary-button"
