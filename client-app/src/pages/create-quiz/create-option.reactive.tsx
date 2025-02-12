@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TaskOption } from "../../models/task-option.model";
 
 interface CreateOptionProps {
@@ -6,15 +6,20 @@ interface CreateOptionProps {
   taskId: string;
   onSaveOption: (option: TaskOption) => void;
   onRemoveOption: (id: string) => void;
+  children?: string | JSX.Element | JSX.Element[] | null;
 }
 
-const CreateOption: React.FC<CreateOptionProps> = ({id, taskId, onSaveOption, onRemoveOption}) => {
+const CreateOption: React.FC<CreateOptionProps> = ({id, taskId, children, onSaveOption, onRemoveOption}) => {
   const [questOptionData, setQuestOptionData] = useState<TaskOption>({
     id: id,
     taskId: taskId,
     text: '',
     isCorrect: false,
   });
+
+  useEffect(() => {
+    onSaveOption(questOptionData);
+  }, [onSaveOption, questOptionData]);
 
   return (
     <section className="create-option">
@@ -25,18 +30,15 @@ const CreateOption: React.FC<CreateOptionProps> = ({id, taskId, onSaveOption, on
         </svg>
       </button>
 
-      <div className="form-group">
-        <label>Запитання:</label>
-        <input
-          type="text"
-          value={questOptionData.text}
-          onChange={(e) => setQuestOptionData({ ...questOptionData, text: e.target.value })}
-          required
-        />
-      </div>
-
-      <button type="button" className="secondary btn" onClick={() => onSaveOption(questOptionData)}>Зберегти варіант відповіді</button>
-    </section>
+      <label>Варіант відповіді:</label>
+      <input
+        type="text"
+        value={questOptionData.text}
+        onChange={(e) => setQuestOptionData({ ...questOptionData, text: e.target.value })}
+        required
+      />
+      {children}
+  </section>
   );
 };
 
