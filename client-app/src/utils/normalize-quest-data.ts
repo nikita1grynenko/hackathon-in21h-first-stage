@@ -1,20 +1,26 @@
 import { QuestTask, TaskTypeSchema } from "../models/quest-task.model";
-import { Quest, QuestDificultySchema, QuestTopicSchema } from "../models/quest.model";
+import { QuestCreate } from "../models/quest.model";
 import { MediaTypeSchema, TaskMedia } from "../models/task-media.model";
 
-function normalizeQuestData(data: Quest) {
+function normalizeQuestData(data: QuestCreate) {
   return {
-    ...data,
+    title: data.title,
+    description: data.description,
     questScore: Number(data.questScore),
     timeLimit: Number(data.timeLimit),
-    difficulty: QuestDificultySchema.indexOf(data.difficulty),
-    topic: QuestTopicSchema.indexOf(data.topic),
-    tasks: data.questTasks.map((task: QuestTask) => ({
-      ...task,
+    difficulty: data.difficulty,
+    topic: data.topic,
+    tasks: data.tasks.map((task: QuestTask) => ({
+      title: task.title,
+      description: task.description,
       questionType: TaskTypeSchema.indexOf(task.questionType),
       media: task.media.map((media: TaskMedia) => ({
-        ...media,
+        url: media.url,
         mediaType: MediaTypeSchema.indexOf(media.mediaType),
+      })),
+      options: task.options.map((option) => ({
+        text: option.text,
+        isCorrect: Boolean(option.isCorrect),
       })),
     })),
   };

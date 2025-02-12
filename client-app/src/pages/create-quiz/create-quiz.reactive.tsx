@@ -1,26 +1,22 @@
-import { ElementRef, FormEvent, useCallback, useState } from 'react';
+import { ElementRef, useCallback, useEffect, useState } from 'react';
 import './create-quiz.style.css';
 import CreateTask from './create-task.reactive';
 import { v6 } from 'uuid';
 import { QuestTask } from '../../models/quest-task.model';
-import { isQuestDificulty, isQuestTopic, Quest, QuestDificultySchema, QuestTopicSchema } from '../../models/quest.model';
+import { isQuestDificulty, isQuestTopic, QuestCreate, QuestDificultySchema, QuestTopicSchema } from '../../models/quest.model';
 import { createQuest } from '../../middleware/quest.fetching';
 
 const CreateQuest: React.FC = () => {
   const [tasks, setTasks] = useState<JSX.Element[]>([]);
 
-  const [questData, setQuestData] = useState<Quest>({
-    id: '',
+  const [questData, setQuestData] = useState<QuestCreate>({
     title: '',
     description: '',
     questScore: 0,
     timeLimit: 0,
-    createdByUserId: '',
-    createdByUser: null,
-    questTasks: [],
-    feedbacks: [],
-    difficulty: QuestDificultySchema[0],
-    topic: QuestTopicSchema[0],
+    tasks: [],
+    difficulty: 0,
+    topic: 0,
   });
 
   const handleChange = (
@@ -36,7 +32,7 @@ const CreateQuest: React.FC = () => {
   const handleCreateTask = useCallback((task: QuestTask) => {
     setQuestData((prev) => ({
       ...prev,
-      questTasks: [...prev.questTasks.filter(questTask => questTask.id !== task.id), task],
+      tasks: [...prev.tasks.filter(questTask => questTask.id !== task.id), task],
     }));
   }, []);
 
@@ -44,7 +40,7 @@ const CreateQuest: React.FC = () => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.props.id !== taskId));
     setQuestData((prev) => ({
       ...prev,
-      questTasks: prev.questTasks.filter((task) => task.id !== taskId),
+      tasks: prev.tasks.filter((task) => task.id !== taskId),
     }));
   }, []);
 
@@ -61,17 +57,33 @@ const CreateQuest: React.FC = () => {
     ]);
   }, [handleCreateTask, handleRemoveTask]);
 
-  const handleSubmit = (e: FormEvent<ElementRef<'form'>>) => {
+  const handleSubmit = (e: React.MouseEvent<ElementRef<'button'>, MouseEvent>) => {
     e.preventDefault();
     
     createQuest(questData);
-  }
+  };
+
+  const convertDificulty = (dificulty: string) => {
+    if (!isQuestDificulty(dificulty)) return -1;
+
+    return QuestDificultySchema.indexOf(dificulty);
+  };
+
+  const convertTopic = (topic: string) => {
+    if (!isQuestTopic(topic)) return -1;
+
+    return QuestTopicSchema.indexOf(topic);
+  };
+  
+  useEffect(() => {
+    console.log(questData);
+  }, [questData]);
 
   return (
     <div className="create-quest-wrapper">
       <div className="create-quest-container">
         <h2>Створити квест</h2>
-        <form className="quest-form" onSubmit={handleSubmit}>
+        <form className="quest-form">
           <div className="form-group">
             <label>Назва квесту:</label>
             <input
@@ -97,7 +109,7 @@ const CreateQuest: React.FC = () => {
             <label>Складність:</label>
             <select
               value={questData.difficulty}
-              onChange={(e) => isQuestDificulty(e.target.value) && setQuestData({ ...questData, difficulty: e.target.value })}
+              onChange={(e) => isQuestDificulty(e.target.value) && setQuestData({ ...questData, difficulty: convertDificulty(e.target.value) })}
             >
               {QuestDificultySchema.map((questDificulty) => (
                 <option key={questDificulty} value={questDificulty}>{questDificulty}</option>
@@ -108,8 +120,8 @@ const CreateQuest: React.FC = () => {
           <div className="form-group">
             <label>Тема:</label>
             <select
-              value={questData.topic}
-              onChange={(e) => isQuestTopic(e.target.value) && setQuestData({ ...questData, topic: e.target.value })}
+              value={QuestTopicSchema[questData.topic]}
+              onChange={(e) => isQuestTopic(e.target.value) && setQuestData({ ...questData, topic: convertTopic(e.target.value) })}
             >
               {QuestTopicSchema.map((questTopic) => (
                 <option key={questTopic} value={questTopic}>{questTopic}</option>
@@ -138,18 +150,18 @@ const CreateQuest: React.FC = () => {
               required
             />
           </div>
-
-          <hr />
-
-          <div className="tasks-group">{tasks}</div>
-          <button className="btn" onClick={addTask} type="button">
-            Додати завдання
-          </button>
-
-          <button type="submit" className="btn submit-btn">
-            Створити квест
-          </button>
         </form>
+        <hr />
+
+        <div className="tasks-group">{tasks}</div>
+        <button className="secondary btn" onClick={addTask} type="button">
+          Додати завдання
+        </button>
+
+        <button type="button" className="btn submit-btn" onClick={handleSubmit}>
+          Створити квест
+        </button>
+        
       </div>
     </div>
   );

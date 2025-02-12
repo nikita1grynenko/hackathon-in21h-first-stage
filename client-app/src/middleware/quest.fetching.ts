@@ -2,9 +2,9 @@ import instance from '../axios-config';
 import {
   QuestSimplifiedSchema,
   QuestSchema,
-  type Quest,
+  type QuestCreate,
   type QuestSimplified,
-  QuestCreateSchema,
+  type Quest,
 } from '../models/quest.model';
 import normalizeQuestData from '../utils/normalize-quest-data';
 
@@ -38,17 +38,23 @@ export const fetchQuestById = async (id: string): Promise<Quest | null> => {
   return result.data;
 };
 
-export const createQuest = async (quest: Quest) => {  
+export const createQuest = async (quest: QuestCreate) => { 
+  const token = localStorage.getItem('jwt');
+  if (!token) {
+    console.error('Токен не знайдено');
+    return;
+  }
+
   try {
     const normalizedQuest = normalizeQuestData(quest);
-    const validatedQuest = QuestCreateSchema.safeParse(normalizedQuest);
 
-    if (!validatedQuest.success) {
-      console.error(validatedQuest.error);
-      return;
-    }
+    console.log('Перед відправкою фідбеку:', normalizedQuest);
 
-    const response = await instance.post(`/quests`, validatedQuest.data);
+    const response = await instance.post(`/quests`, normalizedQuest, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     console.log('Отримана відповідь:', response.data);
   } catch (error) {

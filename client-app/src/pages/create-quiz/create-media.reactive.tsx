@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { isMediaType, MediaTypeSchema, TaskMedia } from "../../models/task-media.model";
 
 interface CreateMediaProps {
@@ -15,6 +15,10 @@ const CreateMedia: React.FC<CreateMediaProps> = ({id, taskId, onSaveMedia, onRem
     url: "",
     mediaType: MediaTypeSchema[0],
   });
+  
+  useEffect(() => {
+    onSaveMedia(questMediaData);
+  }, [onSaveMedia, questMediaData]);
 
   return (
     <section className="create-media">
@@ -26,7 +30,7 @@ const CreateMedia: React.FC<CreateMediaProps> = ({id, taskId, onSaveMedia, onRem
       </button>
 
       <div className="form-group">
-        <label>Посилання на зображення:</label>
+        <label>Посилання на медіа:</label>
         <input
           type="text"
           value={questMediaData.url}
@@ -35,19 +39,15 @@ const CreateMedia: React.FC<CreateMediaProps> = ({id, taskId, onSaveMedia, onRem
         />
       </div>
 
-      <div className="form-group">
-        <label>Тип запитання:</label>
-        <select
-          value={questMediaData.mediaType}
-          onChange={(e) => isMediaType(e.target.value) && setQuestMediaData({ ...questMediaData, mediaType: e.target.value })}
-        >
-          {MediaTypeSchema.map((mediaType) => (
-            <option key={mediaType} value={mediaType}>{mediaType}</option>
-          ))}
-        </select>
-      </div>
-
-      <button type="button" className="secondary btn" onClick={() => onSaveMedia(questMediaData)}>Зберегти медіа</button>
+      <label>Тип медіа:</label>
+      <select
+        value={questMediaData.mediaType}
+        onChange={(e) => isMediaType(e.target.value) && setQuestMediaData({ ...questMediaData, mediaType: e.target.value })}
+      >
+        {MediaTypeSchema.map((mediaType) => (
+          <option key={mediaType} value={mediaType}>{mediaType}</option>
+        ))}
+      </select>
     </section>
   );
 };
