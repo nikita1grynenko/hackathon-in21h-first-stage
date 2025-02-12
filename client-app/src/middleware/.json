@@ -1,0 +1,47 @@
+{
+  "id": "",
+  "title": "Тест на політкоректність",
+  "description": "хехе",
+  "questScore": "2000",
+  "timeLimit": "1",
+  "createdByUserId": "",
+  "createdByUser": null,
+  "questTasks": [
+    {
+      "id": "1efe8e03-c3a0-6b50-b209-c6375740eab5",
+      "questId": "",
+      "title": "Хто я?",
+      "description": "",
+      "questionType": "MultipleChoice",
+      "options": [
+        {
+          "id": "1efe8e07-dd31-6ac0-b965-9e550283cc95",
+          "taskId": "1efe8e03-c3a0-6b50-b209-c6375740eab5",
+          "text": "Колишній фотограф, який захищає країну на Сході?",
+          "isCorrect": false
+        },
+        {
+          "id": "1efe8e09-9d58-63c0-9cb2-3f8ab27da55e",
+          "taskId": "1efe8e03-c3a0-6b50-b209-c6375740eab5",
+          "text": "Колишній фізик, який миє посуд в Італії?",
+          "isCorrect": false
+        },
+        {
+          "id": "1efe8e0a-0a6a-6990-a1be-9c89a357e32e",
+          "taskId": "1efe8e03-c3a0-6b50-b209-c6375740eab5",
+          "text": "Чи колишній хімік, який будує висотку в Новосибірську?",
+          "isCorrect": false
+        }
+      ],
+      "media": [
+        {
+          "id": "1efe8e04-23c6-6f70-b5f5-ce25b764c326",
+          "taskId": "1efe8e03-c3a0-6b50-b209-c6375740eab5",
+          "url": "https://img.tsn.ua/cached/306/tsn-87394d020f46df1bdfb04b5785c6f4e0/thumbs/1036x648/cf/c7/40c29aa1bfbc5eadd99170f159bdc7cf.png",
+          "mediaType": "Image"
+        }
+      ]
+    }
+  ],
+  "feedbacks": []
+}

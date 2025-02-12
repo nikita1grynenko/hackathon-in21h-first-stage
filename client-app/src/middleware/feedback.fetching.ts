@@ -37,6 +37,7 @@ export const fetchFeedbackById = async (
   return result.data;
 };
 
+// TODO: remove JWT usage
 export const createFeedback = async (
   feedback: Omit<FeedbackCreate, 'userId' | 'userName'>
 ) => {
@@ -77,6 +78,7 @@ export const createFeedback = async (
 
   return null;
 };
+
 export const deleteFeedback = async (feedbackId: string) => {
   const token = localStorage.getItem('jwt');
   if (!token) {

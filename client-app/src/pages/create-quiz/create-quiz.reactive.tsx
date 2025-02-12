@@ -1,9 +1,10 @@
-import { ElementRef, useCallback, useState } from 'react';
+import { ElementRef, FormEvent, useCallback, useState } from 'react';
 import './create-quiz.style.css';
 import CreateTask from './create-task.reactive';
 import { v6 } from 'uuid';
 import { QuestTask } from '../../models/quest-task.model';
-import { Quest } from '../../models/quest.model';
+import { isQuestDificulty, isQuestTopic, Quest, QuestDificultySchema, QuestTopicSchema } from '../../models/quest.model';
+import { createQuest } from '../../middleware/quest.fetching';
 
 const CreateQuest: React.FC = () => {
   const [tasks, setTasks] = useState<JSX.Element[]>([]);
@@ -18,6 +19,8 @@ const CreateQuest: React.FC = () => {
     createdByUser: null,
     questTasks: [],
     feedbacks: [],
+    difficulty: QuestDificultySchema[0],
+    topic: QuestTopicSchema[0],
   });
 
   const handleChange = (
@@ -58,11 +61,17 @@ const CreateQuest: React.FC = () => {
     ]);
   }, [handleCreateTask, handleRemoveTask]);
 
+  const handleSubmit = (e: FormEvent<ElementRef<'form'>>) => {
+    e.preventDefault();
+    
+    createQuest(questData);
+  }
+
   return (
     <div className="create-quest-wrapper">
       <div className="create-quest-container">
         <h2>Створити квест</h2>
-        <form className="quest-form">
+        <form className="quest-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Назва квесту:</label>
             <input
@@ -85,23 +94,47 @@ const CreateQuest: React.FC = () => {
           </div>
 
           <div className="form-group">
+            <label>Складність:</label>
+            <select
+              value={questData.difficulty}
+              onChange={(e) => isQuestDificulty(e.target.value) && setQuestData({ ...questData, difficulty: e.target.value })}
+            >
+              {QuestDificultySchema.map((questDificulty) => (
+                <option key={questDificulty} value={questDificulty}>{questDificulty}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>Тема:</label>
+            <select
+              value={questData.topic}
+              onChange={(e) => isQuestTopic(e.target.value) && setQuestData({ ...questData, topic: e.target.value })}
+            >
+              {QuestTopicSchema.map((questTopic) => (
+                <option key={questTopic} value={questTopic}>{questTopic}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
             <label>Бали:</label>
             <input
               type="number"
               name="questScore"
               value={questData.questScore}
-              onChange={handleChange}
+              onChange={(e) => setQuestData({ ...questData, questScore: Math.max(+e.target.value, 0) })}
               required
             />
           </div>
 
           <div className="form-group">
-            <label>Ліміт часу (сек):</label>
+            <label>Ліміт часу (хв):</label>
             <input
               type="number"
               name="timeLimit"
               value={questData.timeLimit}
-              onChange={handleChange}
+              onChange={(e) => setQuestData({ ...questData, timeLimit: Math.max(+e.target.value, 0) })}
               required
             />
           </div>

@@ -1,9 +1,9 @@
 import z from "zod";
 import { QuestSimplifiedSchema } from "./quest.model";
-import { TaskMediaSimplifiedSchema } from "./task-media.model";
+import { TaskMediaSchema } from "./task-media.model";
 import { TaskOptionSchema } from "./task-option.model";
 
-export const TaskTypeSchema = ['SingleChoice', 'MultipleChoice', 'OpenAnswer'] as const;
+export const TaskTypeSchema = ['Одна правильна відповідь', 'Кілька правильних відповідей', 'Текстова відповідь'] as const;
 
 export type TaskType = typeof TaskTypeSchema[number];
 
@@ -22,7 +22,7 @@ export const QuestTaskSimplifiedSchema = z.object({
 export const QuestTaskSchema = QuestTaskSimplifiedSchema.merge(z.object({
   description: z.string().nullable(),
   options: z.array(z.lazy(() => TaskOptionSchema)),
-  media: z.array(z.lazy(() => TaskMediaSimplifiedSchema))
+  media: z.array(z.lazy(() => TaskMediaSchema))
 }));
 
 export type QuestTask = z.infer<typeof QuestTaskSchema>;

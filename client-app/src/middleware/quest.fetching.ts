@@ -4,7 +4,9 @@ import {
   QuestSchema,
   type Quest,
   type QuestSimplified,
+  QuestCreateSchema,
 } from '../models/quest.model';
+import normalizeQuestData from '../utils/normalize-quest-data';
 
 const QUESTS_PER_PAGE = 10;
 
@@ -36,18 +38,22 @@ export const fetchQuestById = async (id: string): Promise<Quest | null> => {
   return result.data;
 };
 
-export const createQuest = async (quest: Quest) => {
-  const response = await instance.post(`/quests`, quest);
+export const createQuest = async (quest: Quest) => {  
+  try {
+    const normalizedQuest = normalizeQuestData(quest);
+    const validatedQuest = QuestCreateSchema.safeParse(normalizedQuest);
 
-  const result = QuestSchema.safeParse(response.data);
+    if (!validatedQuest.success) {
+      console.error(validatedQuest.error);
+      return;
+    }
 
-  if (!result.success) {
-    console.error(result.error);
-    return;
+    const response = await instance.post(`/quests`, validatedQuest.data);
+
+    console.log('Отримана відповідь:', response.data);
+  } catch (error) {
+    console.error('Помилка при створенні фідбека:', error);
   }
-
-  console.log('Creating feedback', result.data);
-  // await axios.post(`/feedbacks`, result.data);
 };
 
 export const fetchAmountOfQuests = async (): Promise<number | null> => {
