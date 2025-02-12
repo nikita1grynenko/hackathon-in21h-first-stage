@@ -3,6 +3,7 @@ using HtmlRunnersFirstStage.Application.DTOs;
 using HtmlRunnersFirstStage.Application.DTOs.Quest;
 using HtmlRunnersFirstStage.Application.DTOs.QuestAttempt;
 using HtmlRunnersFirstStage.Domain.Entities;
+using HtmlRunnersFirstStage.Domain.Enums;
 using HtmlRunnersFirstStage.Infrastructure.Context;
 using HtmlRunnersFirstStage.Infrastructure.Contracts;
 
@@ -58,9 +59,9 @@ public class QuestService : IQuestService
         return await _questRepository.GetQuestByIdAsync(id);
     }
     
-    public async Task<PagedResponseDto<QuestDto>> GetAllQuestsAsync(int page, int pageSize)
+    public async Task<PagedResponseDto<QuestDto>> GetAllQuestsAsync(int page, int pageSize, DifficultyLevel? difficulty)
     {
-        var (quests, totalCount) = await _questRepository.GetAllQuestsAsync(page, pageSize);
+        var (quests, totalCount) = await _questRepository.GetAllQuestsAsync(page, pageSize, difficulty);
 
         var questDtos = quests.Select(q => new QuestDto
         {
@@ -69,7 +70,9 @@ public class QuestService : IQuestService
             Description = q.Description,
             QuestScore = q.QuestScore,
             TimeLimit = q.TimeLimit,
-            CreatedByUserId = q.CreatedByUserId
+            CreatedByUserId = q.CreatedByUserId,
+            Difficulty = q.Difficulty,
+            Topic = q.Topic
         }).ToList();
 
         return new PagedResponseDto<QuestDto>

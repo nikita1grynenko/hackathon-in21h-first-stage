@@ -25,4 +25,6 @@ public class Quest
     // Додаємо рівень складності
     public DifficultyLevel Difficulty { get; set; }
     public Topic Topic { get; set; }
+    
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
