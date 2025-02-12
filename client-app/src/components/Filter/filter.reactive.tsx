@@ -6,10 +6,11 @@ import './filter.style.css';
 
 interface FilterProps {
   current: number;
+  perPage: number;
   total: number;
 }
 
-const Filter: React.FC<FilterProps> = ({ current, total }) => {
+const Filter: React.FC<FilterProps> = ({ current, perPage, total }) => {
   const dispatch = useDispatch();
   const difficulty = useSelector((state: RootState) => state.filter.difficulty);
 
@@ -46,7 +47,7 @@ const Filter: React.FC<FilterProps> = ({ current, total }) => {
       <div className="quiz-counter">
         <span>Квести</span>
         <strong>
-          {current}-{Math.min(current + 5, total)}
+          {current}-{Math.min(current + perPage-1, total)}
         </strong>
         із <strong>{total}</strong>
       </div>

@@ -7,30 +7,32 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({totalPages = 1, currentPage = 1, onPageChange}) => {
+const Pagination: React.FC<PaginationProps> = ({totalPages = 2, currentPage = 2, onPageChange}) => {
   const pages = useMemo(() => {
     const pagesNumbers: Array<number | string> = [1];
-
+  
+    if (totalPages === 1) return pagesNumbers;
+  
     if (currentPage > 3) {
       pagesNumbers.push('...');
     }
-
+  
     for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
       pagesNumbers.push(i);
     }
-
+  
     if (currentPage < totalPages - 2) {
       pagesNumbers.push('...');
     }
-
-    if (currentPage < totalPages) {
+  
+    if (!pagesNumbers.includes(totalPages)) {
       pagesNumbers.push(totalPages);
     }
-
+  
+    console.log(pagesNumbers);
     return pagesNumbers;
   }, [totalPages, currentPage]);
-
-  console.log(pages);
+  
 
   return (
     <div className="pagination">
@@ -67,7 +69,7 @@ const Pagination: React.FC<PaginationProps> = ({totalPages = 1, currentPage = 1,
             key={index} 
             className={dots + ' ' + activePage} 
             onClick={() => !isNaN(+page) && onPageChange(+page)}
-            disabled={isNaN(+page) || (!isNaN(+page) && +page !== currentPage)}
+            disabled={isNaN(+page) || (!isNaN(+page) && +page === currentPage)}
           >
             {page}
           </button>
