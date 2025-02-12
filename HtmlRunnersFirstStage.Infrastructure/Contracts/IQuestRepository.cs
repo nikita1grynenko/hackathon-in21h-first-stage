@@ -6,7 +6,7 @@ public interface IQuestRepository
 {
     Task<Quest> AddQuestAsync(Quest quest);
     Task<Quest?> GetQuestByIdAsync(Guid id);
-    Task<(List<Quest> Quests, int TotalCount)> GetAllQuestsAsync(int page, int pageSize);
+    Task<(List<Quest>, int)> GetAllQuestsAsync(int page, int pageSize, string sortBy);
     Task DeleteQuestAsync(Quest quest);
     Task<int> GetTotalQuestsCountAsync();
 }

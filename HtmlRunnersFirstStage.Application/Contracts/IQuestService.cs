@@ -9,7 +9,7 @@ public interface IQuestService
 {
     Task<Quest> CreateQuestAsync(CreateQuestDto questDto, Guid userId);
     Task<Quest?> GetQuestByIdAsync(Guid id);
-    Task<PagedResponseDto<QuestDto>> GetAllQuestsAsync(int page, int pageSize);
+    Task<PagedResponseDto<QuestDto>> GetAllQuestsAsync(int page, int pageSize, string sortBy);
     Task<bool> DeleteQuestAsync(Guid questId, Guid userId);
     Task<int> GetTotalQuestsCountAsync();
 }

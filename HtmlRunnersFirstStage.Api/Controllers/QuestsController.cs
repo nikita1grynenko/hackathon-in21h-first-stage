@@ -47,9 +47,9 @@ public class QuestsController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAllQuests([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public async Task<IActionResult> GetAllQuests([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string sortBy = "date")
     {
-        var result = await _questService.GetAllQuestsAsync(page, pageSize);
+        var result = await _questService.GetAllQuestsAsync(page, pageSize, sortBy);
         return Ok(result);
     }
     

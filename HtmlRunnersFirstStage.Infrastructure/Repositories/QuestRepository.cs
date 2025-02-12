@@ -32,12 +32,20 @@ public class QuestRepository : IQuestRepository
             .FirstOrDefaultAsync(q => q.Id == id);
     }
     
-    public async Task<(List<Quest> Quests, int TotalCount)> GetAllQuestsAsync(int page, int pageSize)
+    public async Task<(List<Quest>, int)> GetAllQuestsAsync(int page, int pageSize, string sortBy)
     {
         var totalCount = await _context.Quests.CountAsync();
 
-        var quests = await _context.Quests
-            .OrderByDescending(q => q.CreatedAt) 
+        var query = _context.Quests.AsQueryable();
+
+        // Додаємо сортування
+        query = sortBy.ToLower() switch
+        {
+            "difficulty" => query.OrderBy(q => q.Difficulty),
+            _ => query.OrderByDescending(q => q.CreatedAt) // За замовчуванням - новіші квести першими
+        };
+
+        var quests = await query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
