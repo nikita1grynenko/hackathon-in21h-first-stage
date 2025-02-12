@@ -1,9 +1,15 @@
 import z from "zod";
 import { QuestSimplifiedSchema } from "./quest.model";
 import { TaskMediaSimplifiedSchema } from "./task-media.model";
-import { TaskOptionSimplifiedSchema } from "./task-option.model";
+import { TaskOptionSchema } from "./task-option.model";
 
-export const TaskTypeSchema = ['SingleChoice', 'MultipleChoice', 'OpenAnswer'];
+export const TaskTypeSchema = ['SingleChoice', 'MultipleChoice', 'OpenAnswer'] as const;
+
+export type TaskType = typeof TaskTypeSchema[number];
+
+export function isTaskType(value: string): value is TaskType {
+  return TaskTypeSchema.includes(value as TaskType);
+}
 
 export const QuestTaskSimplifiedSchema = z.object({
   id: z.string().uuid(),
@@ -15,7 +21,7 @@ export const QuestTaskSimplifiedSchema = z.object({
 
 export const QuestTaskSchema = QuestTaskSimplifiedSchema.merge(z.object({
   description: z.string().nullable(),
-  options: z.array(z.lazy(() => TaskOptionSimplifiedSchema)),
+  options: z.array(z.lazy(() => TaskOptionSchema)),
   media: z.array(z.lazy(() => TaskMediaSimplifiedSchema))
 }));
 

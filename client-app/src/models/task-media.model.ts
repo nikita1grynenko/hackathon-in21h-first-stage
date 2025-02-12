@@ -1,7 +1,9 @@
 import z from "zod";
 import { QuestTaskSimplifiedSchema } from "./quest-task.model";
 
-export const MediaTypeSchema = ['Image', 'Video'];
+export const MediaTypeSchema = ['Image', 'Video'] as const;
+
+export type MediaType = typeof MediaTypeSchema[number];
 
 export const TaskMediaSimplifiedSchema = z.object({
   id: z.string().uuid(),

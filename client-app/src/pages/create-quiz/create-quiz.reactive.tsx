@@ -1,44 +1,27 @@
-import { useState } from 'react';
+import { ElementRef, useCallback, useState } from 'react';
 import './create-quiz.style.css';
-
-interface Option {
-  text: string;
-  isCorrect: boolean;
-}
-
-interface Task {
-  title: string;
-  description: string;
-  questionType: number;
-  options: Option[];
-}
-
-interface Quest {
-  title: string;
-  description: string;
-  questScore: number;
-  timeLimit: number;
-  tasks: Task[];
-}
+import CreateTask from './create-task.reactive';
+import { v6 } from 'uuid';
+import { QuestTask } from '../../models/quest-task.model';
+import { Quest } from '../../models/quest.model';
 
 const CreateQuest: React.FC = () => {
+  const [tasks, setTasks] = useState<JSX.Element[]>([]);
+
   const [questData, setQuestData] = useState<Quest>({
+    id: '',
     title: '',
     description: '',
     questScore: 0,
     timeLimit: 0,
-    tasks: [],
-  });
-
-  const [newTask, setNewTask] = useState<Task>({
-    title: '',
-    description: '',
-    questionType: 0,
-    options: [],
+    createdByUserId: '',
+    createdByUser: null,
+    questTasks: [],
+    feedbacks: [],
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<ElementRef<'input' | 'textarea'>>
   ) => {
     const { name, value } = e.target;
     setQuestData((prev) => ({
@@ -47,57 +30,39 @@ const CreateQuest: React.FC = () => {
     }));
   };
 
-  const addTask = () => {
+  const handleCreateTask = useCallback((task: QuestTask) => {
     setQuestData((prev) => ({
       ...prev,
-      tasks: [...prev.tasks, newTask],
+      questTasks: [...prev.questTasks.filter(questTask => questTask.id !== task.id), task],
     }));
+  }, []);
 
-    setNewTask({
-      title: '',
-      description: '',
-      questionType: 0,
-      options: [],
-    });
-  };
+  const handleRemoveTask = useCallback((taskId: string) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.props.id !== taskId));
+    setQuestData((prev) => ({
+      ...prev,
+      questTasks: prev.questTasks.filter((task) => task.id !== taskId),
+    }));
+  }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('http://localhost:4000/api/quests', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify(questData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Помилка при створенні квесту');
-      }
-
-      const result = await response.json();
-      console.log('Квест створено:', result);
-
-      setQuestData({
-        title: '',
-        description: '',
-        questScore: 0,
-        timeLimit: 0,
-        tasks: [],
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const addTask = useCallback(() => {
+    const taskId = v6();
+    setTasks((prevTasks) => [
+      ...prevTasks,
+      <CreateTask
+        key={taskId}
+        id={taskId}
+        onSaveTask={handleCreateTask}
+        onRemoveTask={handleRemoveTask}
+      />,
+    ]);
+  }, [handleCreateTask, handleRemoveTask]);
 
   return (
     <div className="create-quest-wrapper">
       <div className="create-quest-container">
         <h2>Створити квест</h2>
-        <form onSubmit={handleSubmit} className="quest-form">
+        <form className="quest-form">
           <div className="form-group">
             <label>Назва квесту:</label>
             <input
@@ -113,7 +78,7 @@ const CreateQuest: React.FC = () => {
             <label>Опис:</label>
             <textarea
               name="description"
-              value={questData.description}
+              value={questData.description || ''}
               onChange={handleChange}
               required
             />
@@ -143,47 +108,10 @@ const CreateQuest: React.FC = () => {
 
           <hr />
 
-          <h3>Додати завдання</h3>
-          <div className="form-group">
-            <label>Запитання:</label>
-            <input
-              type="text"
-              value={newTask.title}
-              onChange={(e) =>
-                setNewTask({ ...newTask, title: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Опис завдання:</label>
-            <textarea
-              value={newTask.description}
-              onChange={(e) =>
-                setNewTask({ ...newTask, description: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Тип запитання:</label>
-            <select
-              value={newTask.questionType}
-              onChange={(e) =>
-                setNewTask({ ...newTask, questionType: Number(e.target.value) })
-              }
-            >
-              <option value={0}>Одна правильна відповідь</option>
-              <option value={1}>Кілька правильних відповідей</option>
-              <option value={2}>Текстова відповідь</option>
-            </select>
-          </div>
-
-          <button type="button" onClick={addTask} className="btn">
+          <div className="tasks-group">{tasks}</div>
+          <button className="btn" onClick={addTask} type="button">
             Додати завдання
           </button>
-
-          <hr />
 
           <button type="submit" className="btn submit-btn">
             Створити квест

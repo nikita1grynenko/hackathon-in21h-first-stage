@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 import { useQuestById } from '../../hooks/quest.hook';
 import secondsToTime from '../../utils/time-format';
 import { createFeedback } from '../../middleware/feedback.fetching';
-import { FeedbackCreate, FeedbackSchema } from '../../models/feedback.model';
+import { FeedbackCreate } from '../../models/feedback.model';
 import FeedbackItem from '../../components/feedback-item/feedback-item.reactive';
 import './single-quiz.style.css';
 
