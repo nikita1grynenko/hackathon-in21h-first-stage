@@ -11,6 +11,7 @@ import { CreateQuizPage } from './pages/create-quiz';
 import { ProfilePage } from './pages/profile';
 import { RootState } from './store/store';
 import { loadUserFromToken } from './store/slices/authSlice';
+import { QuestAttemptPage } from './pages/quest-attempt';
 
 const AppRouter = () => {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const AppRouter = () => {
         }
       />
       <Route path="/quiz/:id" element={<SingleQuizPage />} />
-      <Route path="/quiz/:id/attempt" element={<SingleQuizPage />} />
+      <Route path="/quiz/:id/attempt" element={<QuestAttemptPage />} />
       <Route path="/create-quiz" element={<CreateQuizPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/auth" element={<AuthPage />} />

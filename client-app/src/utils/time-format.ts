@@ -1,5 +1,5 @@
-function secondsToTime(allMinutes: number): string {
-  const hours = Math.floor(allMinutes / 3600);
+function formatTime(allMinutes: number): string {
+  const hours = Math.floor(allMinutes / 60);
   const minutes = allMinutes % 60;
 
   if (hours > 0) {
@@ -9,4 +9,4 @@ function secondsToTime(allMinutes: number): string {
   return `${minutes} хв`;
 }
 
-export default secondsToTime;
+export default formatTime;

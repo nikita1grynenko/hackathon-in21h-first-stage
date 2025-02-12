@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { FilterComponent } from "../../components/filter";
 import { QuizGridComponent } from "../../components/quiz-grid";
 import { PaginationComponent } from "../../components/pagination";
 import { setCurrentPage, setTotalItems, selectPagination } from '../../store/slices/pagination.slice';
@@ -38,11 +37,11 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <FilterComponent 
+      {/* <FilterComponent 
         current={(pagination.currentPage - 1) * pagination.itemsPerPage + 1} 
         perPage={pagination.itemsPerPage} 
         total={pagination.totalItems} 
-      />
+      /> */}
       <QuizGridComponent key={pagination.currentPage} currentPage={pagination.currentPage} />
       <PaginationComponent 
         currentPage={pagination.currentPage} 

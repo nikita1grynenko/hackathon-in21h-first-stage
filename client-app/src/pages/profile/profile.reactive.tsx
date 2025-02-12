@@ -4,30 +4,32 @@ import { RootState } from '../../store/store';
 import { setAvatar } from '../../store/slices/authSlice';
 import { faker } from '@faker-js/faker';
 import './profile.style.css';
+import { useQuestHistory } from '../../hooks/query.hook';
+import formatDateTime from '../../utils/date-time-format';
 
 export const ProfilePage: React.FC = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const [showHistory, setShowHistory] = useState(false);
 
+  const { data: questHistory = [], isLoading, isError, error } = useQuestHistory();
+
   // Генерція данних один раз після рендеринга компонента, змінити коли будуть данні з беку
-  const questHistory = useMemo(
-    () =>
-      Array.from({ length: 5 }, () => ({
-        id: faker.string.uuid(),
-        title: faker.lorem.words(3),
-        date: faker.date.recent().toLocaleDateString(),
-        score: faker.number.int({ min: 50, max: 100 }),
-      })),
-    []
-  );
+  // const questHistory = useMemo(() => (
+  //   Array.from({ length: 5 }, () => ({
+  //     id: faker.string.uuid(),
+  //     title: faker.lorem.words(3),
+  //     date: faker.date.recent().toLocaleDateString(),
+  //     score: faker.number.int({ min: 50, max: 100 }),
+  //   }
+  // ))), []);
 
   const stats = useMemo(
     () => ({
       completedQuests: questHistory.length,
-      totalScore: questHistory.reduce((sum, quest) => sum + quest.score, 0),
+      totalScore: questHistory.reduce((sum, quest) => sum + quest.userScore, 0),
       averageScore: Math.round(
-        questHistory.reduce((sum, quest) => sum + quest.score, 0) /
+        questHistory.reduce((sum, quest) => sum + quest.userScore, 0) /
           questHistory.length
       ),
     }),
@@ -44,6 +46,10 @@ export const ProfilePage: React.FC = () => {
   useEffect(() => {
     document.title = `${user?.displayName} — Profile — QUIZIII`;
   }, [user?.displayName]);
+
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
 
   if (!user) {
     return <div>Користувач не знайдений</div>;
@@ -96,10 +102,10 @@ export const ProfilePage: React.FC = () => {
             {questHistory.map((quest) => (
               <div key={quest.id} className="history-item">
                 <div className="quest-info">
-                  <div className="quest-title">{quest.title}</div>
-                  <div className="quest-date">{quest.date}</div>
+                  {/* <div className="quest-title">{quest.title}</div> */}
+                  <div className="quest-date">{quest.completedAt && formatDateTime(quest.completedAt)}</div>
                 </div>
-                <div className="quest-score">{quest.score} бал</div>
+                <div className="quest-score">{quest.userScore} бал</div>
               </div>
             ))}
           </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { QuizCardComponent } from '../quiz-card';
 import './quiz-grid.style.css';
-import { useQuests } from '../../hooks/quest.hook';
+import { useQuests } from '../../hooks/query.hook';
 import { RootState } from '../../store/store';
 
 interface QuizGridProps {
