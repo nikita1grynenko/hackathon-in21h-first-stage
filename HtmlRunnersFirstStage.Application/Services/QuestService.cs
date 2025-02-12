@@ -40,7 +40,13 @@ public class QuestService : IQuestService
                     Id = Guid.NewGuid(),
                     Text = optionDto.Text,
                     IsCorrect = optionDto.IsCorrect
-                }).ToList()
+                }).ToList(),
+                Media = taskDto.Media.Select(mediaDto => new TaskMedia
+                {
+                    Id = Guid.NewGuid(),
+                    Url = mediaDto.Url,
+                    MediaType = mediaDto.MediaType
+                }).ToList() // Додаємо медіа
             }).ToList()
         };
 
