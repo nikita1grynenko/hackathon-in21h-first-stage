@@ -4,7 +4,7 @@ import { fetchAllQuests, fetchQuestById } from '../middleware/quest.fetching';
 export const useQuests = () => {
   return useQuery({
     queryKey: ['quests'],
-    queryFn: fetchAllQuests,
+    queryFn: () => fetchAllQuests(),
   });
 };
 

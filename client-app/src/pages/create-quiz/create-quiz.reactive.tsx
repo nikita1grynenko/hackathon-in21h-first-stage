@@ -120,7 +120,7 @@ const CreateQuest: React.FC = () => {
           <div className="form-group">
             <label>Тема:</label>
             <select
-              value={questData.topic}
+              value={QuestTopicSchema[questData.topic]}
               onChange={(e) => isQuestTopic(e.target.value) && setQuestData({ ...questData, topic: convertTopic(e.target.value) })}
             >
               {QuestTopicSchema.map((questTopic) => (

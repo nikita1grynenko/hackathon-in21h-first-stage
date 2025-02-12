@@ -19,7 +19,7 @@ function normalizeQuestData(data: QuestCreate) {
         mediaType: MediaTypeSchema.indexOf(media.mediaType),
       })),
       options: task.options.map((option) => ({
-        test: option.text,
+        text: option.text,
         isCorrect: Boolean(option.isCorrect),
       })),
     })),

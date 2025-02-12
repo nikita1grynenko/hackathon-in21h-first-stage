@@ -6,6 +6,7 @@ import {
   type QuestSimplified,
   type Quest,
 } from '../models/quest.model';
+import normalizeQuestData from '../utils/normalize-quest-data';
 
 const QUESTS_PER_PAGE = 10;
 
@@ -45,8 +46,11 @@ export const createQuest = async (quest: QuestCreate) => {
   }
 
   try {
+    const normalizedQuest = normalizeQuestData(quest);
 
-    const response = await instance.post(`/quests`, quest, {
+    console.log('Перед відправкою фідбеку:', normalizedQuest);
+
+    const response = await instance.post(`/quests`, normalizedQuest, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
