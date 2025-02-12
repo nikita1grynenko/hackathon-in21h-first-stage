@@ -46,8 +46,8 @@ const SingleQuiz: FC = () => {
         questId: id,
         rating: formData.rating,
         comment: formData.comment || null,
-        userId: '1', // TODO: get userId from auth
-        userName: 'User', // TODO: get userName from auth
+        userId: '1',
+        userName: 'User',
       };
 
       try {

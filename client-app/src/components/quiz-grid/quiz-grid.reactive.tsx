@@ -1,16 +1,16 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { QuizCardComponent } from '../quiz-card';
 import './quiz-grid.style.css';
 import { useQuests } from '../../hooks/quest.hook';
+import { RootState } from '../../store/store';
 
 const QuizGrid: React.FC = () => {
   const { data, isLoading, isError, error } = useQuests();
-  
-  // const searchQuery = useSelector(
-  //   (state: RootState) => state.search.searchQuery
-  // );
-  // const difficulty = useSelector(selectDifficulty);
-  
+  const searchQuery = useSelector(
+    (state: RootState) => state.search.searchQuery
+  );
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -23,35 +23,19 @@ const QuizGrid: React.FC = () => {
     return <div>No data</div>;
   }
 
-  // * TODO: Update filtering logic
-
-  // const filteredQuizzes = data
-  //   .filter((quiz) => {
-  //     if (!searchQuery) return true;
-
-  //     const searchLower = searchQuery.toLowerCase();
-
-  //     return (
-  //       quiz.title.toLowerCase().includes(searchLower) ||
-  //       quiz.tags.some((tag) => tag.toLowerCase().includes(searchLower)) ||
-  //       quiz.author.toLowerCase().includes(searchLower)
-  //     );
-  //   })
-  //   .filter((quiz) => {
-  //     if (difficulty === 'all') return true;
-
-  //     const difficultyMap = {
-  //       easy: 'Простий',
-  //       medium: 'Середній',
-  //       hard: 'Складний',
-  //     };
-
-  //     return quiz.tags.includes(difficultyMap[difficulty]);
-  //   });
+  const filteredQuizzes = data.filter((quiz) => {
+    const searchLower = searchQuery.toLowerCase();
+    return (
+      (quiz.title && quiz.title.toLowerCase().includes(searchLower)) ||
+      (quiz.tags &&
+        quiz.tags.some((tag) => tag.toLowerCase().includes(searchLower))) ||
+      (quiz.author && quiz.author.toLowerCase().includes(searchLower))
+    );
+  });
 
   return (
     <div className="quiz-grid">
-      {data.map((quiz) => (
+      {filteredQuizzes.map((quiz) => (
         <QuizCardComponent key={quiz.id} {...quiz} />
       ))}
     </div>

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { faker } from '@faker-js/faker';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 import './profile.style.css';
 
 interface QuestHistory {
@@ -10,6 +12,11 @@ interface QuestHistory {
 }
 
 export const ProfilePage: React.FC = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+  if (!user) {
+    return <div>Користувач не знайдений</div>;
+  }
+  console.log(user);
   const [showHistory, setShowHistory] = useState(false);
 
   // Тестові данні
@@ -34,7 +41,7 @@ export const ProfilePage: React.FC = () => {
     <div className="profile-container">
       <div className="profile-header animate-fade-in">
         <div className="avatar-container">
-          <img src={userAvatar} alt="User avatar" />
+          <img src={user.avatarUrl ?? ''} alt="User avatar" />
         </div>
         <div className="profile-info">
           <h1 className="profile-name">{userName}</h1>

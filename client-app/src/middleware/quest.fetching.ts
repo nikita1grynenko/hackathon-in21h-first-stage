@@ -1,14 +1,17 @@
-
-import instance from "../axios-config";
+import instance from '../axios-config';
 import {
   QuestSimplifiedSchema,
   QuestSchema,
-  type Quest, 
+  type Quest,
   type QuestSimplified,
-} from "../models/quest.model";
+} from '../models/quest.model';
 
-export const fetchAllQuests = async (): Promise<QuestSimplified[]> => {
-  const response = await instance.get(`/quests`);
+const QUESTS_PER_PAGE = 10;
+
+export const fetchAllQuests = async (page = 1): Promise<QuestSimplified[]> => {
+  const response = await instance.get(`/quests`, {
+    params: { page, limit: QUESTS_PER_PAGE },
+  });
 
   const result = QuestSimplifiedSchema.array().safeParse(response.data.items);
 
@@ -43,6 +46,19 @@ export const createQuest = async (quest: Quest) => {
     return;
   }
 
-  console.log("Creating feedback", result.data);
+  console.log('Creating feedback', result.data);
   // await axios.post(`/feedbacks`, result.data);
+};
+
+export const fetchAmountOfQuests = async (): Promise<number | null> => {
+  const response = await instance.get(`/quests/total`);
+
+  const result = response.data;
+
+  if (!result) {
+    console.error('No data');
+    return null;
+  }
+
+  return result as number;
 };
