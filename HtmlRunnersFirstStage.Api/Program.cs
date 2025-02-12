@@ -162,7 +162,9 @@ namespace HtmlRunnersFirstStage.Api
             
             app.UseAuthorization();
 
+            app.UseStaticFiles(); // Дозволяє обслуговування статичних файлів (JS, CSS, HTML)
             app.MapControllers(); // API-контролери
+            app.MapFallbackToFile("index.html"); // SPA fallback
             
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
