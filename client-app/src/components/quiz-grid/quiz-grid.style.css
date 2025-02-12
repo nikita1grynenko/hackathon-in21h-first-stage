@@ -11,6 +11,8 @@
   margin-bottom: 60px;
   justify-items: center;
   justify-content: center;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 @media (min-width: 640px) {
