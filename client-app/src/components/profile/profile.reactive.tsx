@@ -9,24 +9,28 @@ export interface ProfileComponentProps {
   avatar?: string;
 }
 
-export const ProfileComponent: React.FC<ProfileComponentProps> = ({
-  avatar,
-}) => {
+export const ProfileComponent: React.FC<ProfileComponentProps> = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const username = useSelector((state: RootState) => state.auth.user?.userName);
-  const userAvatar =
-    useSelector((state: RootState) => state.auth.user?.avatarUrl) || avatar;
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const handleLogout = () => {
     dispatch(logout());
     navigate('/auth');
   };
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="profile-container">
       <div className="profile-avatar">
-        <img src={userAvatar} alt={username} />
+        <img
+          src={user.avatar}
+          alt={user.displayName}
+          className="avatar-image"
+        />
       </div>
       <div className="profile-menu">
         <li>
