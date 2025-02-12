@@ -156,7 +156,8 @@ namespace HtmlRunnersFirstStage.Api
             
             // Активуємо CORS
             app.UseCors("AllowAll");
-
+            
+            app.UseRouting();
             // Аутентифікація та авторизація (ВАЖЛИВО: ПРАВИЛЬНИЙ ПОРЯДОК)
             app.UseAuthentication();
             
@@ -180,7 +181,7 @@ namespace HtmlRunnersFirstStage.Api
                 logger.LogError(ex, "An error occured during migration");
             }
             
-            app.UseRouting();
+            
 
             await app.RunAsync();
         }
