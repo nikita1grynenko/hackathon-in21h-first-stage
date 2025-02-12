@@ -8,10 +8,8 @@ const QuizCard: React.FC<QuestSimplified> = ({
   id,
   title,
   questScore,
-  // createdByUser,
   timeLimit,
 }) => {
-  // const { avatarUrl, userName: author } = createdByUser; // * TODO: Update backend 
   const navigate = useNavigate();
   const tags = ['Тест', 'Команда', 'Простий'];
 
@@ -56,8 +54,6 @@ const QuizCard: React.FC<QuestSimplified> = ({
 };
 
 export default QuizCard;
-
-
 
 // import React from 'react';
 // import { useNavigate } from 'react-router-dom';
