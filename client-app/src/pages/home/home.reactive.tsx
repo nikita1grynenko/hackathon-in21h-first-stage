@@ -5,17 +5,15 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FilterComponent } from "../../components/filter";
 import { QuizGridComponent } from "../../components/quiz-grid";
 import { PaginationComponent } from "../../components/pagination";
-import { setCurrentPage, setTotalItems, selectPagination, selectTotalItems } from '../../store/slices/pagination.slice';
+import { setCurrentPage, setTotalItems, selectPagination } from '../../store/slices/pagination.slice';
 import { fetchAmountOfQuests } from "../../middleware/quest.fetching";
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pagination = useSelector(selectPagination);
-  const totalItems = useSelector(selectTotalItems);
   const [searchParams] = useSearchParams();
 
-  // Оновлення поточної сторінки при зміні параметрів URL
   useEffect(() => {
     const page = searchParams.get('page');
     if (!page || isNaN(+page)) {

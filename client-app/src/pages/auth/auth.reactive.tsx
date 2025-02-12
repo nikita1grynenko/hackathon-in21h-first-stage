@@ -43,6 +43,8 @@ const Auth: React.FC = () => {
             userName: decodedToken.userName,
             email: decodedToken.email,
             displayName: decodedToken.userName,
+            avatarUrl: null,
+            avatar: ''
           })
         );
         navigate('/');
@@ -69,6 +71,8 @@ const Auth: React.FC = () => {
             userName: decodedToken.userName,
             email: decodedToken.email,
             displayName: decodedToken.userName,
+            avatarUrl: null,
+            avatar: ''
           })
         );
         navigate('/');

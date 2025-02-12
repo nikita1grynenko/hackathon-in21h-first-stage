@@ -5,8 +5,12 @@ import './quiz-grid.style.css';
 import { useQuests } from '../../hooks/quest.hook';
 import { RootState } from '../../store/store';
 
-const QuizGrid: React.FC = () => {
-  const { data, isLoading, isError, error } = useQuests();
+interface QuizGridProps {
+  currentPage: number;
+}
+
+const QuizGrid: React.FC<QuizGridProps> = ({currentPage}) => {
+  const { data, isLoading, isError, error } = useQuests(currentPage);
   const searchQuery = useSelector(
     (state: RootState) => state.search.searchQuery
   );
