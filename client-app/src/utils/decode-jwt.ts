@@ -8,7 +8,7 @@ type DecodedJWTPayload = {
 
 function decodeJWT(token: string) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [header, payload, signature] = token.split('.');
+  const [, payload] = token.split('.');
   const decodedPayload = JSON.parse(
     atob(payload.replace(/-/g, '+').replace(/_/g, '/'))
   ) as DecodedJWTPayload;
