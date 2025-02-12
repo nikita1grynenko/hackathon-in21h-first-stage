@@ -38,7 +38,7 @@ const Pagination: React.FC<PaginationProps> = ({totalPages = 2, currentPage = 2,
     <div className="pagination">
       <button 
         className="pagination-btn"
-        onChange={() => currentPage > 1 && onPageChange(currentPage - 1)}
+        onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
         <svg

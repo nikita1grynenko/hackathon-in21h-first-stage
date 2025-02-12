@@ -10,13 +10,13 @@ import normalizeQuestData from '../utils/normalize-quest-data';
 import { selectItemsPerPage } from '../store/slices/pagination.slice';
 import { store } from '../store/store';
 
-export const fetchAllQuests = async (page = 1): Promise<QuestSimplified[]> => {
+export const fetchAllQuests = async (page: number): Promise<QuestSimplified[]> => {
   const state = store.getState();
   const itemsPerPage = selectItemsPerPage(state);
 
-  const response = await instance.get(`/quests`, {
-    params: { page, pageSize: itemsPerPage },
-  });
+  console.log('page:', { page: page, pageSize: itemsPerPage });
+
+  const response = await instance.get(`/quests?page=${page}&pageSize=${itemsPerPage}`);
 
   const result = QuestSimplifiedSchema.array().safeParse(response.data.items);
 
