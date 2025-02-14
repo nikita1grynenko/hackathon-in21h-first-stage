@@ -8,8 +8,8 @@ import {
   FC,
 } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuestById } from '../../hooks/quest.hook';
-import secondsToTime from '../../utils/time-format';
+import { useQuestById } from '../../hooks/query.hook';
+import formatTime from '../../utils/time-format';
 import { createFeedback } from '../../middleware/feedback.fetching';
 import { FeedbackCreate } from '../../models/feedback.model';
 import FeedbackItem from '../../components/feedback-item/feedback-item.reactive';
@@ -110,7 +110,7 @@ const SingleQuiz: FC = () => {
             >
               <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            {secondsToTime(quest.timeLimit)}
+            {formatTime(quest.timeLimit)}
           </div>
           <div className="quiz-meta-item">
             <svg

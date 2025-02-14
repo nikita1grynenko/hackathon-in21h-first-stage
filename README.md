@@ -24,7 +24,7 @@
 
 Production version is hosted on Azure.
 
-[Website](https://quiziiiplatform.azurewebsites.net) **currently unawailable**.
+[Website](https://quiziiii.azurewebsites.net)
 
 If you found any issues please DM me in Telegram ([@Lackych](https://t.me/Lackych)).
 

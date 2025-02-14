@@ -19,7 +19,7 @@ const CreateOption: React.FC<CreateOptionProps> = ({id, taskId, children, onSave
 
   useEffect(() => {
     onSaveOption(questOptionData);
-  }, [onSaveOption, questOptionData]);
+  }, [id, onSaveOption, questOptionData]);
 
   return (
     <section className="create-option">

@@ -156,16 +156,16 @@ namespace HtmlRunnersFirstStage.Api
             
             // Активуємо CORS
             app.UseCors("AllowAll");
-
+            
+            app.UseRouting();
             // Аутентифікація та авторизація (ВАЖЛИВО: ПРАВИЛЬНИЙ ПОРЯДОК)
             app.UseAuthentication();
             
             app.UseAuthorization();
 
-            // Маршрути контролерів
-            app.MapControllers();
-            app.MapFallbackToFile("index.html"); 
-            
+            app.UseStaticFiles(); // Дозволяє обслуговування статичних файлів (JS, CSS, HTML)
+            app.MapControllers(); // API-контролери
+            app.MapFallbackToFile("index.html"); // SPA fallback
             
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
@@ -181,9 +181,6 @@ namespace HtmlRunnersFirstStage.Api
                 logger.LogError(ex, "An error occured during migration");
             }
             
-            app.UseStaticFiles(); // ✅ Дозволяємо обслуговування статичних файлів
-            app.UseRouting();
-
             
 
             await app.RunAsync();

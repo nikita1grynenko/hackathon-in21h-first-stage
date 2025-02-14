@@ -24,7 +24,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\index-DLTRljII.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\index-DrC97FCy.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\quest-q-avatar-B0NjD5kZ.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\index-CrtgiEDG.js" />
     </ItemGroup>
 
 </Project>
