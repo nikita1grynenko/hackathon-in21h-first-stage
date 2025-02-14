@@ -57,14 +57,14 @@ namespace HtmlRunnersFirstStage.Api
             builder.Services.AddControllers();
 
             // Отримуємо налаштування JWT із `appsettings.json`
-            var jwtKey = builder.Configuration["Jwt:Key"];
+            var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");;
             if (string.IsNullOrEmpty(jwtKey))
             {
-                throw new ArgumentNullException("Jwt:Key", "JWT ключ не заданий у конфігурації.");
+                throw new ArgumentNullException("JWT_KEY", "JWT ключ не заданий у конфігурації.");
             }
 
-            var jwtIssuer = builder.Configuration["Jwt:Issuer"];
-            var jwtAudience = builder.Configuration["Jwt:Audience"];
+            var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");;
+            var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUD");;
             var key = Encoding.UTF8.GetBytes(jwtKey);
 
             // Налаштовуємо JWT-аутентифікацію
@@ -75,7 +75,7 @@ namespace HtmlRunnersFirstStage.Api
             })
             .AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = false; // Для локального тестування (на продакшені включи!)
+                options.RequireHttpsMetadata = true;
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -158,9 +158,9 @@ namespace HtmlRunnersFirstStage.Api
             app.UseCors("AllowAll");
             
             app.UseRouting();
+            
             // Аутентифікація та авторизація (ВАЖЛИВО: ПРАВИЛЬНИЙ ПОРЯДОК)
             app.UseAuthentication();
-            
             app.UseAuthorization();
 
             app.UseStaticFiles(); // Дозволяє обслуговування статичних файлів (JS, CSS, HTML)
@@ -181,8 +181,6 @@ namespace HtmlRunnersFirstStage.Api
                 logger.LogError(ex, "An error occured during migration");
             }
             
-            
-
             await app.RunAsync();
         }
     }
