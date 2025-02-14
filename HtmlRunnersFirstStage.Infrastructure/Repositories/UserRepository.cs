@@ -23,4 +23,6 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
         => await _userManager.CheckPasswordAsync(user, password);
+    public async Task<ApplicationUser?> FindByIdAsync(Guid userId)
+        => await _userManager.FindByIdAsync(userId.ToString());
 }

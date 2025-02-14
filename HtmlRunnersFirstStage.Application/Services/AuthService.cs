@@ -1,7 +1,5 @@
 ﻿using HtmlRunnersFirstStage.Domain.Entities;
 using HtmlRunnersFirstStage.Application.Contracts;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,12 +12,10 @@ namespace HtmlRunnersFirstStage.Application.Services
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IConfiguration _configuration;
 
-        public AuthService(IUserRepository userRepository, IConfiguration configuration)
+        public AuthService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _configuration = configuration;
         }
 
         public async Task<string?> RegisterAsync(RegisterDto model)
@@ -53,27 +49,39 @@ namespace HtmlRunnersFirstStage.Application.Services
 
             return GenerateJwtToken(user);
         }
+        
+        public async Task<UserProfileDto?> GetUserProfileAsync(Guid userId)
+        {
+            var user = await _userRepository.FindByIdAsync(userId);
+            if (user == null) return null;
 
+            return new UserProfileDto
+            {
+                Id = user.Id,
+                Username = user.UserName!,
+                Email = user.Email!,
+                AvatarUrl = user.AvatarUrl
+            };
+        }
+        
         private string GenerateJwtToken(ApplicationUser user)
         {
-            var jwtKey = _configuration["Jwt:Key"];
-            if (string.IsNullOrEmpty(jwtKey))
-            {
-                throw new ArgumentNullException("Jwt:Key", "JWT ключ не знайдений в конфигурації.");
-            }
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY") ?? throw new InvalidOperationException()));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email!),
+                new Claim(ClaimTypes.Name, user.UserName ?? ""),
+                new Claim("AvatarUrl", user.AvatarUrl ?? "")
+            };
+
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email!)
-                },
-                expires: DateTime.UtcNow.AddHours(Convert.ToDouble(_configuration["Jwt:TokenLifetime"])),
+                issuer: Environment.GetEnvironmentVariable("JWT_ISSUER"),
+                audience: Environment.GetEnvironmentVariable("JWT_AUD"),
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(Convert.ToDouble(Environment.GetEnvironmentVariable("JWT_LIFETIME"))),
                 signingCredentials: creds
             );
 

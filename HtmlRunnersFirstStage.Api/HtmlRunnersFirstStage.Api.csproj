@@ -19,6 +19,8 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
     </ItemGroup>
 
+    
+
     <ItemGroup>
       <ProjectReference Include="..\HtmlRunnersFirstStage.Application\HtmlRunnersFirstStage.Application.csproj" />
     </ItemGroup>
@@ -28,6 +30,18 @@
       <_ContentIncludedByDefault Remove="wwwroot\assets\index-DrC97FCy.css" />
       <_ContentIncludedByDefault Remove="wwwroot\assets\quest-q-avatar-B0NjD5kZ.svg" />
       <_ContentIncludedByDefault Remove="wwwroot\assets\index-CrtgiEDG.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\index-Bdhg3KIJ.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\index-kkMlFDBT.css" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Update="wwwroot\**\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\" />
     </ItemGroup>
 
 </Project>
