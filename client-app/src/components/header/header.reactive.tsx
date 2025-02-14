@@ -6,6 +6,7 @@ import './header.style.css';
 import { SearchBarComponent } from '../search-bar';
 import { ProfileComponent } from '../profile';
 import { CreateQuizComponent } from '../create-quest-btn';
+import Qlogo from './quest-q-avatar.svg';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -20,8 +21,11 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="header-left">
+      <Link to={'/'}>
+        <img src={Qlogo} alt="Logo" width={64} style={{ marginRight: "8px", aspectRatio: 1/1, objectFit: 'contain' }}/>
+      </Link>
         <h1>
-          <Link to={'/'}>Quiz Site 👍📰</Link>
+          <Link to={'/'} style={{ fontSize: "32px", color: "#5c7cfa" }}>QUIZIII</Link>
         </h1>
 
         {isAuthenticated && (

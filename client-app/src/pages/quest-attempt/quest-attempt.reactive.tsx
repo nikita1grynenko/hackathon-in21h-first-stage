@@ -6,7 +6,7 @@ import { QuestTask } from '../../models/quest-task.model';
 import { isQuestDificulty, isQuestTopic, QuestCreate, QuestDificultySchema, QuestTopicSchema } from '../../models/quest.model';
 import { createQuest } from '../../middleware/quest.fetching';
 
-const CreateQuest: React.FC = () => {
+const QuestAttempt: React.FC = () => {
   const [tasks, setTasks] = useState<JSX.Element[]>([]);
 
   const [questData, setQuestData] = useState<QuestCreate>({
@@ -171,4 +171,4 @@ const CreateQuest: React.FC = () => {
   );
 };
 
-export default CreateQuest;
+export default QuestAttempt;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './quiz-card.style.css';
 import { type QuestSimplified } from '../../models/quest.model';
@@ -9,9 +9,13 @@ const QuizCard: React.FC<QuestSimplified> = ({
   title,
   questScore,
   timeLimit,
+  difficulty,
+  topic,
 }) => {
   const navigate = useNavigate();
-  const tags = ['Тест', 'Команда', 'Простий'];
+  const tags = useMemo(() => {
+    return [difficulty, topic];
+  }, [difficulty, topic]);
 
   return (
     <div className="quiz-card" onClick={() => navigate(`/quiz/${id}`)}>

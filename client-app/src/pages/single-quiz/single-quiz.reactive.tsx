@@ -7,7 +7,7 @@ import {
   ElementRef,
   FC,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuestById } from '../../hooks/quest.hook';
 import secondsToTime from '../../utils/time-format';
 import { createFeedback } from '../../middleware/feedback.fetching';
@@ -22,6 +22,7 @@ interface FeedbackFormData {
 
 const SingleQuiz: FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState<FeedbackFormData>({
     comment: '',
@@ -86,6 +87,10 @@ const SingleQuiz: FC = () => {
       rating,
     }));
   }, []);
+
+  useEffect(() => {
+    document.title = `${quest?.title} — Quest — QUIZIII`;
+  }, [quest?.title]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
@@ -189,7 +194,7 @@ const SingleQuiz: FC = () => {
         </div>
       </div>
 
-      <button className="start-quiz-btn">Почати квест</button>
+      <button className="start-quiz-btn" onClick={() => navigate("./attempt")}>Почати квест</button>
     </div>
   );
 };

@@ -1,60 +1,72 @@
-import React, { useState } from 'react';
-import { faker } from '@faker-js/faker';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
+import { setAvatar } from '../../store/slices/authSlice';
+import { faker } from '@faker-js/faker';
 import './profile.style.css';
 
-interface QuestHistory {
-  id: string;
-  title: string;
-  date: string;
-  score: number;
-}
-
 export const ProfilePage: React.FC = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
+  const [showHistory, setShowHistory] = useState(false);
+
+  // Генерція данних один раз після рендеринга компонента, змінити коли будуть данні з беку
+  const questHistory = useMemo(
+    () =>
+      Array.from({ length: 5 }, () => ({
+        id: faker.string.uuid(),
+        title: faker.lorem.words(3),
+        date: faker.date.recent().toLocaleDateString(),
+        score: faker.number.int({ min: 50, max: 100 }),
+      })),
+    []
+  );
+
+  const stats = useMemo(
+    () => ({
+      completedQuests: questHistory.length,
+      totalScore: questHistory.reduce((sum, quest) => sum + quest.score, 0),
+      averageScore: Math.round(
+        questHistory.reduce((sum, quest) => sum + quest.score, 0) /
+          questHistory.length
+      ),
+    }),
+    [questHistory]
+  );
+
+  useEffect(() => {
+    if (!user?.avatar) {
+      const randomAvatar = faker.image.avatar();
+      dispatch(setAvatar(randomAvatar));
+    }
+  }, [dispatch, user?.avatar]);
+
+  useEffect(() => {
+    document.title = `${user?.displayName} — Profile — QUIZIII`;
+  }, [user?.displayName]);
+
   if (!user) {
     return <div>Користувач не знайдений</div>;
   }
-  console.log(user);
-  const [showHistory, setShowHistory] = useState(false);
-
-  // Тестові данні
-  const userAvatar = faker.image.avatar();
-  const userName = faker.person.fullName();
-  const userEmail = faker.internet.email();
-
-  const questHistory: QuestHistory[] = Array.from({ length: 5 }, () => ({
-    id: faker.string.uuid(),
-    title: faker.lorem.words(3),
-    date: faker.date.recent().toLocaleDateString(),
-    score: faker.number.int({ min: 50, max: 100 }),
-  }));
-
-  const stats = {
-    completedQuests: faker.number.int({ min: 10, max: 50 }),
-    totalScore: faker.number.int({ min: 1000, max: 5000 }),
-    averageScore: faker.number.int({ min: 70, max: 95 }),
-  };
 
   return (
     <div className="profile-container">
       <div className="profile-header animate-fade-in">
         <div className="avatar-container">
-          <img src={user.avatarUrl ?? ''} alt="User avatar" />
+          <img
+            src={user.avatar || faker.image.avatar()}
+            alt={`${user.displayName}'s avatar`}
+          />
         </div>
         <div className="profile-info">
-          <h1 className="profile-name">{userName}</h1>
-          <p className="profile-email">{userEmail}</p>
+          <h1 className="profile-name">{user.displayName}</h1>
+          <p className="profile-email">{user.email}</p>
           <div className="profile-actions">
             <button
               className="action-button primary-button"
               onClick={() => setShowHistory(!showHistory)}
             >
               {showHistory ? 'Сховати історію' : 'Історія проходження квестів'}
-            </button>
-            <button className="action-button secondary-button">
-              Редагувати профіль
             </button>
           </div>
         </div>
@@ -71,10 +83,6 @@ export const ProfilePage: React.FC = () => {
         <div className="stat-card">
           <div className="stat-value">{stats.totalScore}</div>
           <div className="stat-label">Загальний рахунок</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-value">{stats.averageScore}%</div>
-          <div className="stat-label">Середній результат</div>
         </div>
       </div>
 

@@ -5,31 +5,39 @@ import './quiz-grid.style.css';
 import { useQuests } from '../../hooks/quest.hook';
 import { RootState } from '../../store/store';
 
-const QuizGrid: React.FC = () => {
-  const { data, isLoading, isError, error } = useQuests();
+interface QuizGridProps {
+  currentPage: number;
+}
+
+const QuizGrid: React.FC<QuizGridProps> = ({currentPage}) => {
+  const { data, isLoading, isError, error } = useQuests(currentPage);
   const searchQuery = useSelector(
     (state: RootState) => state.search.searchQuery
   );
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (isLoading) { 
+    return (
+      <div className="loading">
+        <div className="spinner"></div>
+        Loading...
+      </div>
+    );
   }
-
+  
   if (isError) {
-    return <div>Error: {error.message}</div>;
+    return <div className="error">Error: {error.message}</div>;
   }
-
+  
   if (!data) {
-    return <div>No data</div>;
-  }
+    return <div className="no-data">No data</div>;
+  }  
 
   const filteredQuizzes = data.filter((quiz) => {
     const searchLower = searchQuery.toLowerCase();
+    const tags: string[] = [quiz.difficulty, quiz.topic];
     return (
       (quiz.title && quiz.title.toLowerCase().includes(searchLower)) ||
-      (quiz.tags &&
-        quiz.tags.some((tag) => tag.toLowerCase().includes(searchLower))) ||
-      (quiz.author && quiz.author.toLowerCase().includes(searchLower))
+      (tags.some((tag) => tag.toLowerCase().includes(searchLower)))
     );
   });
 

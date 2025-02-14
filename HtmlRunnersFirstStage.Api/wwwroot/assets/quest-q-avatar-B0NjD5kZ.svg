@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="#f8f9fa"/>
+  
+  <!-- Decorative ring -->
+  <circle cx="100" cy="100" r="85" fill="none" stroke="#5c7cfa" stroke-width="5"/>
+  
+  <!-- Quest scroll background -->
+  <path d="M40 70 C40 40, 160 40, 160 70 L160 130 C160 160, 40 160, 40 130 Z" 
+        fill="#5c7cfa" opacity="0.1"/>
+  
+  <!-- Letter Q -->
+  <path d="M65 70 Q65 60, 75 60 L125 60 Q135 60, 135 70 L135 110 Q135 120, 125 120 L75 120 Q65 120, 65 110 Z
+           M65 70 L65 110 M135 70 L135 110
+           M125 120 L140 135" 
+        fill="none" stroke="#5c7cfa" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Quest decorative elements -->
+  <path d="M50 85 L30 85 M50 95 L35 95" stroke="#5c7cfa" stroke-width="3" stroke-linecap="round"/>
+  <path d="M150 85 L170 85 M150 95 L165 95" stroke="#5c7cfa" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Small quest icons -->
+  <circle cx="45" cy="60" r="5" fill="#5c7cfa"/>
+  <circle cx="155" cy="60" r="5" fill="#5c7cfa"/>
+  <path d="M45 140 L55 150 L45 160" fill="none" stroke="#5c7cfa" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M155 140 L145 150 L155 160" fill="none" stroke="#5c7cfa" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

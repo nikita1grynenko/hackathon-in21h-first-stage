@@ -5,12 +5,14 @@ interface PaginationState {
   currentPage: number;
   itemsPerPage: number;
   totalItems: number;
+  maxPage: number;
 }
 
 const initialState: PaginationState = {
   currentPage: 1,
   itemsPerPage: 12, // Кількість квестів на сторінці
   totalItems: 0,
+  maxPage: 1,
 };
 
 export const paginationSlice = createSlice({
@@ -24,6 +26,8 @@ export const paginationSlice = createSlice({
     // Встановлення загальної кількості елементів
     setTotalItems: (state, action: PayloadAction<number>) => {
       state.totalItems = action.payload;
+      state.maxPage = Math.ceil(state.totalItems / state.itemsPerPage);
+      console.log("hehe", state.totalItems, state.maxPage);
     },
     // Зміна кількості елементів на сторінці
     setItemsPerPage: (state, action: PayloadAction<number>) => {
@@ -45,6 +49,8 @@ export const selectItemsPerPage = (state: RootState) =>
   state.pagination.itemsPerPage;
 export const selectTotalPages = (state: RootState) =>
   Math.ceil(state.pagination.totalItems / state.pagination.itemsPerPage);
+export const selectTotalItems = (state: RootState) =>
+  state.pagination.totalItems;
 
 export const { setCurrentPage, setTotalItems, setItemsPerPage } =
   paginationSlice.actions;

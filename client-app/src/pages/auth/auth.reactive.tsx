@@ -1,4 +1,4 @@
-import { type FormEvent, useCallback, useState } from 'react';
+import { type FormEvent, useCallback, useEffect, useState } from 'react';
 import './auth.style.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -43,6 +43,8 @@ const Auth: React.FC = () => {
             userName: decodedToken.userName,
             email: decodedToken.email,
             displayName: decodedToken.userName,
+            avatarUrl: null,
+            avatar: ''
           })
         );
         navigate('/');
@@ -69,6 +71,8 @@ const Auth: React.FC = () => {
             userName: decodedToken.userName,
             email: decodedToken.email,
             displayName: decodedToken.userName,
+            avatarUrl: null,
+            avatar: ''
           })
         );
         navigate('/');
@@ -86,6 +90,10 @@ const Auth: React.FC = () => {
 
   const blockActions = useCallback((e: React.ClipboardEvent) => {
     e.preventDefault();
+  }, []);
+
+  useEffect(() => {
+    document.title = 'Auth — QUIZIII';
   }, []);
 
   return (

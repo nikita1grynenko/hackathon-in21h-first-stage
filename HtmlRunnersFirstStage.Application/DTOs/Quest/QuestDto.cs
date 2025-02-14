@@ -1,4 +1,6 @@
-﻿namespace HtmlRunnersFirstStage.Application.DTOs.Quest;
+﻿using HtmlRunnersFirstStage.Domain.Enums;
+
+namespace HtmlRunnersFirstStage.Application.DTOs.Quest;
 
 public class QuestDto
 {
@@ -7,7 +9,7 @@ public class QuestDto
     public string? Description { get; set; }
     public int QuestScore { get; set; }
     public int TimeLimit { get; set; }
-    
-    public Guid CreatedByUserId { get; set; }
-    public string? CreatedByUsername { get; set; } = string.Empty; // Додаємо Username
+    public DifficultyLevel Difficulty { get; set; }
+    public Topic Topic { get; set; }
+    public Guid CreatedByUserId { get; set; } 
 }

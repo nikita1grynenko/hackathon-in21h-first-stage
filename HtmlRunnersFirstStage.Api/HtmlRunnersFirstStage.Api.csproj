@@ -23,4 +23,8 @@
       <ProjectReference Include="..\HtmlRunnersFirstStage.Application\HtmlRunnersFirstStage.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\" />
+    </ItemGroup>
+
 </Project>

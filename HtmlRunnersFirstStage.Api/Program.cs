@@ -19,18 +19,20 @@ namespace HtmlRunnersFirstStage.Api
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            // Налаштовуємо контекст бази даних
-            var projectRoot = Directory.GetParent(Directory.GetCurrentDirectory())!.FullName;
-            var envPath = Path.Combine(projectRoot, "client-app", ".env");
-            
-            if (File.Exists(envPath))
+            if (builder.Environment.IsDevelopment())
             {
-                Env.Load(envPath);
-                Console.WriteLine($"Завантажено .env із {envPath}");
-            }
-            else
-            {
-                Console.WriteLine("Файл .env не знайдено!");
+                var projectRoot = Directory.GetParent(Directory.GetCurrentDirectory())!.FullName;
+                var envPath = Path.Combine(projectRoot, "client-app", ".env");
+
+                if (File.Exists(envPath))
+                {
+                    Env.Load(envPath);
+                    Console.WriteLine($"Завантажено .env із {envPath}");
+                }
+                else
+                {
+                    Console.WriteLine("Файл .env не знайдено!");
+                }
             }
 
             var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
@@ -157,10 +159,13 @@ namespace HtmlRunnersFirstStage.Api
 
             // Аутентифікація та авторизація (ВАЖЛИВО: ПРАВИЛЬНИЙ ПОРЯДОК)
             app.UseAuthentication();
+            
             app.UseAuthorization();
 
             // Маршрути контролерів
             app.MapControllers();
+            app.MapFallbackToFile("index.html"); 
+            
             
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
@@ -175,6 +180,11 @@ namespace HtmlRunnersFirstStage.Api
                 var logger = services.GetRequiredService<ILogger<Program>>();
                 logger.LogError(ex, "An error occured during migration");
             }
+            
+            app.UseStaticFiles(); // ✅ Дозволяємо обслуговування статичних файлів
+            app.UseRouting();
+
+            
 
             await app.RunAsync();
         }

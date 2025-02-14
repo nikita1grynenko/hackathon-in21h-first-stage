@@ -2,18 +2,20 @@ import instance from '../axios-config';
 import {
   QuestSimplifiedSchema,
   QuestSchema,
-  type Quest,
+  type QuestCreate,
   type QuestSimplified,
-  QuestCreateSchema,
+  type Quest,
 } from '../models/quest.model';
 import normalizeQuestData from '../utils/normalize-quest-data';
+import { selectItemsPerPage } from '../store/slices/pagination.slice';
+import { store } from '../store/store';
 
-const QUESTS_PER_PAGE = 10;
+export const fetchAllQuests = async (page: number): Promise<QuestSimplified[]> => {
+  const state = store.getState();
+  const itemsPerPage = selectItemsPerPage(state);
 
-export const fetchAllQuests = async (page = 1): Promise<QuestSimplified[]> => {
-  const response = await instance.get(`/quests`, {
-    params: { page, limit: QUESTS_PER_PAGE },
-  });
+  const response = await instance.get(`/quests?page=${page}&pageSize=${itemsPerPage}`);
+  console.log('response:', response);
 
   const result = QuestSimplifiedSchema.array().safeParse(response.data.items);
 
@@ -21,7 +23,7 @@ export const fetchAllQuests = async (page = 1): Promise<QuestSimplified[]> => {
     console.error(result.error);
     return [];
   }
-
+  
   return result.data;
 };
 
@@ -38,17 +40,23 @@ export const fetchQuestById = async (id: string): Promise<Quest | null> => {
   return result.data;
 };
 
-export const createQuest = async (quest: Quest) => {  
+export const createQuest = async (quest: QuestCreate) => { 
+  const token = localStorage.getItem('jwt');
+  if (!token) {
+    console.error('Токен не знайдено');
+    return;
+  }
+
   try {
     const normalizedQuest = normalizeQuestData(quest);
-    const validatedQuest = QuestCreateSchema.safeParse(normalizedQuest);
 
-    if (!validatedQuest.success) {
-      console.error(validatedQuest.error);
-      return;
-    }
+    console.log('Перед відправкою фідбеку:', normalizedQuest);
 
-    const response = await instance.post(`/quests`, validatedQuest.data);
+    const response = await instance.post(`/quests`, normalizedQuest, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     console.log('Отримана відповідь:', response.data);
   } catch (error) {
@@ -66,5 +74,5 @@ export const fetchAmountOfQuests = async (): Promise<number | null> => {
     return null;
   }
 
-  return result as number;
+  return result.totalQuests as number;
 };
