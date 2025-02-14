@@ -4,8 +4,9 @@ namespace HtmlRunnersFirstStage.Application.DTOs.Auth;
 
 public class LoginDto
 {
-    [Required]
+    [Required, EmailAddress, StringLength(100)]
     public string Email { get; set; } = null!;
-    [Required]
+
+    [Required, StringLength(50, MinimumLength = 6)]
     public string Password { get; set; } = null!;
 }
