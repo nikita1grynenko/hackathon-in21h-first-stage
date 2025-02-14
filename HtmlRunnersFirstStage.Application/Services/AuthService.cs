@@ -18,27 +18,24 @@ namespace HtmlRunnersFirstStage.Application.Services
             _userRepository = userRepository;
         }
 
-        public async Task<string?> RegisterAsync(RegisterDto model)
+        public async Task<(string? Token, string? Error)> RegisterAsync(RegisterDto model)
         {
             var user = new ApplicationUser
             {
                 UserName = model.Username,
-                Email = model.Email
+                Email = model.Email,
             };
 
             var result = await _userRepository.RegisterAsync(user, model.Password);
-    
+
             if (!result.Succeeded)
             {
-                // Логуємо помилку Identity
-                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                Console.WriteLine($"Помилка реєстрації: {errors}");
-                return null;
+                var errors = string.Join("; ", result.Errors.Select(e => $"{e.Code}: {e.Description}"));
+                return (null, errors);
             }
 
-            // Генеруємо JWT
             var token = GenerateJwtToken(user);
-            return token;
+            return (token, null);
         }
 
         public async Task<string?> LoginAsync(LoginDto model)

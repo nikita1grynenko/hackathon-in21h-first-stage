@@ -23,16 +23,25 @@ namespace HtmlRunnersFirstStage.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
-            var token = await _authService.RegisterAsync(model);
-            if (token == null) return BadRequest("Помилка реєстрації.");
+            var (token, error) = await _authService.RegisterAsync(model);
+
+            if (error != null)
+            {
+                return BadRequest(new { Message = "Registration failed", Errors = error });
+            }
+
             return Ok(new { token });
         }
+
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+            
             var token = await _authService.LoginAsync(model);
-            if (token == null) return Unauthorized("Невірні данні.");
+            if (token == null) return Unauthorized( new { massege = "Invalid email or password." });
             return Ok(new { token });
         }
         
@@ -42,7 +51,7 @@ namespace HtmlRunnersFirstStage.API.Controllers
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
-                return NotFound(new { message = "Користувача не знайдено" });
+                return NotFound(new { message = "User not found." });
             }
 
             var result = await _userManager.DeleteAsync(user);
