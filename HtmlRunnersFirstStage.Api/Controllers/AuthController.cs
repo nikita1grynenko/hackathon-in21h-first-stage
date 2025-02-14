@@ -1,4 +1,5 @@
-﻿using HtmlRunnersFirstStage.Application.Contracts;
+﻿using System.Security.Claims;
+using HtmlRunnersFirstStage.Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using HtmlRunnersFirstStage.Application.DTOs.Auth;
 using HtmlRunnersFirstStage.Domain.Entities;
@@ -51,6 +52,22 @@ namespace HtmlRunnersFirstStage.API.Controllers
             }
 
             return Ok(new { message = "Користувача успішно видалено" });
+        }
+        
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetUserProfile()
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim))
+                return Unauthorized(new { message = "Не вдалося отримати ID користувача" });
+
+            var userId = Guid.Parse(userIdClaim);
+            var userProfile = await _authService.GetUserProfileAsync(userId);
+
+            if (userProfile == null)
+                return NotFound(new { message = "Користувача не знайдено" });
+
+            return Ok(userProfile);
         }
     }
 }

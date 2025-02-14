@@ -59,25 +59,43 @@ namespace HtmlRunnersFirstStage.Application.Services
             var jwtKey = _configuration["Jwt:Key"];
             if (string.IsNullOrEmpty(jwtKey))
             {
-                throw new ArgumentNullException("Jwt:Key", "JWT ключ не знайдений в конфигурації.");
+                throw new ArgumentNullException("Jwt:Key", "JWT ключ не знайдений у конфігурації.");
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email!),
+                new Claim(ClaimTypes.Name, user.UserName ?? ""), // Додаємо Username
+                new Claim("AvatarUrl", user.AvatarUrl ?? "") // Додаємо AvatarUrl
+            };
+
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
-                claims: new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email!)
-                },
+                claims: claims,
                 expires: DateTime.UtcNow.AddHours(Convert.ToDouble(_configuration["Jwt:TokenLifetime"])),
                 signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        
+        public async Task<UserProfileDto?> GetUserProfileAsync(Guid userId)
+        {
+            var user = await _userRepository.FindByIdAsync(userId);
+            if (user == null) return null;
+
+            return new UserProfileDto
+            {
+                Id = user.Id,
+                Username = user.UserName!,
+                Email = user.Email!,
+                AvatarUrl = user.AvatarUrl
+            };
         }
     }
 }

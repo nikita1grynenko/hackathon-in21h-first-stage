@@ -37,6 +37,7 @@ public class QuestRepository : IQuestRepository
         var totalCount = await _context.Quests.CountAsync();
 
         var quests = await _context.Quests
+            .Include(q => q.CreatedByUser)    
             .OrderBy(q => q.Title)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)

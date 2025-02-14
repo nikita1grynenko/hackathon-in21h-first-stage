@@ -8,5 +8,6 @@ public class QuestDto
     public int QuestScore { get; set; }
     public int TimeLimit { get; set; }
     
-    public Guid CreatedByUserId { get; set; } 
+    public Guid CreatedByUserId { get; set; }
+    public string? CreatedByUsername { get; set; } = string.Empty; // Додаємо Username
 }

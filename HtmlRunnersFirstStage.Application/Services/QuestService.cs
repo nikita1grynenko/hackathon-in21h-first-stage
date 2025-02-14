@@ -63,7 +63,8 @@ public class QuestService : IQuestService
             Description = q.Description,
             QuestScore = q.QuestScore,
             TimeLimit = q.TimeLimit,
-            CreatedByUserId = q.CreatedByUserId
+            CreatedByUserId = q.CreatedByUserId,
+            CreatedByUsername = q.CreatedByUser.UserName,
         }).ToList();
 
         return new PagedResponseDto<QuestDto>
