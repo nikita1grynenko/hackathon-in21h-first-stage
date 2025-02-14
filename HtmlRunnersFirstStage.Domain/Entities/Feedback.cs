@@ -18,7 +18,7 @@ public class Feedback
     [Range(1, 5)]
     public int Rating { get; set; }
 
-    [MaxLength(2000)]
+    [StringLength(2000)]
     public string? Comment { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
