@@ -258,6 +258,21 @@ body {
 .container.sign-up .img.sign-up img {
   transform: translateX(0);
 }
+.container.sign-in .form.sign-up,
+.container.sign-up .form.sign-in {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.5s ease-in-out 0.3s,
+    visibility 0s linear 0.8s;
+}
+
+.container.sign-in .form.sign-in,
+.container.sign-up .form.sign-up {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease-in-out;
+}
 
 /* BACKGROUND */
 
