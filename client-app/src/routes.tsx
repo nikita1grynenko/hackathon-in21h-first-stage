@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { HomePage } from './pages/home';
-import { LoginPage } from './pages/login';
-import { RegisterPage } from './pages/register';
 import { SingleQuizPage } from './pages/single-quiz';
 import { AuthPage } from './pages/auth';
 import PrivateRoute from './components/private-route/private-route.reactive';
@@ -42,8 +40,6 @@ const AppRouter = () => {
       <Route path="/create-quiz" element={<CreateQuizPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/auth" element={<AuthPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
     </Routes>
   );
 };

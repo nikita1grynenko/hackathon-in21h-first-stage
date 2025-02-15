@@ -44,7 +44,7 @@ const Auth: React.FC = () => {
             email: decodedToken.email,
             displayName: decodedToken.userName,
             avatarUrl: null,
-            avatar: ''
+            avatar: '',
           })
         );
         navigate('/');
@@ -72,7 +72,7 @@ const Auth: React.FC = () => {
             email: decodedToken.email,
             displayName: decodedToken.userName,
             avatarUrl: null,
-            avatar: ''
+            avatar: '',
           })
         );
         navigate('/');
@@ -85,7 +85,7 @@ const Auth: React.FC = () => {
 
   const toggle = useCallback(() => {
     setIsSignIn(!isSignIn);
-    setError(null); // Сброс ошибки при переключении между формами
+    setError(null);
   }, [isSignIn]);
 
   const blockActions = useCallback((e: React.ClipboardEvent) => {
@@ -110,6 +110,7 @@ const Auth: React.FC = () => {
                 <i className="bx bxs-user"></i>
                 <input
                   type="text"
+                  id="username-input"
                   placeholder="Username"
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
@@ -151,7 +152,7 @@ const Auth: React.FC = () => {
               {error && <div className="error-message">{error}</div>}
               <button>Sign up</button>
               <p>
-                <span>Already have an account?</span>
+                <span>Already have an account? </span>
                 <b onClick={toggle} className="pointer">
                   Sign in here
                 </b>
@@ -187,7 +188,7 @@ const Auth: React.FC = () => {
               {error && <div className="error-message">{error}</div>}
               <button type="submit">Sign in</button>
               <p>
-                <span>Don't have an account?</span>
+                <span>Don't have an account? </span>
                 <b onClick={toggle} className="pointer">
                   Sign up here
                 </b>
