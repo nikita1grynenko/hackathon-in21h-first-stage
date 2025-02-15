@@ -12,7 +12,12 @@ export const ProfilePage: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const [showHistory, setShowHistory] = useState(false);
 
-  const { data: questHistory = [], isLoading, isError, error } = useQuestHistory();
+  const {
+    data: questHistory = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuestHistory();
 
   // Генерція данних один раз після рендеринга компонента, змінити коли будуть данні з беку
   // const questHistory = useMemo(() => (
@@ -47,7 +52,6 @@ export const ProfilePage: React.FC = () => {
     document.title = `${user?.displayName} — Profile — QUIZIII`;
   }, [user?.displayName]);
 
-  
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
@@ -103,7 +107,9 @@ export const ProfilePage: React.FC = () => {
               <div key={quest.id} className="history-item">
                 <div className="quest-info">
                   {/* <div className="quest-title">{quest.title}</div> */}
-                  <div className="quest-date">{quest.completedAt && formatDateTime(quest.completedAt)}</div>
+                  <div className="quest-date">
+                    {quest.completedAt && formatDateTime(quest.completedAt)}
+                  </div>
                 </div>
                 <div className="quest-score">{quest.userScore} бал</div>
               </div>
