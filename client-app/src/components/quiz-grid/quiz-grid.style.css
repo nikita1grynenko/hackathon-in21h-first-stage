@@ -1,18 +1,16 @@
 .quiz-grid-container {
   padding: 20px;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: auto;
 }
 
 .quiz-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
-  margin-bottom: 60px;
+  margin: 40px 20px;
   justify-items: center;
   justify-content: center;
-  margin-left: 20px;
-  margin-right: 20px;
 }
 
 @media (min-width: 640px) {

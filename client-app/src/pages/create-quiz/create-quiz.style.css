@@ -106,7 +106,7 @@ hr {
   display: block;
   aspect-ratio: 1 / 1;
   height: 28px;
-  top: 0px;
+  top: -5px;
   right: 4px;
   background: none;
   border: none;
@@ -116,7 +116,8 @@ hr {
   z-index: 10;
 }
 
-.create-task select, .create-media select {
+.create-task select,
+.create-media select {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
@@ -124,12 +125,15 @@ hr {
   font-size: 16px;
 }
 
-.create-task select:focus, .create-media select:focus {
+.create-task select:focus,
+.create-media select:focus {
   outline: none;
   border-color: #5c7cfa;
 }
 
-.create-task, .create-option, .create-media {
+.create-task,
+.create-option,
+.create-media {
   position: relative;
   border-left: 3px solid #e0e0e0;
   padding-left: 10px;
