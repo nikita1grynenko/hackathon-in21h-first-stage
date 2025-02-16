@@ -18,6 +18,7 @@ public class QuestsController : ControllerBase
         _questService = questService;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateQuest([FromBody] CreateQuestDto questDto)
     {
