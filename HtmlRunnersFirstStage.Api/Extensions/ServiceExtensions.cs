@@ -8,6 +8,7 @@ using HtmlRunnersFirstStage.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -38,7 +39,16 @@ public static class ServiceExtensions
 
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(connectionString, sqlOptions =>
-                sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(30), null)));
+            {
+                sqlOptions.ExecutionStrategy(dependencies => new SqlServerRetryingExecutionStrategy(
+                    dependencies,
+                    maxRetryCount: 5,         // кількість повторів
+                    maxRetryDelay: TimeSpan.FromSeconds(30), // максимальний інтервал між спробами
+                    errorNumbersToAdd: null   // тут можна додати інші номери помилок
+                ));
+            })
+        );
+
     }
 
     public static void ConfigureIdentity(this IServiceCollection services)
@@ -72,19 +82,28 @@ public static class ServiceExtensions
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = true;
+                options.RequireHttpsMetadata = !Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.Equals("Development") ?? true;
                 options.SaveToken = true;
+
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
+
                     ValidateIssuer = true,
                     ValidIssuer = jwtIssuer,
+
                     ValidateAudience = true,
                     ValidAudience = jwtAudience,
-                    ValidateLifetime = true
+
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,  // Виключаємо додатковий час після `exp`
+
+                    NameClaimType = JwtRegisteredClaimNames.Sub,  // Тепер `User.Identity.Name` = `sub`
+                    RoleClaimType = "role"  // Використовується для `[Authorize(Roles = "...")]`
                 };
             });
+
     }
 
     public static void ConfigureSwagger(this IServiceCollection services)
