@@ -1,5 +1,3 @@
-using HtmlRunnersFirstStage.Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
 using HtmlRunnersFirstStage.Api.Extensions;
 
 namespace HtmlRunnersFirstStage.Api

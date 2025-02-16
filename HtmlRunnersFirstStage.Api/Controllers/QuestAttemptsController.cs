@@ -18,7 +18,8 @@ public class QuestAttemptsController : ControllerBase
         _questAttemptService = questAttemptService;
     }
     
-    [HttpPost("sub")]
+    [Authorize]
+    [HttpPost("submit")]
     public async Task<IActionResult> SubmitAttempt([FromBody] SubmitAttemptDto attemptDto)
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
