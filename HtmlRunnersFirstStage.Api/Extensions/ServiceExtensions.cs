@@ -79,7 +79,12 @@ public static class ServiceExtensions
 
         var key = Encoding.UTF8.GetBytes(jwtKey);
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+            )
             .AddJwtBearer(options =>
             {
                 options.RequireHttpsMetadata = !Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.Equals("Development") ?? true;
@@ -97,10 +102,6 @@ public static class ServiceExtensions
                     ValidAudience = jwtAudience,
 
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero,  // Виключаємо додатковий час після `exp`
-
-                    NameClaimType = JwtRegisteredClaimNames.Sub,  // Тепер `User.Identity.Name` = `sub`
-                    RoleClaimType = "role"  // Використовується для `[Authorize(Roles = "...")]`
                 };
             });
 
