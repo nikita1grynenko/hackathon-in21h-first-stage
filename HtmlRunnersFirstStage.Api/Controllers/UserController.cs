@@ -13,7 +13,6 @@ public class UserController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserService _userService;
-    private readonly IWebHostEnvironment _env;
 
     public UserController(UserManager<ApplicationUser> userManager, IUserService userService)
     {
