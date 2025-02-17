@@ -67,6 +67,6 @@ public class FeedbacksController : ControllerBase
         if (!result)
             return NotFound("Фідбек не знайдено або ви не маєте прав на його видалення.");
 
-        return NoContent(); // 204 No Content
+        return NoContent();
     }
 }
