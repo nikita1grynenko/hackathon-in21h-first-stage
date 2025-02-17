@@ -26,7 +26,7 @@ public class FeedbacksController : ControllerBase
 
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdClaim))
-            return Unauthorized("Не вдалося отримати ID користувача.");
+            return Unauthorized("Failed to retrieve the user ID.");
 
         var userId = Guid.Parse(userIdClaim);
         var feedback = await _feedbackService.AddFeedbackAsync(feedbackDto, userId);
@@ -47,7 +47,7 @@ public class FeedbacksController : ControllerBase
         var feedback = await _feedbackService.GetFeedbackByIdAsync(id);
         if (feedback == null)
         {
-            return NotFound(new { message = "Відгук не знайдено" });
+            return NotFound(new { message = "Feedback not found." });
         }
 
         return Ok(feedback);
@@ -59,13 +59,13 @@ public class FeedbacksController : ControllerBase
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdClaim))
-            return Unauthorized("Не вдалося отримати ID користувача.");
+            return Unauthorized("Failed to retrieve the user ID.");
 
         var userId = Guid.Parse(userIdClaim);
         var result = await _feedbackService.DeleteFeedbackAsync(id, userId);
 
         if (!result)
-            return NotFound("Фідбек не знайдено або ви не маєте прав на його видалення.");
+            return NotFound("Feedback not found or you do not have permission to delete it.");
 
         return NoContent();
     }

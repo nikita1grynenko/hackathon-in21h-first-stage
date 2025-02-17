@@ -27,7 +27,7 @@ public class QuestsController : ControllerBase
 
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdClaim))
-            return Unauthorized("Не вдалося отримати ID користувача.");
+            return Unauthorized("Failed to retrieve the user ID.");
 
         var userId = Guid.Parse(userIdClaim);
 
@@ -70,13 +70,13 @@ public class QuestsController : ControllerBase
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdClaim))
-            return Unauthorized("Не вдалося отримати ID користувача.");
+            return Unauthorized("Failed to retrieve the user ID.");
 
         var userId = Guid.Parse(userIdClaim);
         var result = await _questService.DeleteQuestAsync(id, userId);
 
         if (!result)
-            return NotFound("Квест не знайдено або ви не маєте прав на його видалення.");
+            return NotFound("Quest not found or you do not have permission to delete it.");
 
         return NoContent(); // 204 No Content
     }

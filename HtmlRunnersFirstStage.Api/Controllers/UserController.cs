@@ -28,13 +28,13 @@ public class UserController : ControllerBase
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdClaim))
-            return Unauthorized(new { message = "Не вдалося отримати ID користувача" });
+            return Unauthorized(new { message = "Failed to retrieve the user ID." });
 
         var userId = Guid.Parse(userIdClaim);
         var userProfile = await _userService.GetUserProfileAsync(userId);
 
         if (userProfile == null)
-            return NotFound(new { message = "Користувача не знайдено" });
+            return NotFound(new { message = "User not found." });
 
         return Ok(userProfile);
     }
@@ -51,9 +51,9 @@ public class UserController : ControllerBase
         var result = await _userManager.DeleteAsync(user);
         if (!result.Succeeded)
         {
-            return BadRequest(new { message = "Помилка при видаленні користувача", errors = result.Errors });
+            return BadRequest(new { message = "Error deleting user.", errors = result.Errors });
         }
 
-        return Ok(new { message = "Користувача успішно видалено" });
+        return Ok(new { message = "User successfully deleted." });
     }
 }

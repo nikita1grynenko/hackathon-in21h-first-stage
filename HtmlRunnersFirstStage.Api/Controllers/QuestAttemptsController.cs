@@ -24,7 +24,7 @@ public class QuestAttemptsController : ControllerBase
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdClaim))
-            return Unauthorized("Не удалось получить ID пользователя.");
+            return Unauthorized("Failed to retrieve the user ID.");
 
         var userId = Guid.Parse(userIdClaim);
 
@@ -39,7 +39,7 @@ public class QuestAttemptsController : ControllerBase
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdClaim))
-            return Unauthorized("Не вдалося отримати ID користувача.");
+            return Unauthorized("Failed to retrieve the user ID.");
 
         var userId = Guid.Parse(userIdClaim);
         var attempts = await _questAttemptService.GetUserAttemptsAsync(userId);

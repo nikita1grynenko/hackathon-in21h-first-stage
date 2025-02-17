@@ -1,10 +1,6 @@
-﻿using System.Security.Claims;
-using HtmlRunnersFirstStage.Application.Contracts;
+﻿using HtmlRunnersFirstStage.Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using HtmlRunnersFirstStage.Application.DTOs.Auth;
-using HtmlRunnersFirstStage.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 
 namespace HtmlRunnersFirstStage.API.Controllers
 {
