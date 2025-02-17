@@ -33,6 +33,7 @@ public class QuestAttemptsController : ControllerBase
         return Ok(result);
     }
     
+    [Authorize]
     [HttpGet("user")]
     public async Task<IActionResult> GetUserAttempts()
     {

@@ -151,6 +151,7 @@ public static class ServiceExtensions
 
     public static void RegisterAppServices(this IServiceCollection services)
     {
+        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IQuestRepository, QuestRepository>();
