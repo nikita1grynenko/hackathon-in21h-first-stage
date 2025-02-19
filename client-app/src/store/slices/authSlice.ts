@@ -18,7 +18,6 @@ const initialState: AuthState = {
   isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
   user: JSON.parse(localStorage.getItem('user') || 'null'),
 };
-console.log(localStorage.getItem('user') || 'null');
 
 const authSlice = createSlice({
   name: 'auth',
@@ -39,22 +38,23 @@ const authSlice = createSlice({
     },
     loadUserFromToken: (state) => {
       const token = localStorage.getItem('jwt');
-      if (token) {
-        const decodedToken = decodeJWT(token);
+      if (!token) return;
 
-        const displayName = decodedToken.email.split('@')[0];
+      const decodedToken = decodeJWT(token);
 
-        state.isAuthenticated = true;
-        state.user = {
-          userName: displayName, //  displayName замість ID
-          email: decodedToken.email,
-          displayName: displayName,
-          avatar: localStorage.getItem('avatar') || faker.image.avatar(),
-          avatarUrl: null,
-        };
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('user', JSON.stringify(state.user));
-      }
+      const displayName = decodedToken.email.split('@')[0];
+
+      state.isAuthenticated = true;
+      state.user = {
+        userName: displayName, //  displayName замість ID
+        email: decodedToken.email,
+        displayName: displayName,
+        avatar: localStorage.getItem('avatar') || faker.image.avatar(),
+        avatarUrl: null,
+      };
+      
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('user', JSON.stringify(state.user));
     },
     setAvatar: (state, action: PayloadAction<string>) => {
       if (state.user) {

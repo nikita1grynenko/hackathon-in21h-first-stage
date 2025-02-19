@@ -27,7 +27,6 @@ export const paginationSlice = createSlice({
     setTotalItems: (state, action: PayloadAction<number>) => {
       state.totalItems = action.payload;
       state.maxPage = Math.ceil(state.totalItems / state.itemsPerPage);
-      console.log("hehe", state.totalItems, state.maxPage);
     },
     // Зміна кількості елементів на сторінці
     setItemsPerPage: (state, action: PayloadAction<number>) => {

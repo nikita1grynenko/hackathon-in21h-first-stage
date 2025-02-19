@@ -55,12 +55,19 @@ const QuizTask = ({task, index, onSaveOption}: QuizTaskProps) => {
 
   useEffect(() => {
     const handleUpdate = () => {
-      const answer = task.questionType === 'Текстова відповідь' ? [formData.inputField] 
-        : task.questionType === 'Одна правильна відповідь' ? [formData.radio]
-        : formData.checkboxes;
+      // const answer = task.questionType === 'Текстова відповідь' ? [formData.inputField] 
+      //   : task.questionType === 'Одна правильна відповідь' ? [formData.radio]
+      //   : formData.checkboxes;
   
+      // const answerText = task.options?.find((option) => option.id === answer[0])?.text;
+      const radioAnswers = task.options?.find((option) => option.id === formData.radio)?.text || '';
+      const checkboxAnswers = task.options?.filter((option) => formData.checkboxes.includes(option.id)).map((option) => option.text);
+      const textAnswers = task.questionType === 'Текстова відповідь' ? formData.inputField : '';
+
       onSaveOption({
-        [task.id]: answer,
+        [task.id]: task.questionType === 'Одна правильна відповідь' ? [radioAnswers] : 
+        task.questionType === 'Кілька правильних відповідей' ? checkboxAnswers : 
+        [textAnswers]
       })
     };
 
@@ -68,7 +75,7 @@ const QuizTask = ({task, index, onSaveOption}: QuizTaskProps) => {
       handleUpdate();
       setIsUpdated(false);
     }
-  }, [formData.checkboxes, formData.inputField, formData.radio, isUpdated, onSaveOption, task.id, task.questionType]);
+  }, [formData.checkboxes, formData.inputField, formData.radio, isUpdated, onSaveOption, task.id, task.options, task.questionType]);
 
   return (
     <form key={task.id} className="task-card">

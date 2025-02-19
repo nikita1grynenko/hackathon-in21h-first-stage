@@ -74,10 +74,6 @@ const CreateQuest: React.FC = () => {
 
     return QuestTopicSchema.indexOf(topic);
   };
-  
-  useEffect(() => {
-    console.log(questData);
-  }, [questData]);
 
   useEffect(() => {
     document.title = 'Create quiz — QUIZIII';
@@ -112,7 +108,7 @@ const CreateQuest: React.FC = () => {
           <div className="form-group">
             <label>Складність:</label>
             <select
-              value={questData.difficulty}
+              value={QuestDificultySchema[questData.difficulty]}
               onChange={(e) => isQuestDificulty(e.target.value) && setQuestData({ ...questData, difficulty: convertDificulty(e.target.value) })}
             >
               {QuestDificultySchema.map((questDificulty) => (

@@ -38,6 +38,8 @@ public class QuestAttemptsController : ControllerBase
     public async Task<IActionResult> GetUserAttempts()
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        Console.WriteLine(userIdClaim);
         if (string.IsNullOrEmpty(userIdClaim))
             return Unauthorized("Failed to retrieve the user ID.");
 
