@@ -350,7 +350,7 @@ body {
   margin-bottom: 16px;
 }
 
-.rating-star {
+.rating-container .rating-star {
   background: none;
   border: none;
   font-size: 24px;
@@ -359,10 +359,10 @@ body {
   transition: color 0.2s;
 }
 
-.rating-star.active {
+.rating-container .rating-star.active {
   color: #ffd700;
 }
 
-.rating-star:hover {
+.rating-container .rating-star:hover {
   color: #ffd700;
 }

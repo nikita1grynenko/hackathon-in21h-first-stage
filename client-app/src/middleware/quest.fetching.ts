@@ -15,7 +15,6 @@ export const fetchAllQuests = async (page: number): Promise<QuestSimplified[]> =
   const itemsPerPage = selectItemsPerPage(state);
 
   const response = await instance.get(`/quests?page=${page}&pageSize=${itemsPerPage}`);
-  console.log('response:', response);
 
   const result = QuestSimplifiedSchema.array().safeParse(response.data.items);
 

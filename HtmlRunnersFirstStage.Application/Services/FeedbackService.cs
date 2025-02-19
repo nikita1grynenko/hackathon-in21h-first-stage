@@ -62,7 +62,7 @@ public class FeedbackService : IFeedbackService
             return false; // Фідбек не знайдено
 
         if (feedback.UserId != userId)
-            throw new UnauthorizedAccessException("Ви можете видаляти тільки свої фідбеки.");
+            throw new UnauthorizedAccessException("You can only delete your own feedback.");
 
         await _feedbackRepository.DeleteFeedbackAsync(feedback);
         return true;
@@ -83,7 +83,7 @@ public class FeedbackService : IFeedbackService
             Rating = feedback.Rating,
             Comment = feedback.Comment,
             CreatedAt = feedback.CreatedAt,
-            UserName = feedback.User?.UserName ?? "Анонім"
+            UserName = feedback.User?.UserName ?? "User"
         };
     }
 }

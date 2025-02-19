@@ -15,7 +15,7 @@ export const fetchUserQuestAttempts = async (): Promise<QuestAttemptSimplified[]
       },
     });
 
-    const result = QuestAttemptSimplifiedSchema.array().safeParse(response.data.items);
+    const result = QuestAttemptSimplifiedSchema.array().safeParse(response.data);
 
     if (!result.success) {
       console.error(result.error);
@@ -43,6 +43,8 @@ export const createQuestAttempt = async (attempt: AttemptSubmit) => {
     console.error('Помилка валідації:', validatedData.error);
     return;
   }
+
+  console.log('Валідація пройшла успішно:', validatedData.data);
 
   try {
     const response = await instance.post(`/quest-attempts/submit`,  {

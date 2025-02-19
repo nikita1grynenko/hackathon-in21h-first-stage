@@ -18,12 +18,13 @@ public class QuestAttemptsController : ControllerBase
         _questAttemptService = questAttemptService;
     }
     
+    [Authorize]
     [HttpPost("submit")]
     public async Task<IActionResult> SubmitAttempt([FromBody] SubmitAttemptDto attemptDto)
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdClaim))
-            return Unauthorized("Не удалось получить ID пользователя.");
+            return Unauthorized("Failed to retrieve the user ID.");
 
         var userId = Guid.Parse(userIdClaim);
 
@@ -32,12 +33,15 @@ public class QuestAttemptsController : ControllerBase
         return Ok(result);
     }
     
+    [Authorize]
     [HttpGet("user")]
     public async Task<IActionResult> GetUserAttempts()
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        Console.WriteLine(userIdClaim);
         if (string.IsNullOrEmpty(userIdClaim))
-            return Unauthorized("Не вдалося отримати ID користувача.");
+            return Unauthorized("Failed to retrieve the user ID.");
 
         var userId = Guid.Parse(userIdClaim);
         var attempts = await _questAttemptService.GetUserAttemptsAsync(userId);

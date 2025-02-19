@@ -1,5 +1,3 @@
-using HtmlRunnersFirstStage.Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
 using HtmlRunnersFirstStage.Api.Extensions;
 
 namespace HtmlRunnersFirstStage.Api
@@ -11,7 +9,6 @@ namespace HtmlRunnersFirstStage.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Load environment variables during development
-            if (builder.Environment.IsDevelopment())
                 ServiceExtensions.LoadEnv();
 
             // Configure services

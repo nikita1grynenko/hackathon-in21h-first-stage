@@ -41,10 +41,6 @@ const QuestAttempt: FC = () => {
   }, [answers, id, navigate]);
 
   useEffect(() => {
-    console.log(answers);
-  }, [answers]);
-
-  useEffect(() => {
     document.title = `${quest?.title} — Quest attempt — QUIZIII`;
   }, [quest?.title]);
 

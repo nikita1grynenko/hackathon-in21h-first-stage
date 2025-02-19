@@ -6,6 +6,6 @@
 trap "kill 0" SIGINT SIGTERM EXIT
 
 pnpm --prefix ./client-app run dev &
-dotnet watch run --project HtmlRunnersFirstStage.Api --urls=http://localhost:4000 &
+dotnet watch run --project HtmlRunnersFirstStage.Api &
 
 wait

@@ -47,21 +47,7 @@ namespace HtmlRunnersFirstStage.Application.Services
             return GenerateJwtToken(user);
         }
         
-        public async Task<UserProfileDto?> GetUserProfileAsync(Guid userId)
-        {
-            var user = await _userRepository.FindByIdAsync(userId);
-            if (user == null) return null;
-
-            return new UserProfileDto
-            {
-                Id = user.Id,
-                Username = user.UserName!,
-                Email = user.Email!,
-                AvatarUrl = user.AvatarUrl
-            };
-        }
-        
-        private string GenerateJwtToken(ApplicationUser user)
+        private static string GenerateJwtToken(ApplicationUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY") ?? throw new InvalidOperationException()));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

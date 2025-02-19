@@ -4,11 +4,13 @@ import { QuestSchema } from "./quest.model";
 
 export const QuestAttemptSimplifiedSchema = z.object({
   id: z.string().uuid(),
-  questId: z.string().uuid(),
-  userScore: z.number(),
-  userId: z.string().uuid(),
-  startedAt: z.date(),
-  completedAt: z.date().nullable()
+  title: z.string(),
+  description: z.string(),
+  questScore: z.number(),
+  timeLimit: z.number(),
+  difficulty: z.number(),
+  topic: z.number(),
+  createdByUserId: z.string().uuid()
 });
 
 export type QuestAttemptSimplified = z.infer<typeof QuestAttemptSimplifiedSchema>;

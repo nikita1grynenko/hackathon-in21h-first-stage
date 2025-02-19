@@ -52,26 +52,26 @@ const CreateTask: React.FC<CreateTaskProps> = ({id, onSaveTask, onRemoveTask}) =
 
     const optionIdx = TaskTypeSchema.indexOf(questTaskData.questionType);
     const optionCorrectPicker = <input 
-      key={optionId} 
-      id={optionId} 
-      name="answer" 
-      type={ ['radio', 'checkbox', 'hidden'][optionIdx] } 
-      checked={radioOptionId.has(optionId)}
-      onChange={(e) => {
-        const isChecked = e.target.checked;
-        switch (questTaskData.questionType) {
-          case 'Одна правильна відповідь':
-            setRadioOptionId((prev) => isChecked ? new Set([optionId]) : prev);
-            break;
-          case 'Кілька правильних відповідей':
-            setRadioOptionId((prev) => new Set([...prev, optionId]));
-            break;
-          default:
-            break;
+    key={radioOptionId.size} 
+    id={optionId} 
+    name="answer" 
+    type={['radio', 'checkbox', 'hidden'][optionIdx]} 
+    checked={radioOptionId.has(optionId)}
+    onChange={(e) => {
+      const isChecked = e.target.checked;
+      setRadioOptionId((prev) => {
+        const newSet = new Set(prev); // Створюємо новий Set
+        console.log(prev, optionId);
+        if (questTaskData.questionType === 'Одна правильна відповідь') {
+          return isChecked ? new Set([optionId]) : prev;
         }
-        e.target.checked = isChecked;
-      }}
-    />;
+        if (questTaskData.questionType === 'Кілька правильних відповідей') {
+          isChecked ? newSet.add(optionId) : newSet.delete(optionId);
+        }
+        return newSet; // Передаємо новий Set
+      });
+    }}
+  />;
 
     setOptions((prevOptions) => [
       ...prevOptions,
