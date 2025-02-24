@@ -1,9 +1,4 @@
-import {
-  useEffect,
-  FC,
-  useState,
-  useCallback,
-} from 'react';
+import { useEffect, FC, useState, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuestById } from '../../hooks/query.hook';
 import formatTime from '../../utils/time-format';
@@ -13,6 +8,29 @@ import formatTimer from '../../utils/timer-format';
 import { AttemptSubmit } from '../../models/quest-attempt.model';
 import { QuizTaskComponent } from '../../components/quiz-task';
 import { createQuestAttempt } from '../../middleware/quest-attempt.fetching';
+
+const calculateCorrectAnswers = (
+  attempt: AttemptSubmit,
+  questTasks: any[]
+): number => {
+  let correctCount = 0;
+
+  questTasks.forEach((task) => {
+    const userAnswers = attempt.answers[task.id] || [];
+    const correctAnswers = task.correctAnswers || [];
+
+    // Перевіряємо, чи співпадають відповіді користувача з правильними
+    const isCorrect =
+      userAnswers.length === correctAnswers.length &&
+      userAnswers.every((answer) => correctAnswers.includes(answer));
+
+    if (isCorrect) {
+      correctCount++;
+    }
+  });
+
+  return correctCount;
+};
 
 const QuestAttempt: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,10 +53,28 @@ const QuestAttempt: FC = () => {
     }));
   };
 
-  const completeAttempt = useCallback(() => {
-    createQuestAttempt(answers);
-    navigate(`/quiz/${id ?? ''}`);
-  }, [answers, id, navigate]);
+  const completeAttempt = useCallback(async () => {
+    if (!quest?.questTasks) return;
+
+    try {
+      // Зберігаємо спробу на сервері
+      await createQuestAttempt(answers);
+
+      // Підраховуємо кількість правильних відповідей
+      const correctAnswers = calculateCorrectAnswers(answers, quest.questTasks);
+
+      // Перенаправляємо на сторінку результатів
+      navigate('/test-completion', {
+        state: {
+          correctAnswers,
+          totalQuestions: quest.questTasks.length,
+          questTitle: quest.title,
+        },
+      });
+    } catch (error) {
+      console.error('Помилка при завершенні спроби:', error);
+    }
+  }, [answers, quest, navigate]);
 
   useEffect(() => {
     document.title = `${quest?.title} — Quest attempt — QUIZIII`;
@@ -85,7 +121,12 @@ const QuestAttempt: FC = () => {
 
       <div className="quiz-tasks">
         {quest.questTasks?.map((task, index) => (
-          <QuizTaskComponent key={task.id} index={index} task={task} onSaveOption={handleUpdateAnswers} />
+          <QuizTaskComponent
+            key={task.id}
+            index={index}
+            task={task}
+            onSaveOption={handleUpdateAnswers}
+          />
         ))}
       </div>
 
@@ -93,11 +134,31 @@ const QuestAttempt: FC = () => {
         Завершити квест
       </button>
 
-      <div className='timer' style={{ 
-        borderColor: timerState === 'EnoughTime' ? 'green' : timerState === 'RunningOut' ? 'yellow' : 'red',
-        color: timerState === 'EnoughTime' ? 'green' : timerState === 'RunningOut' ? 'yellow' : 'red',
-        backgroundColor: timerState === 'EnoughTime' ? '#a9ffa9' : timerState === 'RunningOut' ? '#c0cc5a' : '#671222',
-      }}>{formatTimer(timeSeconds)}</div>
+      <div
+        className="timer"
+        style={{
+          borderColor:
+            timerState === 'EnoughTime'
+              ? 'green'
+              : timerState === 'RunningOut'
+                ? 'yellow'
+                : 'red',
+          color:
+            timerState === 'EnoughTime'
+              ? 'green'
+              : timerState === 'RunningOut'
+                ? 'yellow'
+                : 'red',
+          backgroundColor:
+            timerState === 'EnoughTime'
+              ? '#a9ffa9'
+              : timerState === 'RunningOut'
+                ? '#c0cc5a'
+                : '#671222',
+        }}
+      >
+        {formatTimer(timeSeconds)}
+      </div>
     </div>
   );
 };

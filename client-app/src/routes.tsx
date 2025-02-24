@@ -10,6 +10,7 @@ import { ProfilePage } from './pages/profile';
 import { RootState } from './store/store';
 import { loadUserFromToken } from './store/slices/authSlice';
 import { QuestAttemptPage } from './pages/quest-attempt';
+import TestCompletion from './pages/test-completion/TestCompletion';
 
 const AppRouter = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const AppRouter = () => {
       <Route path="/create-quiz" element={<CreateQuizPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/auth" element={<AuthPage />} />
+      <Route path="/test-completion" element={<TestCompletion />} />
     </Routes>
   );
 };

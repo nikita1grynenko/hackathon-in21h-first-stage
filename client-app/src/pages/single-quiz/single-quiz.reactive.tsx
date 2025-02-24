@@ -143,13 +143,15 @@ const SingleQuiz: FC = () => {
               </div>
             )}
 
-            {task.questionType !== "Текстова відповідь" && (<div className="task-options">
-              {task.options?.map((option) => (
-                    <div key={option.id} className="task-option">
-                      {option.text}
-                    </div>
-              ))}
-            </div>)}
+            {task.questionType !== 'Текстова відповідь' && (
+              <div className="task-options">
+                {task.options?.map((option) => (
+                  <div key={option.id} className="task-option">
+                    {option.text}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -194,7 +196,9 @@ const SingleQuiz: FC = () => {
         </div>
       </div>
 
-      <button className="start-quiz-btn" onClick={() => navigate("./attempt")}>Почати квест</button>
+      <button className="start-quiz-btn" onClick={() => navigate('./attempt')}>
+        Почати квест
+      </button>
     </div>
   );
 };

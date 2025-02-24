@@ -10,11 +10,15 @@ import normalizeQuestData from '../utils/normalize-quest-data';
 import { selectItemsPerPage } from '../store/slices/pagination.slice';
 import { store } from '../store/store';
 
-export const fetchAllQuests = async (page: number): Promise<QuestSimplified[]> => {
+export const fetchAllQuests = async (
+  page: number
+): Promise<QuestSimplified[]> => {
   const state = store.getState();
   const itemsPerPage = selectItemsPerPage(state);
 
-  const response = await instance.get(`/quests?page=${page}&pageSize=${itemsPerPage}`);
+  const response = await instance.get(
+    `/quests?page=${page}&pageSize=${itemsPerPage}`
+  );
 
   const result = QuestSimplifiedSchema.array().safeParse(response.data.items);
 
@@ -22,7 +26,7 @@ export const fetchAllQuests = async (page: number): Promise<QuestSimplified[]> =
     console.error(result.error);
     return [];
   }
-  
+
   return result.data;
 };
 
@@ -39,7 +43,7 @@ export const fetchQuestById = async (id: string): Promise<Quest | null> => {
   return result.data;
 };
 
-export const createQuest = async (quest: QuestCreate) => { 
+export const createQuest = async (quest: QuestCreate) => {
   const token = localStorage.getItem('jwt');
   if (!token) {
     console.error('Токен не знайдено');

@@ -1,0 +1,28 @@
+.test-completion {
+  text-align: center;
+  margin: 50px;
+}
+
+.test-completion h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.test-completion p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+.test-completion button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #5c7cfa;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.test-completion button:hover {
+  background-color: #4a66d6;
+} 
