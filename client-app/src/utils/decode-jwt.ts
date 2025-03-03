@@ -1,9 +1,11 @@
 type DecodedJWTPayload = {
-  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier': string;
-  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress': string;
-  exp: number;
-  iss: string;
-  aud: string;
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": string;
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress": string;
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name": string,
+  "AvatarUrl": string,
+  "exp": 1739980070,
+  "iss": string,
+  "aud": string
 };
 
 function decodeJWT(token: string) {
@@ -14,14 +16,16 @@ function decodeJWT(token: string) {
   ) as DecodedJWTPayload;
 
   return {
-    userName:
-      decodedPayload[
-        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
-      ],
-    email:
-      decodedPayload[
-        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
-      ],
+    id: decodedPayload[
+      'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+    ],
+    name: decodedPayload[
+      'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'
+    ],
+    email: decodedPayload[
+      'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
+    ],
+    avatarUrl: decodedPayload.AvatarUrl,
   };
 }
 

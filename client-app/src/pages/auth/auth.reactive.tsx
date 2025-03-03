@@ -2,7 +2,7 @@ import { type FormEvent, useCallback, useEffect, useState } from 'react';
 import './auth.style.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../store/slices/authSlice';
+import { login } from '../../store/slices/auth.slice';
 import {
   fetchSignIn,
   fetchSignUp,
@@ -38,11 +38,13 @@ const Auth: React.FC = () => {
         localStorage.setItem('jwt', response.token);
         const decodedToken = decodeJWT(response.token);
 
+        console.log(decodedToken);
+
         dispatch(
           login({
-            userName: decodedToken.userName,
+            id: decodedToken.id,
+            userName: decodedToken.name,
             email: decodedToken.email,
-            displayName: decodedToken.userName,
             avatarUrl: null,
             avatar: '',
           })
@@ -68,10 +70,10 @@ const Auth: React.FC = () => {
 
         dispatch(
           login({
-            userName: decodedToken.userName,
+            id: decodedToken.id,
+            userName: decodedToken.name,
             email: decodedToken.email,
-            displayName: decodedToken.userName,
-            avatarUrl: null,
+            avatarUrl: decodedToken.avatarUrl,
             avatar: '',
           })
         );

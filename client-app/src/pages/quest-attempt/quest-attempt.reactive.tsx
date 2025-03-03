@@ -5,14 +5,16 @@ import {
   useCallback,
 } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
 import { useQuestById } from '../../hooks/query.hook';
 import formatTime from '../../utils/time-format';
 import './quest-attempt.style.css';
 import useTimer from '../../hooks/timer.hook';
 import formatTimer from '../../utils/timer-format';
-import { AttemptSubmit } from '../../models/quest-attempt.model';
+import { AttemptResult, AttemptSubmit } from '../../models/quest-attempt.model';
 import { QuizTaskComponent } from '../../components/quiz-task';
 import { createQuestAttempt } from '../../middleware/quest-attempt.fetching';
+import { addAttemptToStack } from '../../store/slices/attempt.slice';
 
 const QuestAttempt: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,8 +37,14 @@ const QuestAttempt: FC = () => {
     }));
   };
 
-  const completeAttempt = useCallback(() => {
-    createQuestAttempt(answers);
+  const completeAttempt = useCallback(async () => {
+    if (!id) return;
+
+    const attempt: AttemptResult | undefined = await createQuestAttempt(answers);
+    if (!attempt) return;
+
+    addAttemptToStack([id, attempt]);
+    console.log('Attempt created:', id, attempt);
     navigate(`/quiz/${id ?? ''}`);
   }, [answers, id, navigate]);
 

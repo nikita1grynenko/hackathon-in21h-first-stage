@@ -8,7 +8,7 @@ import PrivateRoute from './components/private-route/private-route.reactive';
 import { CreateQuizPage } from './pages/create-quiz';
 import { ProfilePage } from './pages/profile';
 import { RootState } from './store/store';
-import { loadUserFromToken } from './store/slices/authSlice';
+import { loadUserFromToken } from './store/slices/auth.slice';
 import { QuestAttemptPage } from './pages/quest-attempt';
 
 const AppRouter = () => {
@@ -40,6 +40,7 @@ const AppRouter = () => {
       <Route path="/create-quiz" element={<CreateQuizPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/auth" element={<AuthPage />} />
+      <Route path="/auth" element={isAuthenticated ? (<Navigate to="/auth" />) : (<AuthPage />)} />
     </Routes>
   );
 };

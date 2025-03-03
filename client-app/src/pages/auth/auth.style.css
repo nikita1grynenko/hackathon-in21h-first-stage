@@ -31,7 +31,7 @@ body {
 
 .container {
   position: relative;
-  min-height: 100vh;
+  height: calc(100svh - 80px);
   overflow: hidden;
 }
 

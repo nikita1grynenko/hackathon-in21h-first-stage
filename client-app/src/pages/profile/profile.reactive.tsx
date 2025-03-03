@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
-import { setAvatar } from '../../store/slices/authSlice';
+import { setAvatar } from '../../store/slices/auth.slice';
 import { faker } from '@faker-js/faker';
 import './profile.style.css';
 import { useQuestHistory } from '../../hooks/query.hook';
@@ -18,16 +18,6 @@ export const ProfilePage: React.FC = () => {
     isError,
     error,
   } = useQuestHistory();
-
-  // Генерція данних один раз після рендеринга компонента, змінити коли будуть данні з беку
-  // const questHistory = useMemo(() => (
-  //   Array.from({ length: 5 }, () => ({
-  //     id: faker.string.uuid(),
-  //     title: faker.lorem.words(3),
-  //     date: faker.date.recent().toLocaleDateString(),
-  //     score: faker.number.int({ min: 50, max: 100 }),
-  //   }
-  // ))), []);
 
   const stats = useMemo(
     () => ({
@@ -49,8 +39,8 @@ export const ProfilePage: React.FC = () => {
   }, [dispatch, user?.avatar]);
 
   useEffect(() => {
-    document.title = `${user?.displayName} — Profile — QUIZIII`;
-  }, [user?.displayName]);
+    document.title = `${user?.userName} — Profile — QUIZIII`;
+  }, [user?.userName]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
@@ -65,11 +55,11 @@ export const ProfilePage: React.FC = () => {
         <div className="avatar-container">
           <img
             src={user.avatar || faker.image.avatar()}
-            alt={`${user.displayName}'s avatar`}
+            alt={`${user.userName}'s avatar`}
           />
         </div>
         <div className="profile-info">
-          <h1 className="profile-name">{user.displayName}</h1>
+          <h1 className="profile-name">{user.userName}</h1>
           <p className="profile-email">{user.email}</p>
           <div className="profile-actions">
             <button
@@ -103,15 +93,15 @@ export const ProfilePage: React.FC = () => {
         >
           <h2>Історія квестів</h2>
           <div className="history-list">
-            {questHistory.map((quest) => (
-              <div key={quest.id} className="history-item">
+            {questHistory.map((questItem) => (
+              <div key={questItem.id} className="history-item">
                 <div className="quest-info">
-                  {/* <div className="quest-title">{quest.title}</div> */}
+                  <div className="quest-title">{questItem.quest && questItem.quest.title}</div>
                   <div className="quest-date">
-                    {quest.completedAt && formatDateTime(quest.completedAt)}
+                    {questItem.completedAt && formatDateTime(questItem.completedAt)}
                   </div>
                 </div>
-                <div className="quest-score">{quest.userScore} бал</div>
+                <div className="quest-score">{questItem.userScore} бал</div>
               </div>
             ))}
           </div>

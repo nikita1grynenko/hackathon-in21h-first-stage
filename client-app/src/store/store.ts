@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import filterReducer from './slices/filterSlice';
-import searchReducer from './slices/searchSlice';
-import authReducer from './slices/authSlice';
+import filterReducer from './slices/filter.slice';
+import searchReducer from './slices/search.slice';
+import authReducer from './slices/auth.slice';
 import paginationReducer from './slices/pagination.slice';
 import timerReducer from './slices/timer.slice';
+import attemptReducer from './slices/attempt.slice';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     auth: authReducer,
     pagination: paginationReducer,
     timer: timerReducer,
+    attempts: attemptReducer,
   },
 });
 
