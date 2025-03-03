@@ -21,7 +21,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
 
     const decodedJWT = decodeJWT(jwt);
     if (decodedJWT.expired < Date.now()) {
-      localStorage.removeItem("jwt");
+      localStorage.clear();
       return null;
     }
 
