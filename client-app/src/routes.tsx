@@ -23,24 +23,15 @@ const AppRouter = () => {
 
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          isAuthenticated ? (
-            <PrivateRoute>
-              <HomePage />
-            </PrivateRoute>
-          ) : (
-            <Navigate to="/auth" />
-          )
-        }
-      />
-      <Route path="/quiz/:id" element={<SingleQuizPage />} />
-      <Route path="/quiz/:id/attempt" element={<QuestAttemptPage />} />
-      <Route path="/create-quiz" element={<CreateQuizPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
+      <Route element={<PrivateRoute />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/quiz/:id" element={<SingleQuizPage />} />
+        <Route path="/quiz/:id/attempt" element={<QuestAttemptPage />} />
+        <Route path="/create-quiz" element={<CreateQuizPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+      </Route>
       <Route path="/auth" element={<AuthPage />} />
-      <Route path="/auth" element={isAuthenticated ? (<Navigate to="/auth" />) : (<AuthPage />)} />
+      <Route path="*" element={<Navigate to={!isAuthenticated ? "/auth" : "/"} />} />
     </Routes>
   );
 };

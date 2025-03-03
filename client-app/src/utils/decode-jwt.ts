@@ -26,6 +26,7 @@ function decodeJWT(token: string) {
       'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
     ],
     avatarUrl: decodedPayload.AvatarUrl,
+    expired: decodedPayload.exp,
   };
 }
 
