@@ -3,6 +3,8 @@ import { Feedback } from '../../models/feedback.model';
 import formatDateTime from '../../utils/date-time-format';
 import { deleteFeedback } from '../../middleware/feedback.fetching';
 import './feedback-item.style.css';
+import { useSelector } from 'react-redux';
+import { selectUserId } from '../../store/slices/search.slice';
 
 interface FeedbackItemProps {
   feedback: Feedback;
@@ -10,6 +12,8 @@ interface FeedbackItemProps {
 }
 
 const FeedbackItem: FC<FeedbackItemProps> = ({ feedback, onDelete }) => {
+  const currentUserId = useSelector(selectUserId);
+  
   const handleDelete = useCallback(async () => {
     if (window.confirm('Ви впевнені, що хочете видалити цей фідбек?')) {
       const result = await deleteFeedback(feedback.id);
@@ -36,9 +40,12 @@ const FeedbackItem: FC<FeedbackItemProps> = ({ feedback, onDelete }) => {
         <span className="feedback-date">
           {formatDateTime(feedback.createdAt).join(' ')}
         </span>
-        <button className="delete-feedback-btn" onClick={handleDelete}>
-          Видалити
-        </button>
+        {
+          feedback.userId === currentUserId &&
+          <button className="delete-feedback-btn" onClick={handleDelete}>
+            Видалити
+          </button>
+        }
       </div>
       {feedback.comment && <p className="feedback-text">{feedback.comment}</p>}
     </div>

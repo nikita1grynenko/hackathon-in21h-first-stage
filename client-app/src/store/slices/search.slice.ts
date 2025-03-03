@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
 interface SearchState {
   searchQuery: string;
@@ -17,6 +18,9 @@ const searchSlice = createSlice({
     },
   },
 });
+
+export const selectUserId = (state: RootState) =>
+  state.auth.user?.id;
 
 export const { setSearchQuery } = searchSlice.actions;
 export default searchSlice.reducer;

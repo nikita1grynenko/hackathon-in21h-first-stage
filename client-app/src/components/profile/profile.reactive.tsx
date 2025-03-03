@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import './profile.style.css';
-import { logout } from '../../store/slices/authSlice';
+import { logout } from '../../store/slices/auth.slice';
 import { RootState } from '../../store/store';
 
 export interface ProfileComponentProps {
@@ -28,7 +28,7 @@ export const ProfileComponent: React.FC<ProfileComponentProps> = () => {
       <div className="profile-avatar">
         <img
           src={user.avatar}
-          alt={user.displayName}
+          alt={user.userName}
           className="avatar-image"
         />
       </div>

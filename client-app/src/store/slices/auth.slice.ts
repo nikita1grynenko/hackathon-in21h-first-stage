@@ -3,10 +3,8 @@ import { type ApplicationUserSimplified } from '../../models/application-user.mo
 import decodeJWT from '../../utils/decode-jwt';
 import { faker } from '@faker-js/faker';
 
-type User = Omit<ApplicationUserSimplified, 'passwordHash' | 'id'> & {
-  displayName: string;
+type User = Omit<ApplicationUserSimplified, 'passwordHash'> & {
   avatar: string;
-  avatarUrl: string | null;
 };
 
 interface AuthState {
@@ -42,15 +40,13 @@ const authSlice = createSlice({
 
       const decodedToken = decodeJWT(token);
 
-      const displayName = decodedToken.email.split('@')[0];
-
       state.isAuthenticated = true;
       state.user = {
-        userName: displayName, //  displayName замість ID
+        id: decodedToken.id,
+        userName: decodedToken.name,
         email: decodedToken.email,
-        displayName: displayName,
-        avatar: localStorage.getItem('avatar') || faker.image.avatar(),
-        avatarUrl: null,
+        avatar: (decodedToken.avatarUrl === '' ? localStorage.getItem('avatar') : decodedToken.avatarUrl) || faker.image.avatar(),
+        avatarUrl: decodedToken.avatarUrl,
       };
       
       localStorage.setItem('isAuthenticated', 'true');

@@ -5,7 +5,6 @@ import {
   type Feedback,
   type FeedbackCreate,
 } from '../models/feedback.model';
-import decodeJWT from '../utils/decode-jwt';
 
 export const fetchAllQuestFeedbacks = async (
   questId: string
@@ -39,7 +38,7 @@ export const fetchFeedbackById = async (
 
 // TODO: remove JWT usage
 export const createFeedback = async (
-  feedback: Omit<FeedbackCreate, 'userId' | 'userName'>
+  feedback: FeedbackCreate
 ) => {
   console.log('Перед відправкою фідбеку:', feedback);
 
@@ -49,15 +48,16 @@ export const createFeedback = async (
     return;
   }
 
-  const { userName } = decodeJWT(token);
+  // const { userName } = decodeJWT(token);
 
-  const fullFeedback: FeedbackCreate = {
-    ...feedback,
-    userId: userName,
-    userName,
-  };
+  // const fullFeedback: FeedbackCreate = {
+  //   ...feedback,
+  //   userId: userName,
+  //   userName,
+  // };
 
-  const result = FeedbackCreateSchema.safeParse(fullFeedback);
+  console.log('Валідація фідбеку:', feedback);
+  const result = FeedbackCreateSchema.safeParse(feedback);
   if (!result.success) {
     console.error('Помилка валідації:', result.error);
     return;
