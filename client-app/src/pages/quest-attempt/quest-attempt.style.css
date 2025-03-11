@@ -346,10 +346,6 @@ body {
   color: #ffd700;
 }
 
-.rating-star:hover {
-  color: #ffd700;
-}
-
 .timer {
   position: fixed;
   width: 120px;

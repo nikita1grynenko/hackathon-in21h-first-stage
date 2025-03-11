@@ -91,7 +91,7 @@ public class QuestService : IQuestService
             return false; // Квест не знайдено
 
         if (quest.CreatedByUserId != userId)
-            throw new UnauthorizedAccessException("Ви можете видаляти тільки свої квести.");
+            throw new UnauthorizedAccessException("You can only delete your own quests.");
 
         await _questRepository.DeleteQuestAsync(quest);
         return true;

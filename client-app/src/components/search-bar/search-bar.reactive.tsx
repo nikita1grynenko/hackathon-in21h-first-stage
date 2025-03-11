@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchQuery } from '../../store/slices/searchSlice';
+import { setSearchQuery } from '../../store/slices/search.slice';
 import { RootState } from '../../store/store';
 import './search-bar.style.css';
 

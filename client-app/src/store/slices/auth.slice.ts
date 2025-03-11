@@ -3,10 +3,8 @@ import { type ApplicationUserSimplified } from '../../models/application-user.mo
 import decodeJWT from '../../utils/decode-jwt';
 import { faker } from '@faker-js/faker';
 
-type User = Omit<ApplicationUserSimplified, 'passwordHash' | 'id'> & {
-  displayName: string;
+type User = Omit<ApplicationUserSimplified, 'passwordHash'> & {
   avatar: string;
-  avatarUrl: string | null;
 };
 
 interface AuthState {
@@ -18,7 +16,6 @@ const initialState: AuthState = {
   isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
   user: JSON.parse(localStorage.getItem('user') || 'null'),
 };
-console.log(localStorage.getItem('user') || 'null');
 
 const authSlice = createSlice({
   name: 'auth',
@@ -39,22 +36,21 @@ const authSlice = createSlice({
     },
     loadUserFromToken: (state) => {
       const token = localStorage.getItem('jwt');
-      if (token) {
-        const decodedToken = decodeJWT(token);
+      if (!token) return;
 
-        const displayName = decodedToken.email.split('@')[0];
+      const decodedToken = decodeJWT(token);
 
-        state.isAuthenticated = true;
-        state.user = {
-          userName: displayName, //  displayName замість ID
-          email: decodedToken.email,
-          displayName: displayName,
-          avatar: localStorage.getItem('avatar') || faker.image.avatar(),
-          avatarUrl: null,
-        };
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('user', JSON.stringify(state.user));
-      }
+      state.isAuthenticated = true;
+      state.user = {
+        id: decodedToken.id,
+        userName: decodedToken.name,
+        email: decodedToken.email,
+        avatar: (decodedToken.avatarUrl === '' ? localStorage.getItem('avatar') : decodedToken.avatarUrl) || faker.image.avatar(),
+        avatarUrl: decodedToken.avatarUrl,
+      };
+      
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('user', JSON.stringify(state.user));
     },
     setAvatar: (state, action: PayloadAction<string>) => {
       if (state.user) {

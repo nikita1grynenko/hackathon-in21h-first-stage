@@ -28,7 +28,7 @@ public class QuestAttemptService : IQuestAttemptService
             .ThenInclude(t => t.Options)
             .FirstOrDefaultAsync(q => q.Id == attemptDto.QuestId);
 
-        if (quest == null) throw new Exception("Квест не знайдено!");
+        if (quest == null) throw new Exception("Quest not found.");
 
         double totalScore = 0;
         var correctTasks = new Dictionary<Guid, string>();

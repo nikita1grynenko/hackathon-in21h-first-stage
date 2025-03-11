@@ -1,7 +1,14 @@
 import instance from "../axios-config";
-import { AttemptSubmit, QuestAttemptSimplified, AttemtSubmitSchema, QuestAttemptSimplifiedSchema } from "../models/quest-attempt.model";
+import { 
+  AttemptSubmit, 
+  QuestAttempt, 
+  AttemtSubmitSchema, 
+  QuestAttemptSchema, 
+  AttemptResultSchema, 
+  AttemptResult 
+} from "../models/quest-attempt.model";
 
-export const fetchUserQuestAttempts = async (): Promise<QuestAttemptSimplified[]> => {
+export const fetchUserQuestAttempts = async (): Promise<QuestAttempt[]> => {
   const token = localStorage.getItem('jwt');
   if (!token) {
     console.error('Токен не знайдено');
@@ -15,7 +22,7 @@ export const fetchUserQuestAttempts = async (): Promise<QuestAttemptSimplified[]
       },
     });
 
-    const result = QuestAttemptSimplifiedSchema.array().safeParse(response.data.items);
+    const result = QuestAttemptSchema.array().safeParse(response.data);
 
     if (!result.success) {
       console.error(result.error);
@@ -30,7 +37,7 @@ export const fetchUserQuestAttempts = async (): Promise<QuestAttemptSimplified[]
   return [];
 }
 
-export const createQuestAttempt = async (attempt: AttemptSubmit) => {
+export const createQuestAttempt = async (attempt: AttemptSubmit): Promise<AttemptResult | undefined> => {
   const token = localStorage.getItem('jwt');
   if (!token) {
     console.error('Токен не знайдено');
@@ -45,7 +52,7 @@ export const createQuestAttempt = async (attempt: AttemptSubmit) => {
   }
 
   try {
-    const response = await instance.post(`/quest-attempts/submit`,  {
+    const response = await instance.post(`/quest-attempts/submit`, validatedData.data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -55,6 +62,15 @@ export const createQuestAttempt = async (attempt: AttemptSubmit) => {
       console.error('No response data');
       return;
     }
+
+    const result = AttemptResultSchema.safeParse(response.data);
+
+    if (!result.success) {
+      console.error(result.error);
+      return;
+    }
+
+    return result.data;
   } catch (error) {
     console.error('Помилка при створенні спроби квесту:', error);
   }

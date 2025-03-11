@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# use `chmod +x start-local-app` to make this file executable
+# use `./start-local-app` to run this file
+
+trap "kill 0" SIGINT SIGTERM EXIT
+
+pnpm --prefix ./client-app run dev &
+dotnet watch run --project HtmlRunnersFirstStage.Api &
+
+wait

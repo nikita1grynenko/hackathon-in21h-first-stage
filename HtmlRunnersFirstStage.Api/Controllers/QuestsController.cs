@@ -18,20 +18,19 @@ public class QuestsController : ControllerBase
         _questService = questService;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateQuest([FromBody] CreateQuestDto questDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        // Беремо UserId з токена (він завжди має бути у JWT)
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdClaim))
-            return Unauthorized("Не вдалося отримати ID користувача.");
+            return Unauthorized("Failed to retrieve the user ID.");
 
         var userId = Guid.Parse(userIdClaim);
 
-        // Передаємо userId в сервіс
         var quest = await _questService.CreateQuestAsync(questDto, userId);
 
         return CreatedAtAction(nameof(GetQuestById), new { id = quest.Id }, quest);
@@ -71,13 +70,13 @@ public class QuestsController : ControllerBase
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdClaim))
-            return Unauthorized("Не вдалося отримати ID користувача.");
+            return Unauthorized("Failed to retrieve the user ID.");
 
         var userId = Guid.Parse(userIdClaim);
         var result = await _questService.DeleteQuestAsync(id, userId);
 
         if (!result)
-            return NotFound("Квест не знайдено або ви не маєте прав на його видалення.");
+            return NotFound("Quest not found or you do not have permission to delete it.");
 
         return NoContent(); // 204 No Content
     }

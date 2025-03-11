@@ -14,6 +14,8 @@ import { createFeedback } from '../../middleware/feedback.fetching';
 import { FeedbackCreate } from '../../models/feedback.model';
 import FeedbackItem from '../../components/feedback-item/feedback-item.reactive';
 import './single-quiz.style.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface FeedbackFormData {
   comment: string;
@@ -23,6 +25,7 @@ interface FeedbackFormData {
 const SingleQuiz: FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const [formData, setFormData] = useState<FeedbackFormData>({
     comment: '',
@@ -46,9 +49,9 @@ const SingleQuiz: FC = () => {
       const feedbackData: FeedbackCreate = {
         questId: id,
         rating: formData.rating,
-        comment: formData.comment || null,
-        userId: '1',
-        userName: 'User',
+        comment: formData.comment,
+        userId: user?.id ?? '',
+        userName: user?.userName ?? '',
       };
 
       try {
@@ -64,7 +67,7 @@ const SingleQuiz: FC = () => {
         console.error('Помилка при створенні фідбека:', error);
       }
     },
-    [formData, id]
+    [formData.comment, formData.rating, id, user?.id, user?.userName]
   );
 
   const handleInputChange = useCallback(
@@ -184,7 +187,7 @@ const SingleQuiz: FC = () => {
         </form>
 
         <div className="feedback-list">
-          {feedbacks.map((feedback) => (
+          {feedbacks.sort((prevFeedback, currentFeedback) => (+currentFeedback.createdAt - +prevFeedback.createdAt)).map((feedback) => (
             <FeedbackItem
               key={feedback.id}
               feedback={feedback}

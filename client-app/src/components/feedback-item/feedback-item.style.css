@@ -25,7 +25,7 @@
   gap: 4px;
 }
 
-.rating-star {
+.rating-container .rating-star {
   font-size: 18px;
   color: #adb5bd;
   background: transparent;
@@ -34,10 +34,10 @@
   transition: color 0.3s ease-in-out;
 }
 
-.rating-star.active {
+.rating-container .rating-star.active {
   color: #ffd700;
 }
-.rating-star:hover {
+.rating-container .rating-star:hover {
   color: #ffc107;
 }
 

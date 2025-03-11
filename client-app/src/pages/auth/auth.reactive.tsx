@@ -2,7 +2,7 @@ import { type FormEvent, useCallback, useEffect, useState } from 'react';
 import './auth.style.css';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../store/slices/authSlice';
+import { login } from '../../store/slices/auth.slice';
 import {
   fetchSignIn,
   fetchSignUp,
@@ -38,13 +38,15 @@ const Auth: React.FC = () => {
         localStorage.setItem('jwt', response.token);
         const decodedToken = decodeJWT(response.token);
 
+        console.log(decodedToken);
+
         dispatch(
           login({
-            userName: decodedToken.userName,
+            id: decodedToken.id,
+            userName: decodedToken.name,
             email: decodedToken.email,
-            displayName: decodedToken.userName,
             avatarUrl: null,
-            avatar: ''
+            avatar: '',
           })
         );
         navigate('/');
@@ -68,11 +70,11 @@ const Auth: React.FC = () => {
 
         dispatch(
           login({
-            userName: decodedToken.userName,
+            id: decodedToken.id,
+            userName: decodedToken.name,
             email: decodedToken.email,
-            displayName: decodedToken.userName,
-            avatarUrl: null,
-            avatar: ''
+            avatarUrl: decodedToken.avatarUrl,
+            avatar: '',
           })
         );
         navigate('/');
@@ -85,7 +87,7 @@ const Auth: React.FC = () => {
 
   const toggle = useCallback(() => {
     setIsSignIn(!isSignIn);
-    setError(null); // Сброс ошибки при переключении между формами
+    setError(null);
   }, [isSignIn]);
 
   const blockActions = useCallback((e: React.ClipboardEvent) => {
@@ -110,6 +112,7 @@ const Auth: React.FC = () => {
                 <i className="bx bxs-user"></i>
                 <input
                   type="text"
+                  id="username-input"
                   placeholder="Username"
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
@@ -151,7 +154,7 @@ const Auth: React.FC = () => {
               {error && <div className="error-message">{error}</div>}
               <button>Sign up</button>
               <p>
-                <span>Already have an account?</span>
+                <span>Already have an account? </span>
                 <b onClick={toggle} className="pointer">
                   Sign in here
                 </b>
@@ -187,7 +190,7 @@ const Auth: React.FC = () => {
               {error && <div className="error-message">{error}</div>}
               <button type="submit">Sign in</button>
               <p>
-                <span>Don't have an account?</span>
+                <span>Don't have an account? </span>
                 <b onClick={toggle} className="pointer">
                   Sign up here
                 </b>

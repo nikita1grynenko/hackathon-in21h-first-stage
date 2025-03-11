@@ -1,7 +1,5 @@
 ﻿using HtmlRunnersFirstStage.Domain.Entities;
 using HtmlRunnersFirstStage.Application.Contracts;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,35 +12,30 @@ namespace HtmlRunnersFirstStage.Application.Services
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IConfiguration _configuration;
 
-        public AuthService(IUserRepository userRepository, IConfiguration configuration)
+        public AuthService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _configuration = configuration;
         }
 
-        public async Task<string?> RegisterAsync(RegisterDto model)
+        public async Task<(string? Token, string? Error)> RegisterAsync(RegisterDto model)
         {
             var user = new ApplicationUser
             {
                 UserName = model.Username,
-                Email = model.Email
+                Email = model.Email,
             };
 
             var result = await _userRepository.RegisterAsync(user, model.Password);
-    
+
             if (!result.Succeeded)
             {
-                // Логуємо помилку Identity
-                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                Console.WriteLine($"Помилка реєстрації: {errors}");
-                return null;
+                var errors = string.Join("; ", result.Errors.Select(e => $"{e.Code}: {e.Description}"));
+                return (null, errors);
             }
 
-            // Генеруємо JWT
             var token = GenerateJwtToken(user);
-            return token;
+            return (token, null);
         }
 
         public async Task<string?> LoginAsync(LoginDto model)
@@ -53,27 +46,25 @@ namespace HtmlRunnersFirstStage.Application.Services
 
             return GenerateJwtToken(user);
         }
-
-        private string GenerateJwtToken(ApplicationUser user)
+        
+        private static string GenerateJwtToken(ApplicationUser user)
         {
-            var jwtKey = _configuration["Jwt:Key"];
-            if (string.IsNullOrEmpty(jwtKey))
-            {
-                throw new ArgumentNullException("Jwt:Key", "JWT ключ не знайдений в конфигурації.");
-            }
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY") ?? throw new InvalidOperationException()));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email!),
+                new Claim(ClaimTypes.Name, user.UserName ?? ""),
+                new Claim("AvatarUrl", user.AvatarUrl ?? "")
+            };
+
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email!)
-                },
-                expires: DateTime.UtcNow.AddHours(Convert.ToDouble(_configuration["Jwt:TokenLifetime"])),
+                issuer: Environment.GetEnvironmentVariable("JWT_ISSUER"),
+                audience: Environment.GetEnvironmentVariable("JWT_AUD"),
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(Convert.ToDouble(Environment.GetEnvironmentVariable("JWT_LIFETIME"))),
                 signingCredentials: creds
             );
 
