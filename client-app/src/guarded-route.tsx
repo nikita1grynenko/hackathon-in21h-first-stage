@@ -1,5 +1,5 @@
 import { ReactElement, useMemo } from "react";
-import { Route, RouteProps } from "react-router-dom";
+import {Navigate, Route, RouteProps} from "react-router-dom";
 import decodeJWT from "./utils/decode-jwt";
 
 const GuardedRoute = (props: RouteProps): ReactElement | null => {

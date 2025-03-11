@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setDifficulty } from '../../store/slices/filterSlice';
+import { setDifficulty } from '../../store/slices/filter.slice';
 import { RootState } from '../../store/store';
 import './filter.style.css';
 
