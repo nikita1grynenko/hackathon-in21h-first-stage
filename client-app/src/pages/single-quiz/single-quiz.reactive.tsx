@@ -146,13 +146,13 @@ const SingleQuiz: FC = () => {
               </div>
             )}
 
-            {task.questionType !== "Текстова відповідь" && (<div className="task-options">
+            <div className="task-options">
               {task.options?.map((option) => (
-                    <div key={option.id} className="task-option">
-                      {option.text}
-                    </div>
+                <div key={option.id} className="task-option">
+                  {option.text}
+                </div>
               ))}
-            </div>)}
+            </div>
           </div>
         ))}
       </div>
