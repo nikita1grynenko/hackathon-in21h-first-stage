@@ -24,11 +24,23 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --primary-color: #646cff;
-  --secondary-color: #1a1a1a;
-  --text-color: rgba(255, 255, 255, 0.87);
-  --background-color: #242424;
-  --active-link-color: #535bf2;
+  --primary-color: #5c7cfa;
+  --primary-hover: #4263eb;
+  --secondary-color: #f8f9fa;
+  --text-color: #242424;
+  --background-color: #ffffff;
+  --active-link-color: #4263eb;
+  --black: #000000;
+  --white: #ffffff;
+  --gray: #e9ecef;
+  --gray-2: #495057;
+  --border-color: #ced4da;
+  --card-bg: #f1f3f5;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --success-color: #40c057;
+  --error-color: #c44949;
+  --warning-color: #fd7e14;
+  --info-color: #15aabf;
 }
 
 body {
@@ -38,8 +50,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f8f9fa;
-  color: #212529;
+  background-color: var(--secondary-color);
+  color: var(--error-color);
 }
 
 * {
@@ -91,12 +103,46 @@ code {
 
 @media (prefers-color-scheme: light) {
   :root {
-    /* TODO: Add light colors */
+    --primary-color: #5c7cfa;
+    --primary-hover: #4263eb;
+    --secondary-color: #f8f9fa;
+    --text-color: #242424;
+    --background-color: #ffffff;
+    --active-link-color: #4263eb;
+    --black: #000000;
+    --white: #ffffff;
+    --gray: #e9ecef;
+    --gray-2: #495057;
+    --border-color: #ced4da;
+    --card-bg: #f1f3f5;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --success-color: #40c057;
+    --error-color: #c44949;
+    --warning-color: #fd7e14;
+    --info-color: #15aabf;
+    --white-black: #eee;
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* TODO: Add dark colors */
+    --primary-color: #646cff;
+    --primary-hover: #7048e8;
+    --secondary-color: #1a1a1a;
+    --text-color: rgba(255, 255, 255, 0.87);
+    --background-color: #242424;
+    --active-link-color: #535bf2;
+    --black: #000000;
+    --white: #ffffff;
+    --gray: #343a40;
+    --gray-2: #adb5bd;
+    --border-color: #495057;
+    --card-bg: #2c2c2c;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --success-color: #37b24d;
+    --error-color: #c44949;
+    --warning-color: #f76707;
+    --info-color: #1098ad;
+    --white-black: #111;
   }
 }

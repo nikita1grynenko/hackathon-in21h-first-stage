@@ -3,7 +3,7 @@
 :root {
   /* --primary-color: #4EA685;
     --secondary-color: #57B894; */
-  --primary-color: #5c7cfa;
+  /* --primary-color: #5c7cfa;
   --secondary-color: #242424;
   --black: #000000;
   --white: #ffffff;
@@ -13,7 +13,7 @@
   --facebook-color: #4267b2;
   --google-color: #db4437;
   --twitter-color: #1da1f2;
-  --insta-color: #e1306c;
+  --insta-color: #e1306c; */
 }
 
 * {
@@ -59,7 +59,7 @@ body {
 
 .form {
   padding: 1rem;
-  background-color: var(--white);
+  background-color: var(--background-color);
   border-radius: 1.5rem;
   width: 100%;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -89,7 +89,7 @@ body {
   font-size: 1rem;
   background-color: var(--gray);
   border-radius: 0.5rem;
-  border: 0.125rem solid var(--white);
+  border: 0.125rem solid var(--white-black);
   outline: none;
 }
 
@@ -97,13 +97,19 @@ body {
   border: 0.125rem solid var(--primary-color);
   outline: none;
 }
+
 #username-input {
   width: 100%;
   padding: 1rem 3rem;
   font-size: 1rem;
   background-color: var(--gray);
   border-radius: 0.5rem;
-  border: 0.125rem solid var(--white);
+  border: 0.125rem solid var(--white-black);
+  outline: none;
+}
+
+#username-input:focus {
+  border: 0.125rem solid var(--primary-color);
   outline: none;
 }
 
@@ -123,12 +129,20 @@ body {
 }
 
 .form.sign-up button {
-  background-color: var(--secondary-color);
+  background-color: #262740;
+  border-radius: 0.5rem;
+  border: 0.125rem solid var(--white-black);
+}
+
+.sign-up button:focus {
+  border: 0.125rem solid var(--primary-color);
+  outline: none;
 }
 
 .form p {
   margin: 1rem 0;
   font-size: 0.7rem;
+  color: var(--active-link-color);
 }
 
 .flex-col {
